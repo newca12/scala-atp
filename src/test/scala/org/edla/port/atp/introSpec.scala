@@ -17,7 +17,7 @@ class IntroSpec extends SpecificationWithJUnit {
     }
   }
   "Explode input" should {
-    "be 2;*;(;(;var_1;+;x;';);+;11;)" in {
+    "be if;(;*;p1;--;==;*;p2;++;);then;f;(;);else;g;(;)" in {
       val input: String = "if (*p1-- == *p2++) then f() else g()"
       lex(input).mkString(";") must equalTo("if;(;*;p1;--;==;*;p2;++;);then;f;(;);else;g;(;)")
     }

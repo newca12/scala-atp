@@ -30,11 +30,9 @@ object Intro extends StandardTokenParsers {
   }
 
   def lex(input: String): List[String] = {
-    var l = List("")
     lexical.delimiters ++= List("(", ")", "+", "-", "*", "/", "'", "++", "==", "--")
-    var s: lexical.Scanner = new lexical.Scanner(input)
-    l = l.init
-    l = l ::: List(s.first.chars.toString)
+    var s = new lexical.Scanner(input)
+    var l = List(s.first.chars.toString)
     do {
       s = s.rest
       l = l ::: List(s.first.chars.toString)
