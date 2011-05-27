@@ -10,4 +10,16 @@ class IntroSpec extends SpecificationWithJUnit {
       simplify(exp) must equalTo(Const(15))
     }
   }
+  "Explode input" should {
+    "be 2;*;(;(;var_1;+;x;';);+;11;)" in {
+      val input: String = "2*((var_1 + x') + 11)"
+      lex(input).mkString(";") must equalTo("2;*;(;(;var_1;+;x;';);+;11;)")
+    }
+  }
+  "Explode input" should {
+    "be 2;*;(;(;var_1;+;x;';);+;11;)" in {
+      val input: String = "if (*p1-- == *p2++) then f() else g()"
+      lex(input).mkString(";") must equalTo("if;(;*;p1;--;==;*;p2;++;);then;f;(;);else;g;(;)")
+    }
+  }
 }
