@@ -39,4 +39,38 @@ object Intro extends StandardTokenParsers {
     } while (!s.atEnd)
     return l.init
   }
+
+  def constant = numericLit ^^ { s => Const(s.toInt) }
+
+  def variable = ident ^^ { s => Var(s.toString) }
+
+  def expression: Parser[Expression] = (product ~ "+" ~ product) ^^ {
+    case left ~ "+" ~ right =>
+      Add(left, right)
+  } | product
+  def product: Parser[Expression] = (atom ~ "*" ~ atom) ^^ {
+    case left ~ "*" ~ right =>
+      Mul(left, right)
+  } | atom
+  def atom: Parser[Expression] = "(" ~> expression <~ ")" | constant | variable
+
+  def parse(s: String) = {
+    lexical.delimiters ++= List("+", "*", "(", ")")
+    val tokens = new lexical.Scanner(s)
+    phrase(expression)(tokens)
+  }
+
+  def apply(s: String): Expression = {
+    parse(s) match {
+      case Success(tree, _) => tree
+      case e: NoSuccess =>
+        throw new IllegalArgumentException("Bad syntax: " + s)
+    }
+  }
+  def parseExpression(exprstr: String): Expression = {
+    (parse(exprstr): @unchecked) match {
+      case Success(tree, _) =>
+        return tree
+    }
+  }
 }

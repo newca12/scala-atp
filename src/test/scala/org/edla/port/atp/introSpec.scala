@@ -22,4 +22,16 @@ class IntroSpec extends SpecificationWithJUnit {
       lex(input).mkString(";") must equalTo("if;(;*;p1;--;==;*;p2;++;);then;f;(;);else;g;(;)")
     }
   }
+  "Parse input" should {
+    "be Add(Var(x),Const(1))" in {
+      val input: String = "x + 1"
+      parseExpression(input).toString must equalTo("Add(Var(x),Const(1))")
+    }
+  }
+  "Parse input" should {
+    "be Mul(Add(Var(x1),Var(x2)),Add(Const(2),Mul(Const(3),Var(x))))" in {
+      val input: String = "(x1 + x2) * (2 + 3 * x)"
+      parseExpression(input).toString must equalTo("Mul(Add(Var(x1),Var(x2)),Add(Const(2),Mul(Const(3),Var(x))))")
+    }
+  }
 }
