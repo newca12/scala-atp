@@ -34,4 +34,16 @@ class IntroSpec extends SpecificationWithJUnit {
       parseExpression(input).toString must equalTo("Mul(Add(Var(x1),Var(x2)),Add(Const(2),Mul(Const(3),Var(x))))")
     }
   }
+  "Pretty print input" should {
+    "be x + 3 * y" in {
+      val input: String = "x + 3 * y"
+      stringOfExp(0, parseExpression(input)) must equalTo("x + 3 * y")
+    }
+  }
+  "Pretty print input" should {
+    "be ((1 + 2) + 3) + 4" in {
+      val input: String = "((1 + 2) + 3) + 4"
+      stringOfExp(0, parseExpression(input)) must equalTo("((1 + 2) + 3) + 4")
+    }
+  }
 }

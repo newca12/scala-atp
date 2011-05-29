@@ -48,10 +48,12 @@ object Intro extends StandardTokenParsers {
     case left ~ "+" ~ right =>
       Add(left, right)
   } | product
+  
   def product: Parser[Expression] = (atom ~ "*" ~ atom) ^^ {
     case left ~ "*" ~ right =>
       Mul(left, right)
   } | atom
+  
   def atom: Parser[Expression] = "(" ~> expression <~ ")" | constant | variable
 
   def parse(s: String) = {
@@ -67,10 +69,27 @@ object Intro extends StandardTokenParsers {
         throw new IllegalArgumentException("Bad syntax: " + s)
     }
   }
+  
   def parseExpression(exprstr: String): Expression = {
     (parse(exprstr): @unchecked) match {
       case Success(tree, _) =>
         return tree
+    }
+  }
+
+  def stringOfExp(pr: Int, e: Expression): String = {
+    e match {
+      case Var(n: String) => n
+      case Const(v: Int) => v.toString
+      case Add(l: Expression, r: Expression) => {
+        val s: String = stringOfExp(3, l) + " + " + stringOfExp(2, r);
+        if (2 < pr) "(" + s + ")" else s;
+
+      }
+      case Mul(l: Expression, r: Expression) => {
+        val s: String = stringOfExp(5, l) + " * " + stringOfExp(4, r);
+        if (4 < pr) "(" + s + ")" else s;
+      }
     }
   }
 }
