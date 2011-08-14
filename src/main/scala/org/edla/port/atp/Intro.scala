@@ -40,21 +40,21 @@ object Intro extends StandardTokenParsers {
     return l.init
   }
 
-  def constant = numericLit ^^ { s => Const(s.toInt) }
-
-  def variable = ident ^^ { s => Var(s.toString) }
-
-  def expression: Parser[Expression] = (product ~ "+" ~ product) ^^ {
+  lazy val expression: Parser[Expression] = product ~ "+" ~ expression ^^ {
     case left ~ "+" ~ right =>
       Add(left, right)
   } | product
-  
-  def product: Parser[Expression] = (atom ~ "*" ~ atom) ^^ {
+
+  lazy val product: Parser[Expression] = atom ~ "*" ~ product ^^ {
     case left ~ "*" ~ right =>
       Mul(left, right)
   } | atom
-  
-  def atom: Parser[Expression] = "(" ~> expression <~ ")" | constant | variable
+
+  lazy val atom: Parser[Expression] = "(" ~> expression <~ ")" | constant | variable
+
+  lazy val constant = numericLit ^^ { s => Const(s.toInt) }
+
+  lazy val variable = ident ^^ { s => Var(s.toString) }
 
   def parse(s: String) = {
     lexical.delimiters ++= List("+", "*", "(", ")")
@@ -69,7 +69,7 @@ object Intro extends StandardTokenParsers {
         throw new IllegalArgumentException("Bad syntax: " + s)
     }
   }
-  
+
   def parseExpression(exprstr: String): Expression = {
     (parse(exprstr): @unchecked) match {
       case Success(tree, _) =>
