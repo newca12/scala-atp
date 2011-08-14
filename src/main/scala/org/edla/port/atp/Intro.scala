@@ -2,8 +2,9 @@ package org.edla.port.atp
 
 import scala.util.parsing.combinator.syntactical.StandardTokenParsers
 import scala.util.parsing.combinator.lexical.StdLexical
+import scala.util.parsing.combinator._
 
-object Intro extends StandardTokenParsers {
+object Intro extends StandardTokenParsers with PackratParsers {
 
   abstract class Expression
   case class Var(n: String) extends Expression
@@ -40,17 +41,17 @@ object Intro extends StandardTokenParsers {
     return l.init
   }
 
-  lazy val expression: Parser[Expression] = product ~ "+" ~ expression ^^ {
+  lazy val expression: PackratParser[Expression] = product ~ "+" ~ expression ^^ {
     case left ~ "+" ~ right =>
       Add(left, right)
   } | product
 
-  lazy val product: Parser[Expression] = atom ~ "*" ~ product ^^ {
+  lazy val product: PackratParser[Expression] = atom ~ "*" ~ product ^^ {
     case left ~ "*" ~ right =>
       Mul(left, right)
   } | atom
 
-  lazy val atom: Parser[Expression] = "(" ~> expression <~ ")" | constant | variable
+  lazy val atom: PackratParser[Expression] = "(" ~> expression <~ ")" | constant | variable
 
   lazy val constant = numericLit ^^ { s => Const(s.toInt) }
 
