@@ -31,14 +31,13 @@ object Intro extends StandardTokenParsers with PackratParsers {
   }
 
   def lex(input: String): List[String] = {
+    def rec(r: util.parsing.input.Reader[lexical.Token]): List[lexical.Token] = {
+      if (r.atEnd) Nil
+      else r.first :: rec(r.drop(1))
+    }
     lexical.delimiters ++= List("(", ")", "+", "-", "*", "/", "'", "++", "==", "--")
-    var s = new lexical.Scanner(input)
-    var l = List(s.first.chars.toString)
-    do {
-      s = s.rest
-      l = l ::: List(s.first.chars.toString)
-    } while (!s.atEnd)
-    return l.init
+    val s = new lexical.Scanner(input)
+    for (e <- rec(s)) yield e.chars
   }
 
   lazy val expression: PackratParser[Expression] = product ~ "+" ~ expression ^^ {
