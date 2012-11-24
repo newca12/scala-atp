@@ -1,10 +1,25 @@
 package org.edla.port.atp
 
+import scala.util.parsing.combinator.PackratParsers
 import scala.util.parsing.combinator.syntactical.StandardTokenParsers
-import scala.util.parsing.combinator.lexical.StdLexical
-import scala.util.parsing.combinator._
+
+object Lex extends StandardTokenParsers {
+
+  lexical.delimiters ++= List("(", ")", "+", "-", "*", "/", "'", "++", "==", "--")
+
+  def lex(input: String): List[String] = {
+    def rec(r: util.parsing.input.Reader[lexical.Token]): List[lexical.Token] = {
+      if (r.atEnd) Nil else r.first :: rec(r.drop(1))
+    }
+    val s = new lexical.Scanner(input)
+    for (e <- rec(s)) yield e.chars
+  }
+
+}
 
 object Intro extends StandardTokenParsers with PackratParsers {
+
+  lexical.delimiters ++= List("+", "*", "(", ")")
 
   abstract class Expression
   case class Var(n: String) extends Expression
@@ -30,16 +45,6 @@ object Intro extends StandardTokenParsers with PackratParsers {
     case x: Any => x
   }
 
-  def lex(input: String): List[String] = {
-    def rec(r: util.parsing.input.Reader[lexical.Token]): List[lexical.Token] = {
-      if (r.atEnd) Nil
-      else r.first :: rec(r.drop(1))
-    }
-    lexical.delimiters ++= List("(", ")", "+", "-", "*", "/", "'", "++", "==", "--")
-    val s = new lexical.Scanner(input)
-    for (e <- rec(s)) yield e.chars
-  }
-
   lazy val expression: PackratParser[Expression] = product ~ "+" ~ expression ^^ {
     case left ~ "+" ~ right =>
       Add(left, right)
@@ -56,8 +61,7 @@ object Intro extends StandardTokenParsers with PackratParsers {
 
   lazy val variable = ident ^^ { s => Var(s.toString) }
 
-  def parse(s: String) = {
-    lexical.delimiters ++= List("+", "*", "(", ")")
+  def parse(s: String): ParseResult[Expression] = {
     val tokens = new lexical.Scanner(s)
     phrase(expression)(tokens)
   }
@@ -72,8 +76,7 @@ object Intro extends StandardTokenParsers with PackratParsers {
 
   def parseExpression(exprstr: String): Expression = {
     (parse(exprstr): @unchecked) match {
-      case Success(tree, _) =>
-        return tree
+      case Success(tree, _) => tree
     }
   }
 
