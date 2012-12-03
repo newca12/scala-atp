@@ -80,19 +80,21 @@ object Intro extends StandardTokenParsers with PackratParsers {
     }
   }
 
-  def stringOfExp(pr: Int, e: Expression): String = {
-    e match {
-      case Var(n: String) => n
-      case Const(v: Int) => v.toString
-      case Add(l: Expression, r: Expression) => {
-        val s: String = stringOfExp(3, l) + " + " + stringOfExp(2, r);
-        if (2 < pr) "(" + s + ")" else s;
-
-      }
-      case Mul(l: Expression, r: Expression) => {
-        val s: String = stringOfExp(5, l) + " * " + stringOfExp(4, r);
-        if (4 < pr) "(" + s + ")" else s;
+  def printExp(e: Expression): String = {
+    def stringOfExp(pr: Int, e: Expression): String = {
+      e match {
+        case Var(n: String) => n
+        case Const(v: Int) => v.toString
+        case Add(l: Expression, r: Expression) => {
+          val s: String = stringOfExp(3, l) + " + " + stringOfExp(2, r);
+          if (2 < pr) "(" + s + ")" else s;
+        }
+        case Mul(l: Expression, r: Expression) => {
+          val s: String = stringOfExp(5, l) + " * " + stringOfExp(4, r);
+          if (4 < pr) "(" + s + ")" else s;
+        }
       }
     }
+    stringOfExp(0, e)
   }
 }
