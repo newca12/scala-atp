@@ -4,7 +4,7 @@ organization := "org.edla"
 
 version := "0.1-SNAPSHOT"
 
-scalaVersion := "2.10.0-RC2"
+scalaVersion := "2.10.1"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-optimize")
 
@@ -18,7 +18,7 @@ resolvers += "edla repo" at "http://www.edla.org/snapshots"
 libraryDependencies ++= Seq(
   "at.logic" % "fol" % "1.0-SNAPSHOT",
   "junit" % "junit" % "4.11" % "test",
-  "org.specs2" % "specs2_2.10.0-RC2" % "1.12.2" % "test"
+  "org.specs2" %% "specs2" % "1.14" % "test"
 )
 
 // Uncomment the following line to use one-jar (https://github.com/sbt/sbt-onejar)
@@ -65,6 +65,7 @@ pomExtra := (
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>scala-maven-plugin</artifactId>
+				<version>3.1.4</version>
 				<executions>
 					<execution>
 						<goals>
@@ -77,7 +78,7 @@ pomExtra := (
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.7</version>
+				<version>2.12.4</version>
 				<configuration>
 					<useFile>false</useFile>
 					<disableXmlReport>true</disableXmlReport>
@@ -98,7 +99,7 @@ pomExtra := (
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>scala-maven-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.1.4</version>
 			</plugin>
 		</plugins>
 	</reporting>
