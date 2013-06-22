@@ -17,6 +17,8 @@ resolvers += "edla repo" at "http://www.edla.org/snapshots"
 
 libraryDependencies ++= Seq(
   "at.logic" % "fol" % "1.0-SNAPSHOT",
+  "at.logic" % "ivy" % "1.0-SNAPSHOT",
+  "org.parboiled" %% "parboiled-scala" % "1.1.5",
   "junit" % "junit" % "4.11" % "test",
   "org.specs2" %% "specs2" % "1.14" % "test"
 )
@@ -63,9 +65,18 @@ pomExtra := (
 		<testSourceDirectory>src/test/scala</testSourceDirectory>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>		
+			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>scala-maven-plugin</artifactId>
-				<version>3.1.4</version>
+				<version>3.1.5</version>
 				<executions>
 					<execution>
 						<goals>
@@ -99,7 +110,7 @@ pomExtra := (
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>scala-maven-plugin</artifactId>
-				<version>3.1.4</version>
+				<version>3.1.5</version>
 			</plugin>
 		</plugins>
 	</reporting>
