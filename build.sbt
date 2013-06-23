@@ -20,6 +20,7 @@ libraryDependencies ++= Seq(
   "at.logic" % "ivy" % "1.0-SNAPSHOT",
   "org.parboiled" %% "parboiled-scala" % "1.1.5",
   "junit" % "junit" % "4.11" % "test",
+  "org.testng" % "testng" % "5.14.1" % "test",  
   "org.specs2" %% "specs2" % "1.14" % "test"
 )
 

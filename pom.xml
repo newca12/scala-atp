@@ -127,6 +127,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>5.14.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.specs2</groupId>
             <artifactId>specs2_2.10</artifactId>
             <version>1.14</version>
