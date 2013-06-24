@@ -6,21 +6,21 @@ class OrderDsl extends Parser {
 
   
   
-  def order = rule { items ~ WhiteSpace ~ account_spec }
+  def order = rule { items ~ account_spec }
 
-  def items = rule { "(" ~ oneOrMore(line_item, separator = ", ") ~ ")" }
+  def items = rule { "( " ~ oneOrMore(line_item, separator = ", ") ~ ") " }
 
-  def line_item = rule { security_spec ~ WhiteSpace ~ buy_sell ~ WhiteSpace ~ price_spec }
+  def line_item = rule { security_spec ~ buy_sell ~ price_spec }
 
-  def buy_sell = rule { "to" ~ WhiteSpace ~ ("buy" | "sell") }
+  def buy_sell = rule { "to " ~ ("buy " | "sell ") }
   
-  def security_spec = rule { numericLit ~ WhiteSpace ~ (ident ~ WhiteSpace ~ "shares" ) }
+  def security_spec = rule { numericLit ~ WhiteSpace ~ (ident ~ WhiteSpace ~ "shares " ) }
   
-  def price_spec = rule { "at" ~ WhiteSpace ~ optional(min_max) ~ WhiteSpace ~ numericLit}
+  def price_spec = rule { "at " ~ optional(min_max) ~ numericLit ~ WhiteSpace}
   
-  def min_max = rule { "min" | "max"}
+  def min_max = rule { "min " | "max "}
   
-  def account_spec = rule { "for" ~ WhiteSpace ~ "account" ~ WhiteSpace ~ stringLit ~ WhiteSpace }
+  def account_spec = rule { "for " ~ "account " ~ stringLit }
 
   def stringLit = rule { "\"" ~ zeroOrMore(NormalChar) ~ "\" " }
   
