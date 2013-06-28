@@ -1,4 +1,4 @@
-package org.edla.study.parsing.parboiled
+package org.edla.study.parsing.parboiled.parsing
 
 import org.parboiled.scala._
 
