@@ -1,10 +1,25 @@
 package org.edla.study.parsing.parboiled.semantic
 
-import org.parboiled.scala._
+import org.parboiled.errors.ParseError
+import org.parboiled.scala.ANY
+import org.parboiled.scala.Parser
+import org.parboiled.scala.creator4Rule0
+import org.parboiled.scala.creator4Rule1
+
+import AST.AccountSpec
+import AST.BUY
+import AST.BuySell
+import AST.Items
+import AST.LineItem
+import AST.MAX
+import AST.MIN
+import AST.Order
+import AST.PriceSpec
+import AST.PriceType
+import AST.SELL
+import AST.SecuritySpec
 
 class OrderDsl extends Parser {
-
-  import AST._
 
   def order = rule { items ~ account_spec ~~> Order }
 
@@ -47,5 +62,10 @@ class OrderDsl extends Parser {
       str(string.trim) ~ WhiteSpace
     else
       str(string)
+
+  def parseErrorMsg(e: ParseError): String = {
+    val pos = e.getInputBuffer.getPosition(e.getStartIndex)
+    "Parse error at: " + pos + " " + e.getErrorMessage
+  }
 
 }

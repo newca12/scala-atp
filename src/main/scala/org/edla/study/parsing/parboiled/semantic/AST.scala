@@ -3,12 +3,12 @@
 package org.edla.study.parsing.parboiled.semantic
 
 object AST {
+  
   trait PriceType
   case object MIN extends PriceType
   case object MAX extends PriceType
 
   case class PriceSpec(pt: Option[PriceType], price: Int)
-  //case class PriceSpec(pt: PriceType, price: Int)
 
   case class SecuritySpec(qty: Int, security: String)
 
