@@ -2,17 +2,26 @@
 
 package org.edla.study.parsing.ch8.trading.semantic
 
-import language.postfixOps
-import scala.util.parsing.combinator._
-import scala.util.parsing.combinator.syntactical._
+import scala.util.parsing.combinator.syntactical.StandardTokenParsers
+
+import org.edla.study.parsing.common.AST.AccountSpec
+import org.edla.study.parsing.common.AST.BUY
+import org.edla.study.parsing.common.AST.BuySell
+import org.edla.study.parsing.common.AST.Items
+import org.edla.study.parsing.common.AST.LineItem
+import org.edla.study.parsing.common.AST.MAX
+import org.edla.study.parsing.common.AST.MIN
+import org.edla.study.parsing.common.AST.Order
+import org.edla.study.parsing.common.AST.PriceSpec
+import org.edla.study.parsing.common.AST.PriceType
+import org.edla.study.parsing.common.AST.SELL
+import org.edla.study.parsing.common.AST.SecuritySpec
 
 object OrderDsl extends StandardTokenParsers {
   lexical.reserved +=
     ("to", "buy", "sell", "min", "max", "for", "account", "shares", "at")
 
   lexical.delimiters += ("(", ")", ",")
-
-  import AST._
 
   lazy val order: Parser[Order] =
     items ~ account_spec ^^ { case i ~ a => Order(i, a) }

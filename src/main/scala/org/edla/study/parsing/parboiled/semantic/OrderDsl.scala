@@ -1,23 +1,21 @@
 package org.edla.study.parsing.parboiled.semantic
 
-import org.parboiled.errors.ParseError
+import org.edla.study.parsing.common.AST.AccountSpec
+import org.edla.study.parsing.common.AST.BUY
+import org.edla.study.parsing.common.AST.BuySell
+import org.edla.study.parsing.common.AST.Items
+import org.edla.study.parsing.common.AST.LineItem
+import org.edla.study.parsing.common.AST.MAX
+import org.edla.study.parsing.common.AST.MIN
+import org.edla.study.parsing.common.AST.Order
+import org.edla.study.parsing.common.AST.PriceSpec
+import org.edla.study.parsing.common.AST.PriceType
+import org.edla.study.parsing.common.AST.SELL
+import org.edla.study.parsing.common.AST.SecuritySpec
 import org.parboiled.scala.ANY
 import org.parboiled.scala.Parser
 import org.parboiled.scala.creator4Rule0
 import org.parboiled.scala.creator4Rule1
-
-import AST.AccountSpec
-import AST.BUY
-import AST.BuySell
-import AST.Items
-import AST.LineItem
-import AST.MAX
-import AST.MIN
-import AST.Order
-import AST.PriceSpec
-import AST.PriceType
-import AST.SELL
-import AST.SecuritySpec
 
 class OrderDsl extends Parser {
 
@@ -62,10 +60,5 @@ class OrderDsl extends Parser {
       str(string.trim) ~ WhiteSpace
     else
       str(string)
-
-  def parseErrorMsg(e: ParseError): String = {
-    val pos = e.getInputBuffer.getPosition(e.getStartIndex)
-    "Parse error at: " + pos + " " + e.getErrorMessage
-  }
 
 }

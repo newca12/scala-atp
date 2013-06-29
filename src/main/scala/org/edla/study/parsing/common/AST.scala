@@ -1,8 +1,9 @@
 // Listing 8.5 Semantic Model for Order Processing
 
-package org.edla.study.parsing.ch8.trading.semantic
+package org.edla.study.parsing.common
 
 object AST {
+  
   trait PriceType
   case object MIN extends PriceType
   case object MAX extends PriceType
@@ -23,4 +24,5 @@ object AST {
   case class AccountSpec(account: String)
 
   case class Order(items: Items, as: AccountSpec)
+
 }

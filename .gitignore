@@ -19,3 +19,6 @@ project/plugins/project/
 .scala_dependencies
 .worksheet
 .scalastyle
+
+# OSX specific
+.DS_Store

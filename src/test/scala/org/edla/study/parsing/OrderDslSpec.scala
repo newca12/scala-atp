@@ -1,16 +1,18 @@
 package org.edla.study.parsing
 
-import org.edla.study.parsing.parboiled.semantic.AST.AccountSpec
-import org.edla.study.parsing.parboiled.semantic.AST.BUY
-import org.edla.study.parsing.parboiled.semantic.AST.Items
-import org.edla.study.parsing.parboiled.semantic.AST.LineItem
-import org.edla.study.parsing.parboiled.semantic.AST.MAX
-import org.edla.study.parsing.parboiled.semantic.AST.MIN
-import org.edla.study.parsing.parboiled.semantic.AST.Order
-import org.edla.study.parsing.parboiled.semantic.AST.PriceSpec
-import org.edla.study.parsing.parboiled.semantic.AST.SELL
-import org.edla.study.parsing.parboiled.semantic.AST.SecuritySpec
+import org.edla.study.parsing.common.AST.AccountSpec
+import org.edla.study.parsing.common.AST.BUY
+import org.edla.study.parsing.common.AST.Items
+import org.edla.study.parsing.common.AST.LineItem
+import org.edla.study.parsing.common.AST.MAX
+import org.edla.study.parsing.common.AST.MIN
+import org.edla.study.parsing.common.AST.Order
+import org.edla.study.parsing.common.AST.PriceSpec
+import org.edla.study.parsing.common.AST.SELL
+import org.edla.study.parsing.common.AST.SecuritySpec
 import org.edla.study.parsing.parboiled.semantic.OrderDsl
+import org.parboiled.errors.ErrorUtils
+import org.parboiled.scala.ParsingResult.unwrap
 import org.parboiled.scala.ReportingParseRunner
 import org.parboiled.scala.Rule0
 import org.parboiled.scala.Rule1
@@ -48,7 +50,7 @@ object OrderDslSpec extends OrderDsl {
       val b = res.result
 
       val failureMessageSuffix = (for (r <- b) yield "'" + c.s + "' resulted in " + r + " which did not equal " + a).
-        getOrElse("failed: " + (res.parseErrors map parseErrorMsg))
+        getOrElse("failed: " + ErrorUtils.printParseErrors(res))
 
       val negatedFailureMessageSuffix =
         "'" + c.s + "' yielded " + a
