@@ -4,7 +4,7 @@ organization := "org.edla"
 
 version := "0.1-SNAPSHOT"
 
-scalaVersion := "2.10.1"
+scalaVersion := "2.10.2"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-optimize")
 
@@ -20,7 +20,6 @@ libraryDependencies ++= Seq(
   "at.logic" % "ivy" % "1.0-SNAPSHOT",
   "org.parboiled" %% "parboiled-scala" % "1.1.5",
   "junit" % "junit" % "4.11" % "test",
-  "org.testng" % "testng" % "5.14.1" % "test",  
   "org.specs2" %% "specs2" % "1.14" % "test"
 )
 
