@@ -1,6 +1,10 @@
 package org.edla.study.parsing.parboiled.parsing
 
-import org.parboiled.scala._
+import scala.language.implicitConversions
+
+import org.parboiled.scala.ANY
+import org.parboiled.scala.Parser
+import org.parboiled.scala.creator4Rule0
 
 class OrderDsl extends Parser {
 

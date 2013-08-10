@@ -29,8 +29,8 @@
         </pluginRepository>
     </pluginRepositories>
     <scm>
-        <url>git@github.com:newca12/ambassy.git</url>
-        <connection>scm:git:git@github.com:newca12/ambassy.git</connection>
+        <url>git@github.com:newca12/scala-atp.git</url>
+        <connection>scm:git:git@github.com:newca12/scala-atp.git</connection>
     </scm>
     <developers>
         <developer>
@@ -88,6 +88,19 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest-maven-plugin</artifactId>
+                <version>1.0-M4-SNAP1</version>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <reporting>
@@ -129,7 +142,13 @@
         <dependency>
             <groupId>org.specs2</groupId>
             <artifactId>specs2_2.10</artifactId>
-            <version>1.14</version>
+            <version>2.1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_2.10</artifactId>
+            <version>2.0.RC1-SNAP3</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

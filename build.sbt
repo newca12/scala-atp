@@ -20,7 +20,8 @@ libraryDependencies ++= Seq(
   "at.logic" % "ivy" % "1.0-SNAPSHOT",
   "org.parboiled" %% "parboiled-scala" % "1.1.5",
   "junit" % "junit" % "4.11" % "test",
-  "org.specs2" %% "specs2" % "1.14" % "test"
+  "org.specs2" %% "specs2" % "2.1.1" % "test",
+  "org.scalatest" % "scalatest_2.10" % "2.0.RC1-SNAP3" % "test"
 )
 
 // Uncomment the following line to use one-jar (https://github.com/sbt/sbt-onejar)
@@ -43,8 +44,8 @@ pomExtra := (
     </pluginRepository>
   </pluginRepositories>
   <scm>
-    <url>git@github.com:newca12/ambassy.git</url>
-    <connection>scm:git:git@github.com:newca12/ambassy.git</connection>
+    <url>git@github.com:newca12/scala-atp.git</url>
+    <connection>scm:git:git@github.com:newca12/scala-atp.git</connection>
   </scm>
   <developers>
     <developer>
@@ -102,6 +103,19 @@ pomExtra := (
 						<exclude>**/*.off</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.scalatest</groupId>
+				<artifactId>scalatest-maven-plugin</artifactId>
+				<version>1.0-M4-SNAP1</version>
+				<executions>
+					<execution>
+						<id>test</id>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

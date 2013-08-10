@@ -1,5 +1,7 @@
 package org.edla.study.parsing
 
+import scala.language.implicitConversions
+
 import org.edla.study.parsing.common.AST.AccountSpec
 import org.edla.study.parsing.common.AST.BUY
 import org.edla.study.parsing.common.AST.Items
@@ -20,12 +22,12 @@ import org.parboiled.scala.string2Input
 import org.scalatest.FunSpec
 import org.scalatest.matchers.MatchResult
 import org.scalatest.matchers.Matcher
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 
-import OrderDslSpec.account_spec
-import OrderDslSpec.order
+import OrderDslTest.account_spec
+import OrderDslTest.order
 
-object OrderDslSpec extends OrderDsl {
+object OrderDslTest extends OrderDsl {
   case class Parsing(s: String) {
     def parsed_with[T](r: Rule1[T]) = ParseCommand(r, s)
     def parsed_with(r: Rule0) = ParseCommand0(r, s)
@@ -70,9 +72,9 @@ object OrderDslSpec extends OrderDsl {
 
 }
 
-class OrderDslSpec extends FunSpec with ShouldMatchers {
+class OrderDslTest extends FunSpec with Matchers {
 
-  import OrderDslSpec._
+  import OrderDslTest._
 
   describe("A PEG OrderDsl Parser") {
     it("Should accept account spec") {

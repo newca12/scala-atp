@@ -1,5 +1,7 @@
 package org.edla.study.parsing.parboiled
 
+import scala.language.implicitConversions
+
 import org.edla.study.parsing.parboiled.AST.And
 import org.edla.study.parsing.parboiled.AST.Const
 import org.edla.study.parsing.parboiled.AST.Equiv

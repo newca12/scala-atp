@@ -1,5 +1,7 @@
 package org.edla.study.parsing.parboiled.semantic
 
+import scala.language.implicitConversions
+
 import org.edla.study.parsing.common.AST.AccountSpec
 import org.edla.study.parsing.common.AST.BUY
 import org.edla.study.parsing.common.AST.BuySell

@@ -2,6 +2,7 @@
 
 package org.edla.study.parsing.ch8.trading.semantic
 
+import scala.language.postfixOps
 import scala.util.parsing.combinator.syntactical.StandardTokenParsers
 
 import org.edla.study.parsing.common.AST.AccountSpec

@@ -7,7 +7,7 @@ object Interpreter {
 
     try { (new Context) eval ast }
     catch {
-      case e =>
+      case e : Throwable =>
         val msg = e.getMessage
         println("eval error: " + (if (msg != null && msg != "") msg else e))
     }
@@ -35,7 +35,7 @@ object Interpreter {
 
     def apply(args: List[Any]) = {
       if (args.length != lam.params.length)
-        error("Wrong number of arguments for function: expected " +
+        sys.error("Wrong number of arguments for function: expected " +
           lam.params.length + ", found " + args.length)
       else (new Context(env ++ lam.params.zip(args))) eval lam.body
     }
@@ -51,7 +51,7 @@ object Interpreter {
       case lam: Lambda => Closure(env, lam)
       case IfExpr(e1, e2, e3) => eval(e1) match {
         case b: Boolean => eval(if (b) e2 else e3)
-        case _ => error("Not a boolean value in condition of IF expression")
+        case _ => sys.error("Not a boolean value in condition of IF expression")
       }
       case Assign(id, expr) => env += (id -> eval(expr))
 
@@ -61,26 +61,26 @@ object Interpreter {
         case (v1, v2: String) => v1.toString + v2
 
         case (i1: Int, i2: Int) => i1 + i2
-        case _ => error("'+' requires two Int values or at least one String")
+        case _ => sys.error("'+' requires two Int values or at least one String")
       }
       case Sub(e1, e2) => (eval(e1), eval(e2)) match {
         case (i1: Int, i2: Int) => i1 - i2
-        case _ => error("'-' requires two Int values")
+        case _ => sys.error("'-' requires two Int values")
       }
       case Mul(e1, e2) => (eval(e1), eval(e2)) match {
         case (i1: Int, i2: Int) => i1 * i2
-        case _ => error("'*' requires two Int values")
+        case _ => sys.error("'*' requires two Int values")
       }
       case Div(e1, e2) => (eval(e1), eval(e2)) match {
         case (i1: Int, i2: Int) => i1 / i2
-        case _ => error("'/' requires two Int values")
+        case _ => sys.error("'/' requires two Int values")
       }
       case Application(expr, args) => eval(expr) match {
         case f: Func => f(args map eval)
-        case x => error(expr + " cannot be applied as a function to argument(s) " + args +
+        case x => sys.error(expr + " cannot be applied as a function to argument(s) " + args +
           ".\n(Only functions can be applied)")
       }
-      case Var(id) => env getOrElse (id, error("Undefined var " + id))
+      case Var(id) => env getOrElse (id, sys.error("Undefined var " + id))
       case Lit(v) => v
     }
   }

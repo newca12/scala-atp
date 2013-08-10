@@ -4,7 +4,7 @@ object Main extends App {
 
   for (a <- args) {
     try { process(a) }
-    catch { case e => println("unexpected error: " + e.getMessage) }
+    catch { case e : Throwable => println("unexpected error: " + e.getMessage) }
   }
 
   def process(input: String) {
