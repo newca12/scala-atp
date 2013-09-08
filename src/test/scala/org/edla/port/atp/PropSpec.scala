@@ -18,11 +18,11 @@ class PropSpec extends SpecificationWithJUnit {
     tautology(result.result.get, AST.varNames.toArray.sorted) must equalTo(true)
   }
 
-  "Tautology (p | q) => q | (p <-> q) should be false" in {
+  "Tautology (p | q) -> q | (p <-> q) should be false" in {
     AST.varNames.clear
     varValues.clear
     val parser = new PropositionalLogic
-    val result = ReportingParseRunner(parser.expr).run("(p | q) => q | (p <-> q)")
+    val result = ReportingParseRunner(parser.expr).run("(p | q) -> q | (p <-> q)")
     tautology(result.result.get, AST.varNames.toArray.sorted) must equalTo(false)
   }
 

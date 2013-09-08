@@ -59,7 +59,7 @@ class PropositionalLogic extends Parser {
 
   def numericLit = rule { oneOrMore("0" - "9") ~> (_.toInt) }
 
-  def NormalChar = rule { !anyOf("\"\\") ~ ANY }
+  //def NormalChar = rule { !anyOf("\"\\") ~ ANY }
 
   def WhiteSpace = rule { zeroOrMore(anyOf(" \n\r\t\f")) }
 
