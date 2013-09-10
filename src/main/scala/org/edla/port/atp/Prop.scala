@@ -18,6 +18,8 @@ import org.edla.study.parsing.parboiled.AST
 
 object Prop {
 
+  val parser = new PropositionalLogic
+
   def eval(e: Expr): Boolean = e match {
     case Xor(l, r) => eval(l) ^ eval(r)
     case Equiv(l, r) => eval(l) == eval(r)
@@ -84,15 +86,13 @@ object Prop {
     return true
   }
 
+  def parse_prop_formula(s: String) = BasicParseRunner(parser.expr).run(s).result.get
+
   def main(args: Array[String]) {
     if (args.length == 0) sys.exit
     val parser = new PropositionalLogic
     val result = ReportingParseRunner(parser.expr).run(args(0))
-    //AST.varNames.clear
-    //varValues.clear
     printTruthTable(result.result.get, AST.varNames.toArray.sorted)
-    //AST.varNames.clear
-    //varValues.clear
     println(tautology(result.result.get, AST.varNames.toArray.sorted))
   }
 

@@ -26,19 +26,19 @@ class PropositionalLogic extends Parser {
   }
 
   def equiv = rule {
-    oneOrMore(impl, separator = "<-> ") ~~> (_.reduceLeft(Equiv))
+    oneOrMore(impl, separator = "<=> ") ~~> (_.reduceLeft(Equiv))
   }
 
   def impl = rule {
-    oneOrMore(or, separator = "-> ") ~~> (_.reduceRight(Impl))
+    oneOrMore(or, separator = "==> ") ~~> (_.reduceRight(Impl))
   }
 
   def or = rule {
-    oneOrMore(and, separator = "| ") ~~> (_.reduceLeft(Or))
+    oneOrMore(and, separator = """\/ """) ~~> (_.reduceLeft(Or))
   }
 
   def and = rule {
-    oneOrMore(not, separator = "& ") ~~> (_.reduceLeft(And))
+    oneOrMore(not, separator = """/\ """) ~~> (_.reduceLeft(And))
   }
 
   def not: Rule1[Expr] = {
@@ -49,9 +49,9 @@ class PropositionalLogic extends Parser {
     (const ~~> Const | (id ~~> Id) | "( " ~ expr ~ ") ")
   }
 
-  def neg = rule { ("!") ~> (_.toString) }
+  def neg = rule { ("~") ~> (_.toString) }
 
-  def const = rule { ("T " | "F ") ~> (_.toString) }
+  def const = rule { ("true " | "false ") ~> (_.toString) }
 
   def id = rule { oneOrMore("a" - "z") ~> (_.toString) }
 
