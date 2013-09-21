@@ -21,14 +21,14 @@ object Prop {
   val parser = new PropositionalLogic
 
   def eval(e: Expr): Boolean = e match {
-    case Xor(l, r) => eval(l) ^ eval(r)
-    case Equiv(l, r) => eval(l) == eval(r)
-    case Impl(l, r) => !eval(l) || eval(r)
-    case Or(l, r) => eval(l) || eval(r)
-    case And(l, r) => eval(l) && eval(r)
-    case Not(x) => !eval(x)
-    case Const(x) => x == "T"
-    case Id(x) => varValues(x)
+    case Xor(l, r)   ⇒ eval(l) ^ eval(r)
+    case Equiv(l, r) ⇒ eval(l) == eval(r)
+    case Impl(l, r)  ⇒ !eval(l) || eval(r)
+    case Or(l, r)    ⇒ eval(l) || eval(r)
+    case And(l, r)   ⇒ eval(l) && eval(r)
+    case Not(x)      ⇒ !eval(x)
+    case Const(x)    ⇒ x == "T"
+    case Id(x)       ⇒ varValues(x)
   }
 
   var varValues = mutable.Map[String, Boolean]()
@@ -43,13 +43,13 @@ object Prop {
 
     // Body
     val rowCount = 1 << varCount
-    for (r <- 0 until rowCount) {
+    for (r ← 0 until rowCount) {
       // Evaluate the expression -tree for each state of variables and print the result:
       // State of variables as an array of Booleans
-      val state = Array.tabulate[Boolean](varCount)(i => (r & (1 << i)) > 0)
+      val state = Array.tabulate[Boolean](varCount)(i ⇒ (r & (1 << i)) > 0)
       // Store the current state of variables in the varVals map
       varValues ++= varNames.zip(state)
-      print(varNames map (v => centered(varValues(v), v.length)) mkString colSpace)
+      print(varNames map (v ⇒ centered(varValues(v), v.length)) mkString colSpace)
       println(resColSpace + centered(eval(tree), resLabel.length))
     }
 
@@ -78,8 +78,8 @@ object Prop {
     varValues.clear
     val varCount = varNames.length
     val rowCount = 1 << varCount
-    for (r <- 0 until rowCount) {
-      val state = Array.tabulate[Boolean](varCount)(i => (r & (1 << i)) > 0)
+    for (r ← 0 until rowCount) {
+      val state = Array.tabulate[Boolean](varCount)(i ⇒ (r & (1 << i)) > 0)
       varValues ++= varNames.zip(state)
       if (eval(tree) == false) return false
     }

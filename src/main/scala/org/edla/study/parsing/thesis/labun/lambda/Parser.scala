@@ -1,56 +1,48 @@
 package org.edla.study.parsing.thesis.labun.lambda
 
 import util.parsing.combinator.syntactical.StandardTokenParsers
-import util.parsing.combinator.ImplicitConversions 
+import util.parsing.combinator.ImplicitConversions
 
 object Parser extends StandardTokenParsers with ImplicitConversions {
 
   import AST._
-  
-// API
-def parse(input: String): Either[String, Expr] = 
-  phrase(program)(new lexical.Scanner(input)) match {
-case Success(ast, _) => Right(ast) 
-case e: NoSuccess => Left("parser error: " + e.msg)
-}
-  
-// Impl.
-lexical.reserved	++= ("if then else" split ' ') 
-lexical.delimiters ++= ("\\ => + - * / ( ) , == = ;" split ' ')
 
-type P[+T] = Parser[T] // alias for brevity
+  // API
+  def parse(input: String): Either[String, Expr] =
+    phrase(program)(new lexical.Scanner(input)) match {
+      case Success(ast, _) ⇒ Right(ast)
+      case e: NoSuccess    ⇒ Left("parser error: " + e.msg)
+    }
 
-def program = rep1sep(expr, ";") <~ opt(";") ^^ Sequence
-def expr: P[Expr] = lambda | ifExpr | assign | operations 
+  // Impl.
+  lexical.reserved ++= ("if then else" split ' ')
+  lexical.delimiters ++= ("\\ => + - * / ( ) , == = ;" split ' ')
 
-def lambda = ("\\" ~> repsep(ident, ",")) ~ ("=>" ~> expr) ^^ Lambda
-def ifExpr = ("if" ~> expr) ~ ("then" ~> expr) ~ ("else" ~> expr) ^^ IfExpr
-def assign = ident ~ ("=" ~> expr)	^^ Assign
-def operations = infixOps
+  type P[+T] = Parser[T] // alias for brevity
 
-def infixOps = equality 
-def equality = sum * ("==" ^^^ Equal)
-def sum = product * ("+" ^^^ Add | "-" ^^^ Sub)
-def product = postfixOps * ("*" ^^^ Mul | "/" ^^^ Div)
+  def program = rep1sep(expr, ";") <~ opt(";") ^^ Sequence
+  def expr: P[Expr] = lambda | ifExpr | assign | operations
 
-def postfixOps = application
+  def lambda = ("\\" ~> repsep(ident, ",")) ~ ("=>" ~> expr) ^^ Lambda
+  def ifExpr = ("if" ~> expr) ~ ("then" ~> expr) ~ ("else" ~> expr) ^^ IfExpr
+  def assign = ident ~ ("=" ~> expr) ^^ Assign
+  def operations = infixOps
 
-def application = simpleExpr ~ rep(argList) ^^ {case e~args => (e /: args)(Application)}
+  def infixOps = equality
+  def equality = sum * ("==" ^^^ Equal)
+  def sum = product * ("+" ^^^ Add | "-" ^^^ Sub)
+  def product = postfixOps * ("*" ^^^ Mul | "/" ^^^ Div)
 
-def argList = "(" ~> repsep(expr, ",") <~ ")" | simpleExpr ^^ {List(_)}
+  def postfixOps = application
 
-def simpleExpr = ( ident ^^ Var
-    | numericLit ^^ {x => Lit(x.toInt)}
+  def application = simpleExpr ~ rep(argList) ^^ { case e ~ args ⇒ (e /: args)(Application) }
+
+  def argList = "(" ~> repsep(expr, ",") <~ ")" | simpleExpr ^^ { List(_) }
+
+  def simpleExpr = (ident ^^ Var
+    | numericLit ^^ { x ⇒ Lit(x.toInt) }
     | stringLit ^^ Lit
-    | "(" ~> expr <~ ")" 
-    | failure ("Expression expected") )
+    | "(" ~> expr <~ ")"
+    | failure("Expression expected"))
 }
 
-
-
- 
-  
-
-
-   
-  

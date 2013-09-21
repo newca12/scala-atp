@@ -42,7 +42,7 @@ class PropositionalLogic extends Parser {
   }
 
   def not: Rule1[Expr] = {
-    optional(neg) ~ atom ~ WhiteSpace ~~> { case (Some(n), m) => Not(m) case (None, m) => m }
+    optional(neg) ~ atom ~ WhiteSpace ~~> { case (Some(n), m) ⇒ Not(m) case (None, m) ⇒ m }
   }
 
   def atom: Rule1[Expr] = rule {

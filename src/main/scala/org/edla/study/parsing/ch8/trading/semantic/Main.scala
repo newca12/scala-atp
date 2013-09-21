@@ -12,9 +12,9 @@ object Main {
     import OrderDsl._
 
     order(new lexical.Scanner(str)) match {
-      case Success(order, _) => println(order)
-      case Failure(msg, _) => println("Failure: " + msg)
-      case Error(msg, _) => println("Error: " + msg)
+      case Success(order, _) ⇒ println(order)
+      case Failure(msg, _)   ⇒ println("Failure: " + msg)
+      case Error(msg, _)     ⇒ println("Error: " + msg)
     }
   }
 }

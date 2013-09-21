@@ -26,17 +26,17 @@ class OrderDsl extends Parser {
   def items = rule { "( " ~ oneOrMore(line_item, separator = ", ") ~ ") " ~~> Items }
 
   def line_item = rule {
-    security_spec ~ buy_sell ~ price_spec ~~> ((s: SecuritySpec, b: BuySell, p: PriceSpec) => LineItem(s, b, p))
+    security_spec ~ buy_sell ~ price_spec ~~> ((s: SecuritySpec, b: BuySell, p: PriceSpec) ⇒ LineItem(s, b, p))
   }
 
   def buy_sell = rule { "to " ~ (("buy " ~ push(BUY)) | ("sell " ~ push(SELL))) }
 
   def security_spec = rule {
-    numericLit ~ WhiteSpace ~ ident ~~> ((n: Int, s) => SecuritySpec(n.toInt, s.toString)) ~ WhiteSpace ~ "shares "
+    numericLit ~ WhiteSpace ~ ident ~~> ((n: Int, s) ⇒ SecuritySpec(n.toInt, s.toString)) ~ WhiteSpace ~ "shares "
   }
 
   def price_spec = rule {
-    "at " ~ optional(min_max) ~ numericLit ~~> ((m: Option[PriceType], p) => PriceSpec(m, p.toInt)) ~ WhiteSpace
+    "at " ~ optional(min_max) ~ numericLit ~~> ((m: Option[PriceType], p) ⇒ PriceSpec(m, p.toInt)) ~ WhiteSpace
   }
 
   def min_max = rule { "min " ~ push(MIN) | "max " ~ push(MAX) }

@@ -9,11 +9,11 @@ trait ArithParser extends JavaTokenParsers {
   def factor = floatingPointNumber ^^ Number | "(" ~> expr <~ ")"
 
   // abstract semantic actions
-  def Add: (T, T) => T
-  def Sub: (T, T) => T
-  def Mul: (T, T) => T
-  def Div: (T, T) => T
-  def Number: String => T
+  def Add: (T, T) ⇒ T
+  def Sub: (T, T) ⇒ T
+  def Mul: (T, T) ⇒ T
+  def Div: (T, T) ⇒ T
+  def Number: String ⇒ T
 
 }
 
@@ -46,7 +46,7 @@ object Arith {
     } else {
       println("Now I'm compiler!"); Compiler
     }
-    arg.tail foreach { x =>
+    arg.tail foreach { x ⇒
       println("input: " + x)
       println("result: " + parser.parseAll(parser.expr, x))
       println()

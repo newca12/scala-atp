@@ -23,7 +23,7 @@ object SSI_AST {
   trait SettlementRule
   case class SettleCashSecuritySeparate(
     set: List[(SettleCashSecurityRule, SettlementModeRule)])
-    extends SettlementRule
+      extends SettlementRule
   case class SettleAll(sm: SettlementModeRule) extends SettlementRule
 
   trait CounterpartyRule
@@ -31,11 +31,11 @@ object SSI_AST {
   case class Broker(code: BrokerCode) extends CounterpartyRule
 
   case class TradeTypeRule(cpt: CounterpartyRule,
-    mkt: Option[Market], sec: Option[Security],
-    tradingAccount: Option[AccountNo])
+                           mkt: Option[Market], sec: Option[Security],
+                           tradingAccount: Option[AccountNo])
 
   case class StandingRule(ttr: TradeTypeRule,
-    str: SettlementRule)
+                          str: SettlementRule)
 
   case class StandingRules(rules: List[StandingRule])
 }

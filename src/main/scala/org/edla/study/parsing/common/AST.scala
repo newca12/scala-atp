@@ -3,7 +3,7 @@
 package org.edla.study.parsing.common
 
 object AST {
-  
+
   trait PriceType
   case object MIN extends PriceType
   case object MAX extends PriceType
@@ -17,7 +17,7 @@ object AST {
   case object SELL extends BuySell
 
   case class LineItem(ss: SecuritySpec,
-    bs: BuySell, ps: PriceSpec)
+                      bs: BuySell, ps: PriceSpec)
 
   case class Items(lis: Seq[LineItem])
 
