@@ -1,4 +1,4 @@
-# scala-atp [![Build Status](https://buildhive.cloudbees.com/job/newca12/job/scala-atp/badge/icon)](https://buildhive.cloudbees.com/job/newca12/job/scala-atp/) [![Ohloh](https://www.ohloh.net/p/scala-atp/widgets/project_thin_badge.gif)](https://www.ohloh.net/p/scala-atp)
+# scala-atp [![Build Status](https://travis-ci.org/newca12/scala-atp.png?branch=master)](https://travis-ci.org/newca12/scala-atp) [![Coverage Status](https://coveralls.io/repos/newca12/scala-atp/badge.png)](https://coveralls.io/r/newca12/scala-atp) [![Ohloh](https://www.ohloh.net/p/scala-atp/widgets/project_thin_badge.gif)](https://www.ohloh.net/p/scala-atp)
 
 ### About ###
 Port of the Objective Caml code supporting John Harrison's logic [textbook](http://www.cambridge.org/catalogue/catalogue.asp?isbn=9780521899574) Handbook of Practical Logic and Automated Reasoning to Scala.
@@ -26,4 +26,4 @@ Contain also a study about parsers and some code from :
 * Eugen Labun's thesis : [Combinator Parsing in Scala](https://docs.google.com/file/d/0B7LbY7bJaltldVRhMHhfT1F4VkE/edit?pli=1)
 
 ### License ###
-© 2012-2013 Olivier ROLAND. Distributed under the GPLv3 License.
+© 2012-2014 Olivier ROLAND. Distributed under the GPLv3 License.
