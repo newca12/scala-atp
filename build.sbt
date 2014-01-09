@@ -4,7 +4,7 @@ organization := "org.edla"
 
 version := "0.1-SNAPSHOT"
 
-scalaVersion := "2.10.2"
+scalaVersion := "2.10.3"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-optimize")
 
@@ -18,10 +18,10 @@ resolvers += "edla repo" at "http://www.edla.org/snapshots"
 libraryDependencies ++= Seq(
   "at.logic" % "fol" % "1.0-SNAPSHOT",
   "at.logic" % "ivy" % "1.0-SNAPSHOT",
-  "org.parboiled" %% "parboiled-scala" % "1.1.5",
+  "org.parboiled" %% "parboiled" % "2.0-M1",
   "junit" % "junit" % "4.11" % "test",
-  "org.specs2" %% "specs2" % "2.1.1" % "test",
-  "org.scalatest" % "scalatest_2.10" % "2.0.RC1-SNAP3" % "test"
+  "org.specs2" %% "specs2" % "2.3.7" % "test",
+  "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
 )
 
 // Uncomment the following line to use one-jar (https://github.com/sbt/sbt-onejar)

@@ -2,15 +2,13 @@ package org.edla.study.parsing.parboiled.parsing
 
 import scala.language.implicitConversions
 
-import org.parboiled.scala.ANY
-import org.parboiled.scala.Parser
-import org.parboiled.scala.creator4Rule0
+import org.parboiled2._
 
-class OrderDsl extends Parser {
+class OrderDsl(val input: ParserInput) extends Parser {
 
   def order = rule { items ~ account_spec }
 
-  def items = rule { "( " ~ oneOrMore(line_item, separator = ", ") ~ ") " }
+  def items = rule { "( " ~ oneOrMore(line_item).separatedBy(", ") ~ ") " }
 
   def line_item = rule { security_spec ~ buy_sell ~ price_spec }
 
@@ -38,10 +36,10 @@ class OrderDsl extends Parser {
    * We redefine the default string-to-rule conversion to also match trailing whitespace if the string ends with
    * a blank, this keeps the rules free from most whitespace matching clutter
    */
-  override implicit def toRule(string: String) =
-    if (string.endsWith(" "))
-      str(string.trim) ~ WhiteSpace
-    else
-      str(string)
+  //  override implicit def toRule(string: String) =
+  //    if (string.endsWith(" "))
+  //      str(string.trim) ~ WhiteSpace
+  //    else
+  //      str(string)
 
 }

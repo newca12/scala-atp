@@ -3,7 +3,7 @@ package org.edla.port.atp
 import scala.Array.canBuildFrom
 import scala.Array.fallbackCanBuildFrom
 import scala.collection.mutable
-import org.parboiled.scala._
+import org.parboiled2._
 import org.edla.study.parsing.parboiled.AST.And
 import org.edla.study.parsing.parboiled.AST.Const
 import org.edla.study.parsing.parboiled.AST.Equiv
@@ -18,7 +18,7 @@ import org.edla.study.parsing.parboiled.AST
 
 object Prop {
 
-  val parser = new PropositionalLogic
+  //val parser = new PropositionalLogic(val input: ParserInput)
 
   def eval(e: Expr): Boolean = e match {
     case Xor(l, r)   ⇒ eval(l) ^ eval(r)
@@ -54,6 +54,7 @@ object Prop {
     }
 
     // helper functions
+
     /**
      * Returns the Boolean value <code>v</code> printed as "0" or "1"
      *
@@ -63,13 +64,13 @@ object Prop {
      */
     def centered(v: Boolean, w: Int) = {
       val spaceBefore = (w - 1) / 2; val spaceAfter = w - spaceBefore - 1
-      /*val buf = new StringBuilder;
+      val buf = new StringBuilder;
       // '1' in the prev. line is the length of a boolean if printed as "0" or "1"
-      for (i <- 0 until spaceBefore) buf += ' '
+      for (i ← 0 until spaceBefore) buf += ' '
       // We don't use (" " * Int) since it clashes with * method in Parsers
       buf += (if (v) '1' else '0')
-      for (i <- 0 until spaceAfter) buf += ' '
-      buf.toString*/
+      for (i ← 0 until spaceAfter) buf += ' '
+      buf.toString
       (" " * spaceBefore) + (if (v) '1' else '0') + (" " * spaceAfter)
     }
   }
@@ -86,14 +87,17 @@ object Prop {
     return true
   }
 
-  def parse_prop_formula(s: String) = BasicParseRunner(parser.expr).run(s).result.get
-
   def main(args: Array[String]) {
+    import scala.util.{ Failure, Success }
     if (args.length == 0) sys.exit
-    val parser = new PropositionalLogic
-    val result = ReportingParseRunner(parser.expr).run(args(0))
-    printTruthTable(result.result.get, AST.varNames.toArray.sorted)
-    println(tautology(result.result.get, AST.varNames.toArray.sorted))
+    val parser = new PropositionalLogic(args(0))
+    val result = parser.expr.run() match {
+      case Success(result) ⇒
+        println(result)
+        printTruthTable(result, AST.varNames.toArray.sorted)
+        println(tautology(result, AST.varNames.toArray.sorted))
+      case Failure(e: ParseError) ⇒ sys.error(parser.formatError(e, showTraces = true))
+      case Failure(e)             ⇒ throw e
+    }
   }
-
 }
