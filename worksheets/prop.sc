@@ -30,4 +30,6 @@ object prop {
 
   // prop.p006
   true && true                                    //> res5: Boolean(true) = true
+  
+  //eval(parse_prop_formula("""p /\ q ==> q /\ r"""))
 }

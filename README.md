@@ -7,8 +7,6 @@ Ambassy is an EDLA project.
 
 The purpose of [edla.org](http://www.edla.org) is to promote the state of the art in various domains.
 
-This project is part of [EDLA](http://www.edla.org). 
-
 ### Other ports ###
 [Haskell](https://github.com/newca12/haskell-atp)  
 [F#](https://github.com/jack-pappas/fsharp-logic-examples)

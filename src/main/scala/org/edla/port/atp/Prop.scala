@@ -15,10 +15,9 @@ import org.edla.study.parsing.parboiled.AST.Or
 import org.edla.study.parsing.parboiled.AST.Xor
 import org.edla.study.parsing.parboiled.PropositionalLogic
 import org.edla.study.parsing.parboiled.AST
+import scala.util.{ Failure, Success }
 
 object Prop {
-
-  //val parser = new PropositionalLogic(val input: ParserInput)
 
   def eval(e: Expr): Boolean = e match {
     case Xor(l, r)   ⇒ eval(l) ^ eval(r)
@@ -87,17 +86,21 @@ object Prop {
     return true
   }
 
-  def main(args: Array[String]) {
-    import scala.util.{ Failure, Success }
-    if (args.length == 0) sys.exit
-    val parser = new PropositionalLogic(args(0))
-    val result = parser.expr.run() match {
-      case Success(result) ⇒
-        println(result)
-        printTruthTable(result, AST.varNames.toArray.sorted)
-        println(tautology(result, AST.varNames.toArray.sorted))
+  def parse_prop_formula(s: String) = {
+    val parser = new PropositionalLogic(s)
+    val expr = parser.expr.run() match {
+      case Success(expr)          ⇒ expr
       case Failure(e: ParseError) ⇒ sys.error(parser.formatError(e, showTraces = true))
       case Failure(e)             ⇒ throw e
     }
+    expr
+  }
+
+  def main(args: Array[String]) {
+    if (args.length == 0) sys.exit
+    val expr = parse_prop_formula(args(0))
+    println(expr)
+    printTruthTable(expr, AST.varNames.toArray.sorted)
+    println(tautology(expr, AST.varNames.toArray.sorted))
   }
 }
