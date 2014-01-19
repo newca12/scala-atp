@@ -24,4 +24,7 @@ Contain also a study about parsers and some code from :
 * Eugen Labun's thesis : [Combinator Parsing in Scala](https://docs.google.com/file/d/0B7LbY7bJaltldVRhMHhfT1F4VkE/edit?pli=1)
 
 ### License ###
-© 2012-2014 Olivier ROLAND. Distributed under the GPLv3 License.
+© 2003-2007, John Harrison. 
+© 2012-2014 Olivier ROLAND.
+(See "LICENSE.txt" for details.)
+

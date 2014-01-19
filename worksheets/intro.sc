@@ -1,3 +1,9 @@
+// ========================================================================= //
+// Copyright (c) 2003-2007, John Harrison.                                   //
+// Copyright (c) 2012-2014, Olivier ROLAND.                                  //
+// (See "LICENSE.txt" for details.)                                          //
+// ========================================================================= //
+
 import org.edla.port.atp.Intro._
 import org.edla.port.atp.Lex.lex
 
@@ -16,8 +22,8 @@ object intro {
   // ------------------------------------------------------------------------- //
 
   val e = Add(Mul(Add(Mul(Const(0), Var("x")), Const(1)), Const(3)), Const(12))
-                                                  //> e  : org.edla.port.atp.Intro.Add = Add(Mul(Add(Mul(Const(0),Var(x)),Const(1)
-                                                  //| ),Const(3)),Const(12))
+                                                  //> e  : org.edla.port.atp.Intro.Add = Add(Mul(Add(Mul(Const(0),Var(x)),Const(1
+                                                  //| )),Const(3)),Const(12))
   //intro.p002
   simplify(e)                                     //> res1: org.edla.port.atp.Intro.Expression = Const(15)
 

@@ -1,3 +1,9 @@
+// ========================================================================= //
+// Copyright (c) 2003-2007, John Harrison.                                   //
+// Copyright (c) 2012-2014 Olivier ROLAND.                                   //
+// (See "LICENSE.txt" for details.)                                          //
+// ========================================================================= //
+
 package org.edla.port.atp
 
 import scala.util.parsing.combinator.PackratParsers
