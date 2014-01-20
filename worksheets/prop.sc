@@ -42,43 +42,43 @@ object prop {
   // prop.p006
   true && true                                    //> res5: Boolean(true) = true
  
- // pg. 33
- // ------------------------------------------------------------------------- //
- // Example of use.                                                           //
- // ------------------------------------------------------------------------- //
+  // pg. 33
+  // ------------------------------------------------------------------------- //
+  // Example of use.                                                           //
+  // ------------------------------------------------------------------------- //
 
- // prop.p007
- // Harrison #01
+  // prop.p007
+  // Harrison #01
   eval("""p /\ q ==> q /\ r""")( _ match {
     case "p" => true
     case "q" => false
     case "r" => true
   })                                              //> res6: Boolean = true
 
- // prop.p008
- // Harrison #01
+  // prop.p008
+  // Harrison #01
   eval("""p /\ q ==> q /\ r""")( _ match {
     case "p" => true
     case "q" => true
     case "r" => false
   })                                              //> res7: Boolean = false
   
- // pg. 35
- // ------------------------------------------------------------------------- //
- // Example.                                                                  //
- // ------------------------------------------------------------------------- //
+  // pg. 35
+  // ------------------------------------------------------------------------- //
+  // Example.                                                                  //
+  // ------------------------------------------------------------------------- //
 
- // prop.p009
- atoms("""p /\ q \/ s ==> ~p \/ (r <=> s)""")     //> res8: List[String] = List(p, q, r, s)
+  // prop.p009
+  atoms("""p /\ q \/ s ==> ~p \/ (r <=> s)""")    //> res8: List[String] = List(p, q, r, s)
  
- // pg. 36
- // ------------------------------------------------------------------------- //
- // Example.                                                                  //
- // ------------------------------------------------------------------------- //
+  // pg. 36
+  // ------------------------------------------------------------------------- //
+  // Example.                                                                  //
+  // ------------------------------------------------------------------------- //
 
- // prop.p010
- // Harrison #01
- print_truthtable("""p /\ q ==> q /\ r""")        //> p      q      r      | formula
+  // prop.p010
+  // Harrison #01
+  print_truthtable("""p /\ q ==> q /\ r""")       //> p      q      r      | formula
                                                   //| ------------------------------
                                                   //| false  false  false  | true   
                                                   //| false  false  true   | true   
@@ -89,10 +89,10 @@ object prop {
                                                   //| true   true   false  | false  
                                                   //| true   true   true   | true   
                                                   //| ------------------------------
- // prop.p011
- // Harrison #01
- val fm002 = """p /\ q ==> q /\ r"""              //> fm002  : String = p /\ q ==> q /\ r
- print_truthtable(fm002)                          //> p      q      r      | formula
+  // prop.p011
+  // Harrison #01
+  val fm002 = """p /\ q ==> q /\ r"""             //> fm002  : String = p /\ q ==> q /\ r
+  print_truthtable(fm002)                         //> p      q      r      | formula
                                                   //| ------------------------------
                                                   //| false  false  false  | true   
                                                   //| false  false  true   | true   
@@ -103,42 +103,76 @@ object prop {
                                                   //| true   true   false  | false  
                                                   //| true   true   true   | true   
                                                   //| ------------------------------
- // pg. 39
- // ------------------------------------------------------------------------- //
- // Additional examples illustrating formula classes.                         //
- // ------------------------------------------------------------------------- //
+  // pg. 39
+  // ------------------------------------------------------------------------- //
+  // Additional examples illustrating formula classes.                         //
+  // ------------------------------------------------------------------------- //
 
- // prop.p012
- // Pelletier #08
- print_truthtable("""((p ==> q) ==> p) ==> p""")  //> p      q      | formula
+  // prop.p012
+  // Pelletier #08
+  print_truthtable("""((p ==> q) ==> p) ==> p""") //> p      q      | formula
                                                   //| -----------------------
                                                   //| false  false  | true   
                                                   //| false  true   | true   
                                                   //| true   false  | true   
                                                   //| true   true   | true   
                                                   //| -----------------------
- // prop.p013
-print_truthtable ("""p /\ ~p""")                  //> p      | formula
+  // prop.p013
+  print_truthtable ("""p /\ ~p""")                //> p      | formula
                                                   //| ----------------
                                                   //| false  | false  
                                                   //| true   | false  
                                                   //| ----------------
-// pg. 41
-// ------------------------------------------------------------------------- //
-// Examples.                                                                 //
-// ------------------------------------------------------------------------- //
+  // pg. 41
+  // ------------------------------------------------------------------------- //
+  // Examples.                                                                 //
+  // ------------------------------------------------------------------------- //
 
- // prop.p014
- // Pelletier #06
- tautology("""p \/ ~p"""")                        //> res9: Boolean = true
+  // prop.p014
+  // Pelletier #06
+  tautology("""p \/ ~p"""")                       //> res9: Boolean = true
  
- // prop.p015
- tautology("""p \/ q ==> p"""")                   //> res10: Boolean = false
- // prop.p016
- tautology("""p \/ q ==> q \/ (p <=> q)"""")      //> res11: Boolean = false
+  // prop.p015
+  tautology("""p \/ q ==> p"""")                  //> res10: Boolean = false
+  // prop.p016
+  tautology("""p \/ q ==> q \/ (p <=> q)"""")     //> res11: Boolean = false
 
- // prop.p017
- tautology("""(p \/ q) /\ ~(p /\ q) ==> (~p <=> q)"""")
+  // prop.p017
+  tautology("""(p \/ q) /\ ~(p /\ q) ==> (~p <=> q)"""")
                                                   //> res12: Boolean = true
-                                                  
+  // pg. 43
+  // ------------------------------------------------------------------------- //
+  // Surprising tautologies including Dijkstra's "Golden rule".                //
+  // ------------------------------------------------------------------------- //
+
+  // prop.p019
+  // Pelletier #16
+  tautology("""(p ==> q) \/ (q ==> p)""")         //> res13: Boolean = true
+  
+  // prop.p020
+  tautology("""p \/ (q <=> r) <=> (p \/ q <=> p \/ r)""")
+                                                  //> res14: Boolean = true
+
+  // prop.p021
+  // Harrison #02 - Equations within equations
+  tautology("""p /\ q <=> ((p <=> q) <=> p \/ q)""")
+                                                  //> res15: Boolean = true
+
+  // prop.p022
+  // Harrison #03 - Equations within equations
+  tautology("""(p ==> q) <=> (~q ==> ~p)""")      //> res16: Boolean = true
+
+  // prop.p023
+  tautology("""(p ==> ~q) <=> (q ==> ~p)""")      //> res17: Boolean = true
+
+  // prop.p024
+  tautology("""(p ==> q) <=> (q ==> p)""")        //> res18: Boolean = false
+
+  // pg. 47
+  // ------------------------------------------------------------------------- //
+  // Some logical equivalences allowing elimination of connectives.            //
+  // ------------------------------------------------------------------------- //
+
+  // prop.p025
+
 }
