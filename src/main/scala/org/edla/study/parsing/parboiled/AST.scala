@@ -8,8 +8,12 @@ object AST {
   case class P(pname: String) extends Prop
 
   sealed abstract class Formula
-  case class False extends Formula
-  case class True extends Formula
+  case class False extends Formula {
+    override def toString = "false"
+  }
+  case class True extends Formula {
+    override def toString = "true"
+  }
   case class Atom(name: String) extends Formula {
     override def toString = name
   }

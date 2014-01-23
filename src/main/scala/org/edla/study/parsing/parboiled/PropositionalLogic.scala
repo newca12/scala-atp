@@ -38,14 +38,16 @@ class PropositionalLogic(val input: ParserInput) extends Parser {
   }
 
   def atom: Rule1[Formula] = rule {
-    ((id ~> Atom) | ws('(') ~ expr ~ ws(')'))
+    PTrue | PFalse | ((id ~> Atom) | ws('(') ~ expr ~ ws(')'))
   }
 
   def neg = rule { capture(("~")) ~> (_.toString) }
 
-  def const = rule { capture(("true " | "false ")) ~> (_.toString) }
+  def PTrue: Rule1[Formula] = rule { oneOrMore("true") ~ WhiteSpace ~> True }
+  
+  def PFalse: Rule1[Formula] = rule { oneOrMore("false") ~ WhiteSpace ~> False }
 
-  def id = rule { capture(oneOrMore("a" - "z" | "A" - "Z")) ~> (_.toString) }
+  def id = rule { capture(oneOrMore("a" - "z" | "a" - "z")) ~> (_.toString) }
 
   def numericLit = rule { capture(oneOrMore("0" - "9")) ~> (_.toInt) }
 

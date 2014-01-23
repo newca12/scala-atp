@@ -118,7 +118,7 @@ object prop {
                                                   //| true   true   | true   
                                                   //| -----------------------
   // prop.p013
-  print_truthtable ("""p /\ ~p""")                //> p      | formula
+  print_truthtable("""p /\ ~p""")                 //> p      | formula
                                                   //| ----------------
                                                   //| false  | false  
                                                   //| true   | false  
@@ -175,4 +175,11 @@ object prop {
 
   // prop.p025
 
+  (parse_prop_formula("""true <=> false ==> false""") ::
+   parse_prop_formula("""~p <=> p ==> false""") ::
+   parse_prop_formula("""p /\ q <=> (p ==> q ==> false) ==> false""") ::
+   parse_prop_formula("""p \/ q <=> (p ==> false) ==> q""") ::
+   parse_prop_formula("""(p <=> q) <=> ((p ==> q) ==> (q ==> p) ==> false) ==> false""")
+   :: Nil).forall(tautology)                      //> res19: Boolean = true
+                                                 
 }
