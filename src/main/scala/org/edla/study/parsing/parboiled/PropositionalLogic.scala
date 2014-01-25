@@ -2,16 +2,11 @@ package org.edla.study.parsing.parboiled
 
 import scala.language.implicitConversions
 
-import org.edla.study.parsing.parboiled.AST.And
-import org.edla.study.parsing.parboiled.AST.False
-import org.edla.study.parsing.parboiled.AST.True
-import org.edla.study.parsing.parboiled.AST.Iff
-import org.edla.study.parsing.parboiled.AST.Formula
-import org.edla.study.parsing.parboiled.AST.Atom
-import org.edla.study.parsing.parboiled.AST.Imp
-import org.edla.study.parsing.parboiled.AST.Not
-import org.edla.study.parsing.parboiled.AST.Or
-import org.parboiled2._
+import org.edla.port.atp.Formulas._
+import org.parboiled2.CharPredicate
+import org.parboiled2.Parser
+import org.parboiled2.ParserInput
+import org.parboiled2.Rule1
 
 class PropositionalLogic(val input: ParserInput) extends Parser {
 
@@ -43,11 +38,11 @@ class PropositionalLogic(val input: ParserInput) extends Parser {
 
   def neg = rule { capture(("~")) ~> (_.toString) }
 
-  def PTrue: Rule1[Formula] = rule { oneOrMore("true") ~ WhiteSpace ~> True }
-  
-  def PFalse: Rule1[Formula] = rule { oneOrMore("false") ~ WhiteSpace ~> False }
+  def PTrue: Rule1[Formula] = rule { "true" ~ WhiteSpace ~> True }
 
-  def id = rule { capture(oneOrMore("a" - "z" | "a" - "z")) ~> (_.toString) }
+  def PFalse: Rule1[Formula] = rule { "false" ~ WhiteSpace ~> False }
+
+  def id = rule { capture(oneOrMore("a" - "z" | "A" - "Z" | "'")) ~> (_.toString) }
 
   def numericLit = rule { capture(oneOrMore("0" - "9")) ~> (_.toInt) }
 

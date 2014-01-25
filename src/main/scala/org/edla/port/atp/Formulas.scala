@@ -6,17 +6,38 @@
 
 package org.edla.port.atp
 
-import org.edla.study.parsing.parboiled.AST.And
-import org.edla.study.parsing.parboiled.AST.Atom
-import org.edla.study.parsing.parboiled.AST.Formula
-import org.edla.study.parsing.parboiled.AST.Iff
-import org.edla.study.parsing.parboiled.AST.Imp
-import org.edla.study.parsing.parboiled.AST.Not
-import org.edla.study.parsing.parboiled.AST.Or
-
 object Formulas {
 
   implicit def atomOrdering: Ordering[Atom] = new Ordering[Atom] { def compare(a: Atom, b: Atom) = a.name compare b.name }
+
+  sealed abstract class Prop
+  case class P(pname: String) extends Prop
+
+  sealed abstract class Formula
+  case class False extends Formula {
+    override def toString = "false"
+  }
+  case class True extends Formula {
+    override def toString = "true"
+  }
+  case class Atom(name: String) extends Formula {
+    override def toString = name
+  }
+  case class Not(v: Formula) extends Formula {
+    override def toString = s"~${v}"
+  }
+  case class And(l: Formula, r: Formula) extends Formula {
+    override def toString = s"""${l} /\\ ${r}"""
+  }
+  case class Or(l: Formula, r: Formula) extends Formula {
+    override def toString = s"""${l} \\/ ${r}"""
+  }
+  case class Imp(l: Formula, r: Formula) extends Formula {
+    override def toString = s"${l} ==> ${r}"
+  }
+  case class Iff(l: Formula, r: Formula) extends Formula {
+    override def toString = s"${l} <=> ${r}"
+  }
 
   // pg. 31
   // ------------------------------------------------------------------------- //

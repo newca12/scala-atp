@@ -9,16 +9,16 @@ package org.edla.port.atp
 import scala.util.Failure
 import scala.util.Success
 
+import org.edla.port.atp.Formulas.And
+import org.edla.port.atp.Formulas.Atom
+import org.edla.port.atp.Formulas.False
+import org.edla.port.atp.Formulas.Formula
+import org.edla.port.atp.Formulas.Iff
+import org.edla.port.atp.Formulas.Imp
+import org.edla.port.atp.Formulas.Not
+import org.edla.port.atp.Formulas.Or
+import org.edla.port.atp.Formulas.True
 import org.edla.port.atp.Formulas.atom_union
-import org.edla.study.parsing.parboiled.AST.And
-import org.edla.study.parsing.parboiled.AST.Atom
-import org.edla.study.parsing.parboiled.AST.False
-import org.edla.study.parsing.parboiled.AST.Formula
-import org.edla.study.parsing.parboiled.AST.Iff
-import org.edla.study.parsing.parboiled.AST.Imp
-import org.edla.study.parsing.parboiled.AST.Not
-import org.edla.study.parsing.parboiled.AST.Or
-import org.edla.study.parsing.parboiled.AST.True
 import org.edla.study.parsing.parboiled.PropositionalLogic
 import org.parboiled2.ParseError
 import org.parboiled2.ParserInput.apply
@@ -101,5 +101,95 @@ object Prop {
   // ------------------------------------------------------------------------- //
 
   def tautology(fm: Formula) = onallvaluations(eval(fm)_, (s: String) ⇒ false, atoms(fm))
+
+  // pg. 50
+  // ------------------------------------------------------------------------- //
+  // Routine simplification.                                                   //
+  // ------------------------------------------------------------------------- //
+
+  //https://issues.scala-lang.org/browse/SUGGEST-25
+  def psimplify1(fm: Formula): Formula = {
+    fm match {
+      case Not(False())                      ⇒ True()
+      case Not(True())                       ⇒ False()
+      case Not(Not(p))                       ⇒ p
+      case And(_, False()) | And(False(), _) ⇒ False()
+      case And(p, True())                    ⇒ p
+      case And(True(), p)                    ⇒ p
+      case Or(p, False())                    ⇒ p
+      case Or(False(), p)                    ⇒ p
+      case Or(_, True()) | Or(True(), _)     ⇒ True()
+      case Imp(False(), _) | Imp(_, True())  ⇒ True()
+      case Imp(True(), p)                    ⇒ p
+      case Imp(p, False())                   ⇒ Not(p)
+      case Iff(p, True())                    ⇒ p
+      case Iff(True(), p)                    ⇒ p
+      case Iff(p, False())                   ⇒ Not(p)
+      case Iff(False(), p)                   ⇒ Not(p)
+      case _                                 ⇒ fm
+    }
+  }
+
+  def psimplify(fm: Formula): Formula = {
+    fm match {
+      case Not(p)    ⇒ psimplify1(Not(psimplify(p)))
+      case And(p, q) ⇒ psimplify1(And(psimplify(p), psimplify(q)))
+      case Or(p, q)  ⇒ psimplify1(Or(psimplify(p), psimplify(q)))
+      case Imp(p, q) ⇒ psimplify1(Imp(psimplify(p), psimplify(q)))
+      case Iff(p, q) ⇒ psimplify1(Iff(psimplify(p), psimplify(q)))
+      case _         ⇒ fm
+    }
+  }
+
+  // pg. 52
+  // ------------------------------------------------------------------------- //
+  // Negation normal form.                                                     //
+  // ------------------------------------------------------------------------- //  
+
+  // NOTE: Changed name from nnf to nenfOrig to avoid Scala compiler error.
+  def nnfOrig(fm: Formula): Formula = {
+    fm match {
+      case And(p, q)      ⇒ And(nnfOrig(p), nnfOrig(q))
+      case Or(p, q)       ⇒ Or(nnfOrig(p), nnfOrig(q))
+      case Imp(p, q)      ⇒ Or(nnfOrig(Not(p)), nnfOrig(q))
+      case Iff(p, q)      ⇒ Or(And(nnfOrig(p), nnfOrig(q)), And(nnfOrig(Not(p)), nnfOrig(Not(q))))
+      case Not(Not(p))    ⇒ nnfOrig(p)
+      case Not(And(p, q)) ⇒ Or(nnfOrig(Not(p)), nnfOrig(Not(q)))
+      case Not(Or(p, q))  ⇒ And(nnfOrig(Not(p)), nnfOrig(Not(q)))
+      case Not(Imp(p, q)) ⇒ And(nnfOrig(p), nnfOrig(Not(q)))
+      case Not(Iff(p, q)) ⇒ Or(And(nnfOrig(p), nnfOrig(Not(q))), And(nnfOrig(Not(p)), nnfOrig(q)))
+      case _              ⇒ fm
+    }
+  }
+
+  // pg. 52
+  // ------------------------------------------------------------------------- //
+  // Roll in simplification.                                                   //
+  // ------------------------------------------------------------------------- //  
+
+  def nnf(fm: Formula): Formula = nnfOrig(psimplify(fm))
+
+  // pg. 53
+  // ------------------------------------------------------------------------- //
+  // Simple negation-pushing when we don't care to distinguish occurrences.    //
+  // ------------------------------------------------------------------------- //
+
+  // NOTE: Changed name from nenf to nenfOrig to avoid Scala compiler error.
+  def nenfOrig(fm: Formula): Formula = {
+    fm match {
+      case Not(Not(p))    ⇒ nenfOrig(p)
+      case Not(And(p, q)) ⇒ Or(nenfOrig(Not(p)), nenfOrig(Not(q)))
+      case Not(Or(p, q))  ⇒ And(nenfOrig(Not(p)), nenfOrig(Not(q)))
+      case Not(Imp(p, q)) ⇒ And(nenfOrig(p), nenfOrig(Not(q)))
+      case Not(Iff(p, q)) ⇒ Iff(nenfOrig(p), nenfOrig(Not(q)))
+      case And(p, q)      ⇒ And(nenfOrig(p), nenfOrig(q))
+      case Or(p, q)       ⇒ Or(nenfOrig(p), nenfOrig(q))
+      case Imp(p, q)      ⇒ Or(nenfOrig(Not(p)), nenfOrig(q))
+      case Iff(p, q)      ⇒ Iff(nenfOrig(p), nenfOrig(q))
+      case _              ⇒ fm
+    }
+  }
+
+  def nenf(fm: Formula): Formula = nenfOrig(psimplify(fm))
 
 }

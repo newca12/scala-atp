@@ -5,30 +5,29 @@
 // ========================================================================= //
 
 import org.edla.port.atp.Prop._
-import org.edla.study.parsing.parboiled.AST._
+import org.edla.port.atp.Formulas._
 
 object prop {
 
-  implicit def default_parser( s: String ) = parse_prop_formula(s)
-                                                  //> default_parser: (s: String)org.edla.study.parsing.parboiled.AST.Formula
+  implicit def default_parser(s: String) = parse_prop_formula(s)
+                                                  //> default_parser: (s: String)org.edla.port.atp.Formulas.Formula
   // pg. 29
   // ------------------------------------------------------------------------- //
-  // Testing the parser (and [pretty] printer not yet implemented) 						 //
+  // Testing the parser and printer                               						 //
   // ------------------------------------------------------------------------- //
-  
+
   // nota: ~ ~u is not allowed
   val fm001: Formula = """p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v)"""
-                                                  //> fm001  : org.edla.study.parsing.parboiled.AST.Formula = Iff(Imp(p,q),Or(And(
-                                                  //| r,s),Iff(t,And(Not(Not(u)),v))))
+                                                  //> fm001  : org.edla.port.atp.Formulas.Formula = p ==> q <=> r /\ s \/ t <=> ~~
+                                                  //| u /\ v
   // pg. 30
   // prop.p001
-  And(fm001, fm001)                               //> res0: org.edla.study.parsing.parboiled.AST.And = And(Iff(Imp(p,q),Or(And(r,s
-                                                  //| ),Iff(t,And(Not(Not(u)),v)))),Iff(Imp(p,q),Or(And(r,s),Iff(t,And(Not(Not(u))
-                                                  //| ,v)))))
+  And(fm001, fm001)                               //> res0: org.edla.port.atp.Formulas.And = p ==> q <=> r /\ s \/ t <=> ~~u /\ v 
+                                                  //| /\ p ==> q <=> r /\ s \/ t <=> ~~u /\ v
   // prop.p002
-  And(Or(fm001, fm001), fm001)                    //> res1: org.edla.study.parsing.parboiled.AST.And = And(Or(Iff(Imp(p,q),Or(And
-                                                  //| (r,s),Iff(t,And(Not(Not(u)),v)))),Iff(Imp(p,q),Or(And(r,s),Iff(t,And(Not(No
-                                                  //| t(u)),v))))),Iff(Imp(p,q),Or(And(r,s),Iff(t,And(Not(Not(u)),v)))))
+  And(Or(fm001, fm001), fm001)                    //> res1: org.edla.port.atp.Formulas.And = p ==> q <=> r /\ s \/ t <=> ~~u /\ v 
+                                                  //| \/ p ==> q <=> r /\ s \/ t <=> ~~u /\ v /\ p ==> q <=> r /\ s \/ t <=> ~~u /
+                                                  //| \ v
   // pg. 33
   // prop.p003
   false && false                                  //> res2: Boolean(false) = false
@@ -41,7 +40,7 @@ object prop {
 
   // prop.p006
   true && true                                    //> res5: Boolean(true) = true
- 
+
   // pg. 33
   // ------------------------------------------------------------------------- //
   // Example of use.                                                           //
@@ -49,7 +48,7 @@ object prop {
 
   // prop.p007
   // Harrison #01
-  eval("""p /\ q ==> q /\ r""")( _ match {
+  eval("""p /\ q ==> q /\ r""")(_ match {
     case "p" => true
     case "q" => false
     case "r" => true
@@ -57,12 +56,12 @@ object prop {
 
   // prop.p008
   // Harrison #01
-  eval("""p /\ q ==> q /\ r""")( _ match {
+  eval("""p /\ q ==> q /\ r""")(_ match {
     case "p" => true
     case "q" => true
     case "r" => false
   })                                              //> res7: Boolean = false
-  
+
   // pg. 35
   // ------------------------------------------------------------------------- //
   // Example.                                                                  //
@@ -70,7 +69,7 @@ object prop {
 
   // prop.p009
   atoms("""p /\ q \/ s ==> ~p \/ (r <=> s)""")    //> res8: List[String] = List(p, q, r, s)
- 
+
   // pg. 36
   // ------------------------------------------------------------------------- //
   // Example.                                                                  //
@@ -131,7 +130,7 @@ object prop {
   // prop.p014
   // Pelletier #06
   tautology("""p \/ ~p"""")                       //> res9: Boolean = true
- 
+
   // prop.p015
   tautology("""p \/ q ==> p"""")                  //> res10: Boolean = false
   // prop.p016
@@ -148,7 +147,7 @@ object prop {
   // prop.p019
   // Pelletier #16
   tautology("""(p ==> q) \/ (q ==> p)""")         //> res13: Boolean = true
-  
+
   // prop.p020
   tautology("""p \/ (q <=> r) <=> (p \/ q <=> p \/ r)""")
                                                   //> res14: Boolean = true
@@ -176,10 +175,57 @@ object prop {
   // prop.p025
 
   (parse_prop_formula("""true <=> false ==> false""") ::
-   parse_prop_formula("""~p <=> p ==> false""") ::
-   parse_prop_formula("""p /\ q <=> (p ==> q ==> false) ==> false""") ::
-   parse_prop_formula("""p \/ q <=> (p ==> false) ==> q""") ::
-   parse_prop_formula("""(p <=> q) <=> ((p ==> q) ==> (q ==> p) ==> false) ==> false""")
-   :: Nil).forall(tautology)                      //> res19: Boolean = true
-                                                 
+    parse_prop_formula("""~p <=> p ==> false""") ::
+    parse_prop_formula("""p /\ q <=> (p ==> q ==> false) ==> false""") ::
+    parse_prop_formula("""p \/ q <=> (p ==> false) ==> q""") ::
+    parse_prop_formula("""(p <=> q) <=> ((p ==> q) ==> (q ==> p) ==> false) ==> false""")
+    :: Nil).forall(tautology)                     //> res19: Boolean = true
+
+  // pg. 51
+  // ------------------------------------------------------------------------- //
+  // Example.                                                                  //
+  // ------------------------------------------------------------------------- //
+
+  // prop.p027
+  psimplify("""(true ==> (x <=> false)) ==> ~(y \/ false /\ z)""")
+                                                  //> res20: org.edla.port.atp.Formulas.Formula = ~x ==> ~y
+  // prop.p028
+  psimplify("""((x ==> y) ==> true) \/ ~false""") //> res21: org.edla.port.atp.Formulas.Formula = true
+
+  // pg. 53
+  // ------------------------------------------------------------------------- //
+  // Example of NNF function in action.                                        //
+  // ------------------------------------------------------------------------- //
+
+  val fm003: Formula = """(p <=> q) <=> ~(r ==> s)"""
+                                                  //> fm003  : org.edla.port.atp.Formulas.Formula = p <=> q <=> ~r ==> s
+
+  val fm003_ = nnf(fm003)                         //> fm003_  : org.edla.port.atp.Formulas.Formula = p /\ q \/ ~p /\ ~q /\ r /\ ~
+                                                  //| s \/ p /\ ~q \/ ~p /\ q /\ ~r \/ s
+
+  // prop.p029
+  tautology(Iff(fm003, fm003_))                   //> res22: Boolean = true
+
+  // pg. 54
+  // ------------------------------------------------------------------------- //
+  // Some tautologies remarked on.                                             //
+  // ------------------------------------------------------------------------- //
+
+  // prop.p030
+  tautology("""(p ==> p') /\ (q ==> q') ==> (p /\ q ==> p' /\ q')""")
+                                                  //> res23: Boolean = true
+
+  // prop.p031
+  tautology("""(p ==> p') /\ (q ==> q') ==> (p \/ q ==> p' \/ q')""")
+                                                  //> res24: Boolean = true
+
+  // pg. 56
+  // ------------------------------------------------------------------------- //
+  // Examples.                                                                 //
+  // ------------------------------------------------------------------------- //
+
+  // Harrison #04
+  val fm004: Formula = """(p \/ q /\ r) /\ (~p \/ ~r)"""
+                                                  //> fm004  : org.edla.port.atp.Formulas.Formula = p \/ q /\ r /\ ~p \/ ~r
+
 }
