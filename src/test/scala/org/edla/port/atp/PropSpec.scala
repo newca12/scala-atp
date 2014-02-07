@@ -8,11 +8,15 @@ import org.edla.port.atp.Formulas.Not
 import org.edla.port.atp.Formulas.Or
 import org.edla.port.atp.Formulas.True
 import org.edla.port.atp.Prop.atoms
+import org.edla.port.atp.Prop.dual
 import org.edla.port.atp.Prop.eval
 import org.edla.port.atp.Prop.nnf
 import org.edla.port.atp.Prop.parse_prop_formula
 import org.edla.port.atp.Prop.psimplify
+import org.edla.port.atp.Prop.purednf
+import org.edla.port.atp.Prop.rawdnf
 import org.edla.port.atp.Prop.tautology
+import org.edla.port.atp.Prop.trivial
 import org.junit.runner.RunWith
 import org.specs2.mutable.SpecificationWithJUnit
 import org.specs2.runner.JUnitRunner
@@ -22,7 +26,7 @@ class PropSpec extends SpecificationWithJUnit {
 
   implicit def default_parser(s: String) = parse_prop_formula(s)
 
-  """correctly parse formulas""" in {
+  """correctly parse and print formulas""" in {
     parse_prop_formula("""p""") must equalTo(Atom("p"))
     parse_prop_formula("""true""") must equalTo(True())
     val fm = parse_prop_formula("""p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v)""")
@@ -56,13 +60,26 @@ class PropSpec extends SpecificationWithJUnit {
     tautology("""(p \/ q) /\ ~(p /\ q) ==> (~p <=> q)""") must equalTo(true)
   }
 
+  """correctly compute dual""" in {
+    dual("""p \/ ~p""") must equalTo(parse_prop_formula("""p /\ ~p"""))
+  }
+
   """correctly simplify formulas""" in {
-    psimplify("""(true ==> (x <=> false)) ==> ~(y \/ false /\ z)""") must equalTo(Imp(Not("x"), Not("y")))
-    psimplify("""((x ==> y) ==> true) \/ ~false""") must equalTo(True())
+    psimplify("""(true ==> (x <=> false)) ==> ~(y \/ false /\ z)""") must equalTo(parse_prop_formula("""~x ==> ~y"""))
+    psimplify("""((x ==> y) ==> true) \/ ~false""") must equalTo(parse_prop_formula("true"))
   }
 
   """correctly transform formula in negation normal form""" in {
     tautology(Iff("""(p <=> q) <=> ~(r ==> s)""", nnf("""(p <=> q) <=> ~(r ==> s)"""))) must equalTo(true)
   }
+  
+//  """correctly transform formula in raw dnf""" in {
+//    rawdnf("""(p \/ q /\ r) /\ (~p \/ ~r)""") must equalTo(parse_prop_formula(
+//        """(p /\ ~p \/ (q /\ r) /\ ~p) \/ p /\ ~r \/ (q /\ r) /\ ~r"""))
+//  }
 
+  """correctly transform formula in negation normal form""" in {
+purednf("""(p \/ q /\ r) /\ (~p \/ ~r)""").filter(!trivial(_))   must equalTo(
+    List(List(Atom("p"), Not(Atom("r"))), List(Atom("q"), Atom("r"), Not(Atom("p")))))
+  }
 }

@@ -6,6 +6,7 @@
 
 import org.edla.port.atp.Prop._
 import org.edla.port.atp.Formulas._
+import com.sun.org.apache.xalan.internal.xsltc.compiler.ForEach
 
 object prop {
 
@@ -18,16 +19,16 @@ object prop {
 
   // nota: ~ ~u is not allowed
   val fm001: Formula = """p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v)"""
-                                                  //> fm001  : org.edla.port.atp.Formulas.Formula = p ==> q <=> r /\ s \/ t <=> ~~
-                                                  //| u /\ v
+                                                  //> fm001  : org.edla.port.atp.Formulas.Formula = p ==> q <=> ( ( r /\ s ) \/ t 
+                                                  //| <=> ( ~~u /\ v ) )
   // pg. 30
   // prop.p001
-  And(fm001, fm001)                               //> res0: org.edla.port.atp.Formulas.And = p ==> q <=> r /\ s \/ t <=> ~~u /\ v 
-                                                  //| /\ p ==> q <=> r /\ s \/ t <=> ~~u /\ v
+  And(fm001, fm001)                               //> res0: org.edla.port.atp.Formulas.And = ( p ==> q <=> ( ( r /\ s ) \/ t <=> 
+                                                  //| ( ~~u /\ v ) ) /\ p ==> q <=> ( ( r /\ s ) \/ t <=> ( ~~u /\ v ) ) )
   // prop.p002
-  And(Or(fm001, fm001), fm001)                    //> res1: org.edla.port.atp.Formulas.And = p ==> q <=> r /\ s \/ t <=> ~~u /\ v 
-                                                  //| \/ p ==> q <=> r /\ s \/ t <=> ~~u /\ v /\ p ==> q <=> r /\ s \/ t <=> ~~u /
-                                                  //| \ v
+  And(Or(fm001, fm001), fm001)                    //> res1: org.edla.port.atp.Formulas.And = ( ( p ==> q <=> ( ( r /\ s ) \/ t <=
+                                                  //| > ( ~~u /\ v ) ) \/ p ==> q <=> ( ( r /\ s ) \/ t <=> ( ~~u /\ v ) ) ) /\ p
+                                                  //|  ==> q <=> ( ( r /\ s ) \/ t <=> ( ~~u /\ v ) ) )
   // pg. 33
   // prop.p003
   false && false                                  //> res2: Boolean(false) = false
@@ -181,6 +182,15 @@ object prop {
     parse_prop_formula("""(p <=> q) <=> ((p ==> q) ==> (q ==> p) ==> false) ==> false""")
     :: Nil).forall(tautology)                     //> res19: Boolean = true
 
+  // pg. 49.
+  // ------------------------------------------------------------------------- //
+  // Example.                                                                  //
+  // ------------------------------------------------------------------------- //
+
+  // prop.p026
+  // Pelletier #06
+  dual("""p \/ ~p""")                             //> res20: org.edla.port.atp.Formulas.Formula = ( p /\ ~p )
+
   // pg. 51
   // ------------------------------------------------------------------------- //
   // Example.                                                                  //
@@ -188,9 +198,9 @@ object prop {
 
   // prop.p027
   psimplify("""(true ==> (x <=> false)) ==> ~(y \/ false /\ z)""")
-                                                  //> res20: org.edla.port.atp.Formulas.Formula = ~x ==> ~y
+                                                  //> res21: org.edla.port.atp.Formulas.Formula = ~x ==> ~y
   // prop.p028
-  psimplify("""((x ==> y) ==> true) \/ ~false""") //> res21: org.edla.port.atp.Formulas.Formula = true
+  psimplify("""((x ==> y) ==> true) \/ ~false""") //> res22: org.edla.port.atp.Formulas.Formula = true
 
   // pg. 53
   // ------------------------------------------------------------------------- //
@@ -199,12 +209,11 @@ object prop {
 
   val fm003: Formula = """(p <=> q) <=> ~(r ==> s)"""
                                                   //> fm003  : org.edla.port.atp.Formulas.Formula = p <=> q <=> ~r ==> s
-
-  val fm003_ = nnf(fm003)                         //> fm003_  : org.edla.port.atp.Formulas.Formula = p /\ q \/ ~p /\ ~q /\ r /\ ~
-                                                  //| s \/ p /\ ~q \/ ~p /\ q /\ ~r \/ s
-
+  val fm003_ = nnf(fm003)                         //> fm003_  : org.edla.port.atp.Formulas.Formula = ( ( ( ( p /\ q ) \/ ( ~p /\ 
+                                                  //| ~q ) ) /\ ( r /\ ~s ) ) \/ ( ( ( p /\ ~q ) \/ ( ~p /\ q ) ) /\ ( ~r \/ s ) 
+                                                  //| ) )
   // prop.p029
-  tautology(Iff(fm003, fm003_))                   //> res22: Boolean = true
+  tautology(Iff(fm003, fm003_))                   //> res23: Boolean = true
 
   // pg. 54
   // ------------------------------------------------------------------------- //
@@ -213,19 +222,33 @@ object prop {
 
   // prop.p030
   tautology("""(p ==> p') /\ (q ==> q') ==> (p /\ q ==> p' /\ q')""")
-                                                  //> res23: Boolean = true
-
+                                                  //> res24: Boolean = true
   // prop.p031
   tautology("""(p ==> p') /\ (q ==> q') ==> (p \/ q ==> p' \/ q')""")
-                                                  //> res24: Boolean = true
-
-  // pg. 56
+                                                  //> res25: Boolean = true
+  // pg. 58
   // ------------------------------------------------------------------------- //
-  // Examples.                                                                 //
+  // Example.                                                                  //
   // ------------------------------------------------------------------------- //
+  //
 
+  // prop.p035
   // Harrison #04
-  val fm004: Formula = """(p \/ q /\ r) /\ (~p \/ ~r)"""
-                                                  //> fm004  : org.edla.port.atp.Formulas.Formula = p \/ q /\ r /\ ~p \/ ~r
+  rawdnf("""(p \/ q /\ r) /\ (~p \/ ~r)""")       //> res26: org.edla.port.atp.Formulas.Formula = ( ( ( p /\ ~p ) \/ ( ( q /\ r )
+                                                  //|  /\ ~p ) ) \/ ( ( p /\ ~r ) \/ ( ( q /\ r ) /\ ~r ) ) )
+  // prop.p036
+  // Harrison #04
+  purednf("""(p \/ q /\ r) /\ (~p \/ ~r)""")      //> res27: List[List[org.edla.port.atp.Formulas.Formula]] = List(List(p, ~p), L
+                                                  //| ist(p, ~r), List(q, r, ~p), List(q, r, ~r))
+  // pg. 59
+  // ------------------------------------------------------------------------- //
+  // Example.                                                                  //
+  // ------------------------------------------------------------------------- //
 
+  // prop.p037
+  // Harrison #04
+
+  purednf("""(p \/ q /\ r) /\ (~p \/ ~r)""").filter(!trivial(_))
+                                                  //> res28: List[List[org.edla.port.atp.Formulas.Formula]] = List(List(p, ~r), L
+                                                  //| ist(q, r, ~p))
 }

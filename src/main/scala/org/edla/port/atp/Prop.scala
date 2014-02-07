@@ -8,7 +8,6 @@ package org.edla.port.atp
 
 import scala.util.Failure
 import scala.util.Success
-
 import org.edla.port.atp.Formulas.And
 import org.edla.port.atp.Formulas.Atom
 import org.edla.port.atp.Formulas.False
@@ -102,6 +101,23 @@ object Prop {
 
   def tautology(fm: Formula) = onallvaluations(eval(fm)_, (s: String) ⇒ false, atoms(fm))
 
+  // pg. 48
+  // ------------------------------------------------------------------------- //
+  // Dualization.                                                              //
+  // ------------------------------------------------------------------------- //
+
+  def dual(fm: Formula): Formula = {
+    fm match {
+      case False()   ⇒ True()
+      case True()    ⇒ False()
+      case Atom(p)   ⇒ fm
+      case Not(p)    ⇒ Not(dual(p))
+      case And(p, q) ⇒ Or(dual(p), dual(q))
+      case Or(p, q)  ⇒ And(dual(p), dual(q))
+      case _         ⇒ throw new RuntimeException("Formula involves connectives ==> or <=>")
+    }
+  }
+
   // pg. 50
   // ------------------------------------------------------------------------- //
   // Routine simplification.                                                   //
@@ -138,6 +154,27 @@ object Prop {
       case Imp(p, q) ⇒ psimplify1(Imp(psimplify(p), psimplify(q)))
       case Iff(p, q) ⇒ psimplify1(Iff(psimplify(p), psimplify(q)))
       case _         ⇒ fm
+    }
+  }
+
+  // pg. 51
+  // ------------------------------------------------------------------------- //
+  // Some operations on literals.                                              //
+  // ------------------------------------------------------------------------- //
+
+  def negative(fm: Formula) = {
+    fm match {
+      case Not(p) ⇒ true
+      case _      ⇒ false
+    }
+  }
+
+  def positive(lit: Formula) = !negative(lit)
+
+  def negate(fm: Formula) = {
+    fm match {
+      case Not(p) ⇒ p
+      case p      ⇒ Not(p)
     }
   }
 
@@ -191,5 +228,68 @@ object Prop {
   }
 
   def nenf(fm: Formula): Formula = nenfOrig(psimplify(fm))
+
+  // pg. 55
+  // ------------------------------------------------------------------------- //
+  // Disjunctive normal form (DNF) via truth tables.                           //
+  // ------------------------------------------------------------------------- //
+
+  def list_conj(l: List[Formula]) = {
+    l.foldRight[Formula](True())(And(_, _))
+  }
+
+  def list_dij(l: List[Formula]) = {
+    l.foldRight[Formula](False())(Or(_, _))
+  }
+
+  // pg. 57
+  // ------------------------------------------------------------------------- //
+  // DNF via distribution.                                                     //
+  // ------------------------------------------------------------------------- //
+
+  def distrib(fm: Formula): Formula = {
+    fm match {
+      case And(p, (Or(q, r))) ⇒ Or(distrib(And(p, q)), distrib(And(p, r)))
+      case And(Or(p, q), r)   ⇒ Or(distrib(And(p, r)), distrib(And(q, r)))
+      case _                  ⇒ fm
+    }
+  }
+
+  def rawdnf(fm: Formula): Formula = {
+    fm match {
+      case And(p, q) ⇒ distrib(And(rawdnf(p), rawdnf(q)))
+      case Or(p, q)  ⇒ Or(rawdnf(p), rawdnf(q))
+      case _         ⇒ fm; ;
+    }
+  }
+
+  // pg. 58
+  // ------------------------------------------------------------------------- //
+  // A version using a list representation.                                    //
+  // ------------------------------------------------------------------------- //
+
+  //http://stackoverflow.com/questions/11803349/composing-a-list-of-all-pairs
+  def distrib(s1: List[List[Formula]], s2: List[List[Formula]]) = {
+    for (x ← s1; y ← s2) yield x.union(y)
+  }
+
+  def purednf(fm: Formula): List[List[Formula]] = {
+    val res: List[List[Formula]] = List()
+    fm match {
+      case And(p, q) ⇒ distrib(purednf(p), purednf(q))
+      case Or(p, q)  ⇒ purednf(p).union(purednf(q))
+      case _         ⇒ List(fm) :: res
+    }
+  }
+
+  // pg. 59
+  // ------------------------------------------------------------------------- //
+  // Filtering out trivial disjuncts (in this guise, contradictory).           //
+  // ------------------------------------------------------------------------- // 
+
+  def trivial(lits: List[Formula]): Boolean = {
+    val (pos, neg) = lits.partition(positive(_))
+    !pos.intersect(neg.map(negate(_))).isEmpty
+  }
 
 }
