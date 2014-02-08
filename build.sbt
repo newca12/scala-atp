@@ -18,7 +18,7 @@ resolvers += "edla repo" at "http://www.edla.org/snapshots"
 libraryDependencies ++= Seq(
   "at.logic" % "fol" % "1.0-SNAPSHOT",
   "at.logic" % "ivy" % "1.0-SNAPSHOT",
-  "org.parboiled" %% "parboiled" % "2.0-M1",
+  "org.parboiled" %% "parboiled" % "2.0-M2",
   "junit" % "junit" % "4.11" % "test",
   "org.specs2" %% "specs2" % "2.3.7" % "test",
   "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
@@ -63,7 +63,6 @@ pomExtra := (
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<build>
-		<!-- source and test directories not handled yet by sbt make-pom so added manually -->
 		<sourceDirectory>src/main/scala</sourceDirectory>
 		<testSourceDirectory>src/test/scala</testSourceDirectory>
 		<plugins>
@@ -75,13 +74,14 @@ pomExtra := (
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
-			</plugin>		
+			</plugin>
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>scala-maven-plugin</artifactId>
-				<version>3.1.5</version>
+				<version>3.1.6</version>
 				<executions>
 					<execution>
+						<id>compile</id>
 						<goals>
 							<goal>compile</goal>
 							<goal>testCompile</goal>
@@ -92,32 +92,16 @@ pomExtra := (
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12.4</version>
+				<version>2.16</version>
 				<configuration>
-					<useFile>false</useFile>
-					<disableXmlReport>true</disableXmlReport>
-					<!-- If you have classpath issue like NoDefClassError,... -->
-					<!-- useManifestOnlyJar>false</useManifestOnlyJar -->
 					<includes>
-						<include>**/*Spec.*</include>
+						<include>**/*Suite.class</include>
+						<include>**/*Test.class</include>
+						<include>**/*Tests.class</include>
+						<include>**/*Spec.class</include>
+						<include>**/*Specs.class</include>
 					</includes>
-					<excludes>
-						<exclude>**/*.off</exclude>
-					</excludes>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.scalatest</groupId>
-				<artifactId>scalatest-maven-plugin</artifactId>
-				<version>1.0-M4-SNAP1</version>
-				<executions>
-					<execution>
-						<id>test</id>
-						<goals>
-							<goal>test</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -126,7 +110,7 @@ pomExtra := (
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>scala-maven-plugin</artifactId>
-				<version>3.1.5</version>
+				<version>3.1.6</version>
 			</plugin>
 		</plugins>
 	</reporting>

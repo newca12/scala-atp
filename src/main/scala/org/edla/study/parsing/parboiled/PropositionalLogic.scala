@@ -3,10 +3,7 @@ package org.edla.study.parsing.parboiled
 import scala.language.implicitConversions
 
 import org.edla.port.atp.Formulas._
-import org.parboiled2.CharPredicate
-import org.parboiled2.Parser
-import org.parboiled2.ParserInput
-import org.parboiled2.Rule1
+import org.parboiled2._
 
 class PropositionalLogic(val input: ParserInput) extends Parser {
 

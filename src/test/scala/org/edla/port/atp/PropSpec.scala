@@ -72,14 +72,14 @@ class PropSpec extends SpecificationWithJUnit {
   """correctly transform formula in negation normal form""" in {
     tautology(Iff("""(p <=> q) <=> ~(r ==> s)""", nnf("""(p <=> q) <=> ~(r ==> s)"""))) must equalTo(true)
   }
-  
-//  """correctly transform formula in raw dnf""" in {
-//    rawdnf("""(p \/ q /\ r) /\ (~p \/ ~r)""") must equalTo(parse_prop_formula(
-//        """(p /\ ~p \/ (q /\ r) /\ ~p) \/ p /\ ~r \/ (q /\ r) /\ ~r"""))
-//  }
+
+  """correctly transform formula in raw dnf""" in {
+    tautology(Iff(rawdnf("""(p \/ q /\ r) /\ (~p \/ ~r)"""),
+      """(p /\ ~p \/ (q /\ r) /\ ~p) \/ p /\ ~r \/ (q /\ r) /\ ~r""")) must equalTo(true)
+  }
 
   """correctly transform formula in negation normal form""" in {
-purednf("""(p \/ q /\ r) /\ (~p \/ ~r)""").filter(!trivial(_))   must equalTo(
-    List(List(Atom("p"), Not(Atom("r"))), List(Atom("q"), Atom("r"), Not(Atom("p")))))
+    purednf("""(p \/ q /\ r) /\ (~p \/ ~r)""").filter(!trivial(_)) must equalTo(
+      List(List(Atom("p"), Not(Atom("r"))), List(Atom("q"), Atom("r"), Not(Atom("p")))))
   }
 }

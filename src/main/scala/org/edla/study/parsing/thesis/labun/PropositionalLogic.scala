@@ -48,7 +48,7 @@ object PropositionalLogic extends RegexParsers {
     case And(l, r)   ⇒ eval(l) && eval(r)
     case Not(x)      ⇒ !eval(x)
     case Const(x)    ⇒ x == "T"
-    //case Id(x)       ⇒ varValues(x)
+    case Id(x)       ⇒ varValues(x)
   }
 
   var varValues = mutable.Map[String, Boolean]()

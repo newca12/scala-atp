@@ -14,6 +14,7 @@ object Formulas {
   case class P(pname: String) extends Prop
 
   sealed abstract class Formula
+  //case objects not compatible with parboiled2
   case class False extends Formula {
     override def toString = "false"
   }
