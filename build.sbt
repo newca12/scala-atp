@@ -4,7 +4,7 @@ organization := "org.edla"
 
 version := "0.1-SNAPSHOT"
 
-scalaVersion := "2.10.3"
+scalaVersion := "2.10.4"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-optimize")
 
@@ -20,11 +20,13 @@ libraryDependencies ++= Seq(
   "at.logic" % "ivy" % "1.0-SNAPSHOT",
   "org.parboiled" %% "parboiled" % "2.0-M2",
   "junit" % "junit" % "4.11" % "test",
-  "org.specs2" %% "specs2" % "2.3.7" % "test",
-  "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
+  "org.specs2" %% "specs2" % "2.3.10" % "test",
+  "org.scalatest" % "scalatest_2.10" % "2.1.2" % "test"
 )
 
-seq(CoverallsPlugin.singleProject: _*)
+ScoverageSbtPlugin.instrumentSettings
+
+CoverallsPlugin.coverallsSettings
 
 // Uncomment the following line to use one-jar (https://github.com/sbt/sbt-onejar)
 //seq(com.github.retronym.SbtOneJar.oneJarSettings: _*)
@@ -36,15 +38,6 @@ homepage := Some(url("http://github.com/newca12/scala-atp"))
 //pomIncludeRepository := { _ => false }
 
 pomExtra := (
-  <!-- pluginRepository needed for add-source goal
-  -->
-  <pluginRepositories>
-	<pluginRepository>
-		<id>el4.elca-services.ch</id>
-        <name>el4</name>
-        <url>http://el4.elca-services.ch/el4j/maven2repository</url>
-    </pluginRepository>
-  </pluginRepositories>
   <scm>
     <url>git@github.com:newca12/scala-atp.git</url>
     <connection>scm:git:git@github.com:newca12/scala-atp.git</connection>

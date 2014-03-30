@@ -19,15 +19,6 @@
         <name>org.edla</name>
         <url>http://github.com/newca12/scala-atp</url>
     </organization>
-    <!-- pluginRepository needed for add-source goal
-  -->
-    <pluginRepositories>
-        <pluginRepository>
-            <id>el4.elca-services.ch</id>
-            <name>el4</name>
-            <url>http://el4.elca-services.ch/el4j/maven2repository</url>
-        </pluginRepository>
-    </pluginRepositories>
     <scm>
         <url>git@github.com:newca12/scala-atp.git</url>
         <connection>scm:git:git@github.com:newca12/scala-atp.git</connection>
@@ -100,7 +91,7 @@
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>2.10.3</version>
+            <version>2.10.4</version>
         </dependency>
         <dependency>
             <groupId>at.logic</groupId>
@@ -126,19 +117,14 @@
         <dependency>
             <groupId>org.specs2</groupId>
             <artifactId>specs2_2.10</artifactId>
-            <version>2.3.7</version>
+            <version>2.3.10</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_2.10</artifactId>
-            <version>2.0</version>
+            <version>2.1.2</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.sqality.scct</groupId>
-            <artifactId>scct_2.10</artifactId>
-            <version>0.2.2</version>
         </dependency>
     </dependencies>
     <repositories>

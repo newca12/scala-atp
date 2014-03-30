@@ -1,4 +1,4 @@
-# scala-atp [![Build Status](https://travis-ci.org/newca12/scala-atp.png?branch=master)](https://travis-ci.org/newca12/scala-atp) [![Coverage Status](https://coveralls.io/repos/newca12/scala-atp/badge.png)](https://coveralls.io/r/newca12/scala-atp) [![Ohloh](http://www.ohloh.net/p/scala-atp/widgets/project_thin_badge.gif)](https://www.ohloh.net/p/scala-atp)
+# scala-atp [![Build Status](https://travis-ci.org/newca12/scala-atp.svg?branch=master)](https://travis-ci.org/newca12/scala-atp) [![Coverage Status](https://coveralls.io/repos/newca12/scala-atp/badge.png)](https://coveralls.io/r/newca12/scala-atp) [![Ohloh](http://www.ohloh.net/p/scala-atp/widgets/project_thin_badge.gif)](https://www.ohloh.net/p/scala-atp)
 
 ### About ###
 Port of the Objective Caml code supporting John Harrison's logic [textbook](http://www.cambridge.org/catalogue/catalogue.asp?isbn=9780521899574) Handbook of Practical Logic and Automated Reasoning to Scala.
@@ -19,7 +19,7 @@ The `worksheets` folder contains `*.sc` scripts corresponding to the original OC
 
 ### Notes ###
 We kept the file names of the original mostly intact, though use Scala naming conventions.  
-Contain also a study about parsers and some code from :  
+This project contain also a study about parsers and some code from :  
 * [DSLs in Action](http://books.google.fr/books?id=SzD6RAAACAAJ&num=16&source=gbs_slider_cls_metadata_1003_mylibrary) from Debasish Ghosh  
 * Eugen Labun's thesis : [Combinator Parsing in Scala](https://docs.google.com/file/d/0B7LbY7bJaltldVRhMHhfT1F4VkE/edit?pli=1)
 
