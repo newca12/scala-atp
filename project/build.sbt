@@ -1,5 +1,3 @@
-resolvers += Classpaths.sbtPluginReleases
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 
-addSbtPlugin("com.sksamuel.scoverage" %% "sbt-scoverage" % "0.95.9")
-
-addSbtPlugin("com.sksamuel.scoverage" %% "sbt-coveralls" % "0.0.5")
+addSbtPlugin("com.github.theon" %% "xsbt-coveralls-plugin" % "0.0.5-SNAPSHOT")
