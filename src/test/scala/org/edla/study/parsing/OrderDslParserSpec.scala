@@ -16,8 +16,11 @@ import org.edla.study.parsing.common.AST.PriceSpec
 import org.edla.study.parsing.common.AST.SELL
 import org.edla.study.parsing.common.AST.SecuritySpec
 
+import org.junit.runner.RunWith
 import org.specs2.mutable.SpecificationWithJUnit
+import org.specs2.runner.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
 class OrderDslParserSpec extends SpecificationWithJUnit {
 
   "The OrderDslParser" should {

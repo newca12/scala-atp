@@ -15,10 +15,10 @@ object Formulas {
 
   sealed abstract class Formula
   //case objects not compatible with parboiled2
-  case class False extends Formula {
+  case class False() extends Formula {
     override def toString = "false"
   }
-  case class True extends Formula {
+  case class True() extends Formula {
     override def toString = "true"
   }
   case class Atom(name: String) extends Formula {

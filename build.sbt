@@ -4,7 +4,7 @@ organization := "org.edla"
 
 version := "0.1-SNAPSHOT"
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.11.0"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-optimize")
 
@@ -16,12 +16,14 @@ org.scalastyle.sbt.ScalastylePlugin.Settings
 resolvers += "edla repo" at "http://www.edla.org/snapshots"
 
 libraryDependencies ++= Seq(
-  "at.logic" % "fol" % "1.0-SNAPSHOT",
-  "at.logic" % "ivy" % "1.0-SNAPSHOT",
-  "org.parboiled" %% "parboiled" % "2.0-M2",
+//  "at.logic" % "fol" % "1.0-SNAPSHOT",
+//  "at.logic" % "ivy" % "1.0-SNAPSHOT",
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1",
+  "org.parboiled" %% "parboiled" % "2.0.0-RC1",
+  "org.scala-lang"  %  "scala-reflect"    % "2.11.0"   % "provided",
   "junit" % "junit" % "4.11" % "test",
-  "org.specs2" %% "specs2" % "2.3.10" % "test",
-  "org.scalatest" % "scalatest_2.10" % "2.1.2" % "test"
+  "org.specs2" %% "specs2" % "2.3.11" % "test",
+  "org.scalatest" %% "scalatest" % "2.1.3" % "test"
 )
 
 seq(CoverallsPlugin.singleProject: _*)
@@ -62,8 +64,8 @@ pomExtra := (
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
