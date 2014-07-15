@@ -4,7 +4,7 @@ organization := "org.edla"
 
 version := "0.1-SNAPSHOT"
 
-scalaVersion := "2.11.0"
+scalaVersion := "2.11.1"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-optimize")
 
@@ -16,14 +16,14 @@ org.scalastyle.sbt.ScalastylePlugin.Settings
 resolvers += "edla repo" at "http://www.edla.org/snapshots"
 
 libraryDependencies ++= Seq(
-//  "at.logic" % "fol" % "1.0-SNAPSHOT",
-//  "at.logic" % "ivy" % "1.0-SNAPSHOT",
+  "at.logic" % "fol" % "1.0-SNAPSHOT",
+  "at.logic" % "ivy" % "1.0-SNAPSHOT",
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1",
-  "org.parboiled" %% "parboiled" % "2.0.0-RC1",
-  "org.scala-lang"  %  "scala-reflect"    % "2.11.0"   % "provided",
+  "org.parboiled" %% "parboiled" % "2.0.0",
+  "org.scala-lang"  %  "scala-reflect"    % "2.11.1"   % "provided",
   "junit" % "junit" % "4.11" % "test",
-  "org.specs2" %% "specs2" % "2.3.11" % "test",
-  "org.scalatest" %% "scalatest" % "2.1.3" % "test"
+  "org.specs2" %% "specs2" % "2.3.13" % "test",
+  "org.scalatest" %% "scalatest" % "2.2.0" % "test"
 )
 
 seq(CoverallsPlugin.singleProject: _*)
@@ -71,7 +71,7 @@ pomExtra := (
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>scala-maven-plugin</artifactId>
-				<version>3.1.6</version>
+				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>compile</id>
@@ -85,7 +85,7 @@ pomExtra := (
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.16</version>
+				<version>2.17</version>
 				<configuration>
 					<includes>
 						<include>**/*Suite.class</include>
