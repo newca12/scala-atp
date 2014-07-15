@@ -109,6 +109,11 @@
             <version>1.0.1</version>
         </dependency>
         <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-xml_2.11</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.parboiled</groupId>
             <artifactId>parboiled_2.11</artifactId>
             <version>2.0.0</version>

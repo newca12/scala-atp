@@ -19,6 +19,9 @@ libraryDependencies ++= Seq(
   "at.logic" % "fol" % "1.0-SNAPSHOT",
   "at.logic" % "ivy" % "1.0-SNAPSHOT",
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1",
+  //workaround for ivy : impossible to get artifacts when data has not been loaded.
+  //http://harrah.github.io/xsbt/latest/sxr/Ivy.scala.html
+  "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.2",
   "org.parboiled" %% "parboiled" % "2.0.0",
   "org.scala-lang"  %  "scala-reflect"    % "2.11.1"   % "provided",
   "junit" % "junit" % "4.11" % "test",
