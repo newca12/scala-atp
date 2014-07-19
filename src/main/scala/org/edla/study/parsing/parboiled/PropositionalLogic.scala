@@ -7,45 +7,48 @@ import org.parboiled2._
 
 class PropositionalLogic(val input: ParserInput) extends Parser {
 
+  implicit def wspStr(s: String): Rule0 = rule {
+    str(s) ~ zeroOrMore(WhiteSpaceChar)
+  }
+
+  //def expr = rule { equiv ~ EOI }
   def expr = equiv
 
   def equiv = rule {
-    oneOrMore(impl).separatedBy("<=> ") ~> (_.reduceLeft(Iff))
+    oneOrMore(impl).separatedBy("<=>") ~> (_.reduceLeft(Iff))
   }
 
   def impl = rule {
-    oneOrMore(or).separatedBy("==> ") ~> (_.reduceRight(Imp))
+    oneOrMore(or).separatedBy("==>") ~> (_.reduceRight(Imp))
   }
 
   def or = rule {
-    oneOrMore(and).separatedBy("""\/ """) ~> (_.reduceLeft(Or))
+    oneOrMore(and).separatedBy("""\/""") ~> (_.reduceLeft(Or))
   }
 
   def and = rule {
-    oneOrMore(not).separatedBy("""/\ """) ~> (_.reduceLeft(And))
+    oneOrMore(not).separatedBy("""/\""") ~> (_.reduceLeft(And))
   }
 
   def not: Rule1[Formula] = rule {
-    optional(neg) ~ atom ~ WhiteSpace ~> (((a: Option[String], b: Formula) ⇒ if (a.isDefined) Not(b) else b))
+    optional(neg) ~ atom ~> (((a: Option[String], b: Formula) ⇒ if (a.isDefined) Not(b) else b))
   }
 
   def atom: Rule1[Formula] = rule {
-    PTrue | PFalse | ((id ~> Atom) | ws('(') ~ expr ~ ws(')'))
+    PTrue | PFalse | ((id ~> Atom) | "(" ~ expr ~ ")")
   }
 
   def neg = rule { capture(("~")) ~> (_.toString) }
 
-  def PTrue: Rule1[Formula] = rule { "true" ~ WhiteSpace ~> True }
+  def PTrue: Rule1[Formula] = rule { "true" ~ push(True()) }
 
-  def PFalse: Rule1[Formula] = rule { "false" ~ WhiteSpace ~> False }
+  def PFalse: Rule1[Formula] = rule { "false" ~ push(False()) }
 
-  def id = rule { capture(oneOrMore("a" - "z" | "A" - "Z" | "'")) ~> (_.toString) }
+  def id = rule { capture(oneOrMore("a" - "z" | "A" - "Z" | "'")) ~ optional(WhiteSpace) ~> (_.toString) }
 
-  def numericLit = rule { capture(oneOrMore("0" - "9")) ~> (_.toInt) }
+  def numericLit = rule { capture(oneOrMore("0" - "9")) ~ optional(WhiteSpace) ~> (_.toInt) }
 
   def WhiteSpace = rule { zeroOrMore(WhiteSpaceChar) }
-
-  def ws(c: Char) = rule { c ~ WhiteSpace }
 
   val WhiteSpaceChar = CharPredicate(" \n\r\t\f")
 
