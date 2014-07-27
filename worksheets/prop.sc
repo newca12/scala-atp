@@ -14,21 +14,20 @@ object prop {
                                                   //> default_parser: (s: String)org.edla.port.atp.Formulas.Formula
   // pg. 29
   // ------------------------------------------------------------------------- //
-  // Testing the parser and printer                               						 //
+  // Testing the parser and printer                                            //
   // ------------------------------------------------------------------------- //
 
-  // nota: ~ ~u is not allowed
-  val fm001: Formula = """p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v)"""
-                                                  //> fm001  : org.edla.port.atp.Formulas.Formula = p ==> q <=> ( ( r /\ s ) \/ t 
-                                                  //| <=> ( ~~u /\ v ) )
+  val fm001: Formula = """p ==> q <=> r /\ s \/ (t <=> ~ ~u /\ v)"""
+                                                  //> fm001  : org.edla.port.atp.Formulas.Formula = p ==> q <=> r /\ s \/ (t <=> ~
+                                                  //| (~u) /\ v)
   // pg. 30
   // prop.p001
-  And(fm001, fm001)                               //> res0: org.edla.port.atp.Formulas.And = ( p ==> q <=> ( ( r /\ s ) \/ t <=> 
-                                                  //| ( ~~u /\ v ) ) /\ p ==> q <=> ( ( r /\ s ) \/ t <=> ( ~~u /\ v ) ) )
+  And(fm001, fm001)                               //> res0: org.edla.port.atp.Formulas.And = (p ==> q <=> r /\ s \/ (t <=> ~(~u) /
+                                                  //| \ v)) /\ (p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))
   // prop.p002
-  And(Or(fm001, fm001), fm001)                    //> res1: org.edla.port.atp.Formulas.And = ( ( p ==> q <=> ( ( r /\ s ) \/ t <=
-                                                  //| > ( ~~u /\ v ) ) \/ p ==> q <=> ( ( r /\ s ) \/ t <=> ( ~~u /\ v ) ) ) /\ p
-                                                  //|  ==> q <=> ( ( r /\ s ) \/ t <=> ( ~~u /\ v ) ) )
+  And(Or(fm001, fm001), fm001)                    //> res1: org.edla.port.atp.Formulas.And = ((p ==> q <=> r /\ s \/ (t <=> ~(~u)
+                                                  //|  /\ v)) \/ (p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))) /\ (p ==> q <=> r /\
+                                                  //|  s \/ (t <=> ~(~u) /\ v))
   // pg. 33
   // prop.p003
   false && false                                  //> res2: Boolean(false) = false
@@ -189,7 +188,7 @@ object prop {
 
   // prop.p026
   // Pelletier #06
-  dual("""p \/ ~p""")                             //> res20: org.edla.port.atp.Formulas.Formula = ( p /\ ~p )
+  dual("""p \/ ~p""")                             //> res20: org.edla.port.atp.Formulas.Formula = p /\ ~p
 
   // pg. 51
   // ------------------------------------------------------------------------- //
@@ -208,10 +207,9 @@ object prop {
   // ------------------------------------------------------------------------- //
 
   val fm003: Formula = """(p <=> q) <=> ~(r ==> s)"""
-                                                  //> fm003  : org.edla.port.atp.Formulas.Formula = p <=> q <=> ~r ==> s
-  val fm003_ = nnf(fm003)                         //> fm003_  : org.edla.port.atp.Formulas.Formula = ( ( ( ( p /\ q ) \/ ( ~p /\ 
-                                                  //| ~q ) ) /\ ( r /\ ~s ) ) \/ ( ( ( p /\ ~q ) \/ ( ~p /\ q ) ) /\ ( ~r \/ s ) 
-                                                  //| ) )
+                                                  //> fm003  : org.edla.port.atp.Formulas.Formula = (p <=> q) <=> ~(r ==> s)
+  val fm003_ = nnf(fm003)                         //> fm003_  : org.edla.port.atp.Formulas.Formula = (p /\ q \/ ~p /\ ~q) /\ r /\
+                                                  //|  ~s \/ (p /\ ~q \/ ~p /\ q) /\ (~r \/ s)
   // prop.p029
   tautology(Iff(fm003, fm003_))                   //> res23: Boolean = true
 
@@ -234,8 +232,8 @@ object prop {
 
   // prop.p035
   // Harrison #04
-  rawdnf("""(p \/ q /\ r) /\ (~p \/ ~r)""")       //> res26: org.edla.port.atp.Formulas.Formula = ( ( ( p /\ ~p ) \/ ( ( q /\ r )
-                                                  //|  /\ ~p ) ) \/ ( ( p /\ ~r ) \/ ( ( q /\ r ) /\ ~r ) ) )
+  rawdnf("""(p \/ q /\ r) /\ (~p \/ ~r)""")       //> res26: org.edla.port.atp.Formulas.Formula = (p /\ ~p \/ (q /\ r) /\ ~p) \/ 
+                                                  //| p /\ ~r \/ (q /\ r) /\ ~r
   // prop.p036
   // Harrison #04
   purednf("""(p \/ q /\ r) /\ (~p \/ ~r)""")      //> res27: List[List[org.edla.port.atp.Formulas.Formula]] = List(List(p, ~p), L

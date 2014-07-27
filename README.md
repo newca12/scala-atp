@@ -1,4 +1,4 @@
-# scala-atp [![Build Status](https://travis-ci.org/newca12/scala-atp.svg?branch=master)](https://travis-ci.org/newca12/scala-atp) [![Coverage Status](https://coveralls.io/repos/newca12/scala-atp/badge.png)](https://coveralls.io/r/newca12/scala-atp) [![Ohloh](http://www.ohloh.net/p/scala-atp/widgets/project_thin_badge.gif)](https://www.ohloh.net/p/scala-atp)
+# scala-atp [![Build Status](https://travis-ci.org/newca12/scala-atp.svg?branch=master)](https://travis-ci.org/newca12/scala-atp) [![Coverage Status](https://coveralls.io/repos/newca12/scala-atp/badge.png)](https://coveralls.io/r/newca12/scala-atp) [![Ohloh](http://www.openhub.net/p/scala-atp/widgets/project_thin_badge.gif)](https://www.openhub.net/p/scala-atp)
 
 ### About ###
 Port of the Objective Caml code supporting John Harrison's logic [textbook](http://www.cambridge.org/catalogue/catalogue.asp?isbn=9780521899574) Handbook of Practical Logic and Automated Reasoning to Scala.

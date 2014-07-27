@@ -13,32 +13,24 @@ object Formulas {
   sealed abstract class Prop
   case class P(pname: String) extends Prop
 
-  sealed abstract class Formula
-  //case objects not compatible with parboiled2
-  case class False() extends Formula {
-    override def toString = "false"
+  sealed abstract class Formula {
+    override def toString = {
+      val stream = new java.io.ByteArrayOutputStream()
+      Console.withOut(stream) {
+        print_formula(this)
+      }
+      stream.toString
+    }
   }
-  case class True() extends Formula {
-    override def toString = "true"
-  }
-  case class Atom(name: String) extends Formula {
-    override def toString = name
-  }
-  case class Not(v: Formula) extends Formula {
-    override def toString = s"~${v}"
-  }
-  case class And(l: Formula, r: Formula) extends Formula {
-    override def toString = s"""${l} /\\ ${r}"""
-  }
-  case class Or(l: Formula, r: Formula) extends Formula {
-    override def toString = s"""${l} \\/ ${r}"""
-  }
-  case class Imp(l: Formula, r: Formula) extends Formula {
-    override def toString = s"${l} ==> ${r}"
-  }
-  case class Iff(l: Formula, r: Formula) extends Formula {
-    override def toString = s"${l} <=> ${r}"
-  }
+
+  case object False extends Formula
+  case object True extends Formula
+  case class Atom(name: String) extends Formula
+  case class Not(v: Formula) extends Formula
+  case class And(l: Formula, r: Formula) extends Formula
+  case class Or(l: Formula, r: Formula) extends Formula
+  case class Imp(l: Formula, r: Formula) extends Formula
+  case class Iff(l: Formula, r: Formula) extends Formula
 
   // pg. 31
   // ------------------------------------------------------------------------- //
@@ -81,4 +73,40 @@ object Formulas {
 
   def atom_union(f: Atom ⇒ List[Atom], fm: Formula) = overatoms(f, fm, Nil).toSet.toList.sorted
 
+  // pg. 626
+  // ------------------------------------------------------------------------- //
+  // Printing of formulas, parametrized by atom printer.                       //
+  // ------------------------------------------------------------------------- //
+
+  // NOTE: No use of OCaml format module. i.e. print_box removed during conversion
+  def bracket[T](p: Boolean, n: Int, f: (T, Formula) ⇒ Unit, x: T, y: Formula) = {
+    if (p) print("(")
+    f(x, y)
+    if (p) print(")")
+  }
+
+  def print_formula(pfn: Formula) {
+    def print_formula_(pr: Int, fm: Formula) {
+      def print_prefix(newpr: Int)(sym: String, p: Formula) = {
+        print(sym); print_formula_(newpr + 1, p)
+      }
+      def print_infix(newpr: Int, sym: String)(p: Formula, q: Formula) = {
+        print_formula_(newpr + 1, p)
+        print(s" ${sym} ")
+        print_formula_(newpr, q)
+      }
+
+      fm match {
+        case False       ⇒ print("false")
+        case True        ⇒ print("true")
+        case Atom(pargs) ⇒ print(pargs)
+        case Not(p)      ⇒ bracket(pr > 10, 1, print_prefix(10), "~", p)
+        case And(p, q)   ⇒ bracket(pr > 8, 0, print_infix(8, """/\"""), p, q)
+        case Or(p, q)    ⇒ bracket(pr > 6, 0, print_infix(6, """\/"""), p, q)
+        case Imp(p, q)   ⇒ bracket(pr > 4, 0, print_infix(4, "==>"), p, q)
+        case Iff(p, q)   ⇒ bracket(pr > 2, 0, print_infix(2, "<=>"), p, q)
+      }
+    }
+    print_formula_(0, pfn)
+  }
 }

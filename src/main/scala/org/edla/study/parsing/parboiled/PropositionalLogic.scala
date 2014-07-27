@@ -11,7 +11,6 @@ class PropositionalLogic(val input: ParserInput) extends Parser {
     str(s) ~ zeroOrMore(WhiteSpaceChar)
   }
 
-  //def expr = rule { equiv ~ EOI }
   def expr = equiv
 
   def equiv = rule {
@@ -35,16 +34,17 @@ class PropositionalLogic(val input: ParserInput) extends Parser {
   }
 
   def atom: Rule1[Formula] = rule {
-    PTrue | PFalse | ((id ~> Atom) | "(" ~ expr ~ ")")
+    PTrue | PFalse | ((optional(neg) ~ id ~>
+      (((a: Option[String], b: String) ⇒ if (a.isDefined) Not(Atom(b)) else Atom(b)))) | "(" ~ equiv ~ (")" | EOI))
   }
 
   def neg = rule { capture(("~")) ~> (_.toString) }
 
-  def PTrue: Rule1[Formula] = rule { "true" ~ push(True()) }
+  def PTrue: Rule1[Formula] = rule { "true" ~ push(True) }
 
-  def PFalse: Rule1[Formula] = rule { "false" ~ push(False()) }
+  def PFalse: Rule1[Formula] = rule { "false" ~ push(False) }
 
-  def id = rule { capture(oneOrMore("a" - "z" | "A" - "Z" | "'")) ~ optional(WhiteSpace) ~> (_.toString) }
+  def id = rule { capture(oneOrMore("a" - "z" | "A" - "Z" | "'")) ~ optional(WhiteSpace) ~> (_.toString.replaceAll("""(?m)\s+$""", "")) }
 
   def numericLit = rule { capture(oneOrMore("0" - "9")) ~ optional(WhiteSpace) ~> (_.toInt) }
 

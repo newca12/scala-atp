@@ -46,8 +46,8 @@ object Prop {
 
   def eval(fm: Formula)(v: String ⇒ Boolean): Boolean = {
     fm match {
-      case False()   ⇒ false
-      case True()    ⇒ true
+      case False     ⇒ false
+      case True      ⇒ true
       case Atom(x)   ⇒ v(x)
       case Not(p)    ⇒ !eval(p)(v)
       case And(p, q) ⇒ eval(p)(v) && eval(q)(v)
@@ -108,8 +108,8 @@ object Prop {
 
   def dual(fm: Formula): Formula = {
     fm match {
-      case False()   ⇒ True()
-      case True()    ⇒ False()
+      case False     ⇒ True
+      case True      ⇒ False
       case Atom(p)   ⇒ fm
       case Not(p)    ⇒ Not(dual(p))
       case And(p, q) ⇒ Or(dual(p), dual(q))
@@ -126,23 +126,23 @@ object Prop {
   //https://issues.scala-lang.org/browse/SUGGEST-25
   def psimplify1(fm: Formula): Formula = {
     fm match {
-      case Not(False())                      ⇒ True()
-      case Not(True())                       ⇒ False()
-      case Not(Not(p))                       ⇒ p
-      case And(_, False()) | And(False(), _) ⇒ False()
-      case And(p, True())                    ⇒ p
-      case And(True(), p)                    ⇒ p
-      case Or(p, False())                    ⇒ p
-      case Or(False(), p)                    ⇒ p
-      case Or(_, True()) | Or(True(), _)     ⇒ True()
-      case Imp(False(), _) | Imp(_, True())  ⇒ True()
-      case Imp(True(), p)                    ⇒ p
-      case Imp(p, False())                   ⇒ Not(p)
-      case Iff(p, True())                    ⇒ p
-      case Iff(True(), p)                    ⇒ p
-      case Iff(p, False())                   ⇒ Not(p)
-      case Iff(False(), p)                   ⇒ Not(p)
-      case _                                 ⇒ fm
+      case Not(False)                    ⇒ True
+      case Not(True)                     ⇒ False
+      case Not(Not(p))                   ⇒ p
+      case And(_, False) | And(False, _) ⇒ False
+      case And(p, True)                  ⇒ p
+      case And(True, p)                  ⇒ p
+      case Or(p, False)                  ⇒ p
+      case Or(False, p)                  ⇒ p
+      case Or(_, True) | Or(True, _)     ⇒ True
+      case Imp(False, _) | Imp(_, True)  ⇒ True
+      case Imp(True, p)                  ⇒ p
+      case Imp(p, False)                 ⇒ Not(p)
+      case Iff(p, True)                  ⇒ p
+      case Iff(True, p)                  ⇒ p
+      case Iff(p, False)                 ⇒ Not(p)
+      case Iff(False, p)                 ⇒ Not(p)
+      case _                             ⇒ fm
     }
   }
 
@@ -235,11 +235,11 @@ object Prop {
   // ------------------------------------------------------------------------- //
 
   def list_conj(l: List[Formula]) = {
-    l.foldRight[Formula](True())(And(_, _))
+    l.foldRight[Formula](True)(And(_, _))
   }
 
   def list_dij(l: List[Formula]) = {
-    l.foldRight[Formula](False())(Or(_, _))
+    l.foldRight[Formula](False)(Or(_, _))
   }
 
   // pg. 57
