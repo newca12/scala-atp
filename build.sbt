@@ -4,32 +4,30 @@ organization := "org.edla"
 
 version := "0.1-SNAPSHOT"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.4"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-optimize")
 
 scalacOptions in (Compile, doc) ++= Seq("-diagrams","-implicits")
 
-org.scalastyle.sbt.ScalastylePlugin.Settings
-
 //resolvers += "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository"
 resolvers += "edla repo" at "http://www.edla.org/snapshots"
+//specs2 https://groups.google.com/forum/#!searchin/specs2-users/scalaz-stream$20$3B0.5a/specs2-users/h7jtavNZc3M/8j4jZeIdG4gJ
+resolvers += "Scalaz Bintray Repo"  at "http://dl.bintray.com/scalaz/releases"
 
 libraryDependencies ++= Seq(
   "at.logic" % "fol" % "1.0-SNAPSHOT",
   "at.logic" % "ivy" % "1.0-SNAPSHOT",
-  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1",
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.3",
   //workaround for ivy : impossible to get artifacts when data has not been loaded.
   //http://harrah.github.io/xsbt/latest/sxr/Ivy.scala.html
-  "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.2",
-  "org.parboiled" %% "parboiled" % "2.0.0",
-  "org.scala-lang"  %  "scala-reflect"    % "2.11.1"   % "provided",
-  "junit" % "junit" % "4.11" % "test",
-  "org.specs2" %% "specs2" % "2.3.13" % "test",
-  "org.scalatest" %% "scalatest" % "2.2.0" % "test"
+  "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.3",
+  "org.parboiled" %% "parboiled" % "2.0.1",
+  "org.scala-lang"  %  "scala-reflect"    % "2.11.4"   % "provided",
+  "junit" % "junit" % "4.12" % "test",
+  "org.specs2" %% "specs2" % "2.4.15" % "test",
+  "org.scalatest" %% "scalatest" % "2.2.3" % "test"
 )
-
-instrumentSettings
 
 seq(CoverallsPlugin.singleProject: _*)
 
@@ -67,7 +65,7 @@ pomExtra := (
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.2</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -90,7 +88,7 @@ pomExtra := (
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.17</version>
+				<version>2.18.1</version>
 				<configuration>
 					<includes>
 						<include>**/*Suite.class</include>
@@ -108,7 +106,7 @@ pomExtra := (
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>scala-maven-plugin</artifactId>
-				<version>3.1.6</version>
+				<version>3.2.0</version>
 			</plugin>
 		</plugins>
 	</reporting>

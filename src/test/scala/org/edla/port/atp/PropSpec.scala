@@ -34,14 +34,17 @@ class PropSpec extends SpecificationWithJUnit {
     f must equalTo(
       And(
         Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))),
-        Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))))
+        Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))
+      )
+    )
     val stream = new java.io.ByteArrayOutputStream()
     Console.withOut(stream) {
       print_formula(f)
     }
     stream.toString must equalTo(
       """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v)) /\""" +
-        """ (p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))""")
+        """ (p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))"""
+    )
   }
 
   "prop.p002" in {
@@ -51,8 +54,11 @@ class PropSpec extends SpecificationWithJUnit {
       And(
         Or(
           Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))),
-          Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))),
-        Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))))
+          Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))
+        ),
+        Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))
+      )
+    )
     val stream = new java.io.ByteArrayOutputStream()
     Console.withOut(stream) {
       print_formula(f)
@@ -60,7 +66,8 @@ class PropSpec extends SpecificationWithJUnit {
     stream.toString must equalTo(
       """((p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v)) \/ """ +
         """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))) /\ """ +
-        """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))""")
+        """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))"""
+    )
   }
 
   "prop.p003" in {
@@ -152,12 +159,15 @@ class PropSpec extends SpecificationWithJUnit {
   }
 
   "prop.035" in {
-    tautology(Iff(rawdnf("""(p \/ q /\ r) /\ (~p \/ ~r)"""),
-      """(p /\ ~p \/ (q /\ r) /\ ~p) \/ p /\ ~r \/ (q /\ r) /\ ~r""")) must equalTo(true)
+    tautology(Iff(
+      rawdnf("""(p \/ q /\ r) /\ (~p \/ ~r)"""),
+      """(p /\ ~p \/ (q /\ r) /\ ~p) \/ p /\ ~r \/ (q /\ r) /\ ~r"""
+    )) must equalTo(true)
   }
 
   "prop.038" in {
     purednf("""(p \/ q /\ r) /\ (~p \/ ~r)""").filter(!trivial(_)) must equalTo(
-      List(List(Atom("p"), Not(Atom("r"))), List(Atom("q"), Atom("r"), Not(Atom("p")))))
+      List(List(Atom("p"), Not(Atom("r"))), List(Atom("q"), Atom("r"), Not(Atom("p"))))
+    )
   }
 }

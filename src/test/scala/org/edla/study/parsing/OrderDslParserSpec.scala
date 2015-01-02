@@ -27,7 +27,8 @@ class OrderDslParserSpec extends SpecificationWithJUnit {
 
     "A PEG OrderDsl Parser" in (
       parseAccountSpec("""for account "A1234"""") ===
-      AccountSpec("A1234"))
+      AccountSpec("A1234")
+    )
 
     "Should accept order" in (
       parseOrder("""(100 IBM shares to buy at max 45, 40 Sun shares 
@@ -35,8 +36,12 @@ class OrderDslParserSpec extends SpecificationWithJUnit {
       for account "A1234"""") ===
       Order(
         Items(List(LineItem(SecuritySpec(100, "IBM"), BUY, PriceSpec(Some(MAX), 45)), LineItem(
-          SecuritySpec(40, "Sun"), SELL, PriceSpec(Some(MIN), 24)), LineItem(
-          SecuritySpec(25, "CISCO"), BUY, PriceSpec(Some(MAX), 56)))), AccountSpec("A1234")))
+          SecuritySpec(40, "Sun"), SELL, PriceSpec(Some(MIN), 24)
+        ), LineItem(
+          SecuritySpec(25, "CISCO"), BUY, PriceSpec(Some(MAX), 56)
+        ))), AccountSpec("A1234")
+      )
+    )
   }
 
   def parseAccountSpec(s: String): AccountSpec = {

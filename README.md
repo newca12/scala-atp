@@ -25,6 +25,6 @@ This project contain also a study about parsers and some code from :
 
 ### License ###
 © 2003-2007, John Harrison.   
-© 2012-2014, Olivier ROLAND.  
+© 2012-2015, Olivier ROLAND.  
 (See "LICENSE.txt" for details.)
 

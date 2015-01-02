@@ -38,7 +38,7 @@ SUCH DAMAGE.
 
 Converted to Scala
 
-Copyright (c) -2013-2014, Olivier ROLAND
+Copyright (c) 2013-2015, Olivier ROLAND
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,7 @@ notice, this list of conditions and the previous disclaimer.
 notice, this list of conditions and the previous disclaimer in the
 documentation and/or other materials provided with the distribution.
 
-* The name of Eric Taucher, Jack Pappas, or Anh-Dung Phan may not be 
-used to endorse or promote products derived from this software without 
-specific prior written permission of each person.
+* The name of Olivier ROLAND may not be used to endorse or promote 
+products derived from this software without specific prior written
+permission of each person.
 

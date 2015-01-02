@@ -16,8 +16,10 @@ object AST {
   case object BUY extends BuySell
   case object SELL extends BuySell
 
-  case class LineItem(ss: SecuritySpec,
-                      bs: BuySell, ps: PriceSpec)
+  case class LineItem(
+    ss: SecuritySpec,
+    bs: BuySell, ps: PriceSpec
+  )
 
   case class Items(lis: Seq[LineItem])
 
