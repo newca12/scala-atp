@@ -29,7 +29,7 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "2.2.3" % "test"
 )
 
-seq(CoverallsPlugin.singleProject: _*)
+//seq(CoverallsPlugin.singleProject: _*)
 
 // Uncomment the following line to use one-jar (https://github.com/sbt/sbt-onejar)
 //seq(com.github.retronym.SbtOneJar.oneJarSettings: _*)
