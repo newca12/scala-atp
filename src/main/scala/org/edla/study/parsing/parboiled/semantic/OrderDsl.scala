@@ -16,7 +16,7 @@ import org.edla.study.parsing.common.AST.SELL
 import org.edla.study.parsing.common.AST.SecuritySpec
 import org.parboiled2._
 
-class OrderDsl(val input: ParserInput) extends Parser {
+object OrderDsl extends SimpleParser {
 
   implicit def wspStr(s: String): Rule0 = rule {
     str(s) ~ WhiteSpace

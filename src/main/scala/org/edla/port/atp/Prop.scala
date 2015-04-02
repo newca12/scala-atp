@@ -6,21 +6,11 @@
 
 package org.edla.port.atp
 
-import scala.util.Failure
-import scala.util.Success
-import org.edla.port.atp.Formulas.And
-import org.edla.port.atp.Formulas.Atom
-import org.edla.port.atp.Formulas.False
-import org.edla.port.atp.Formulas.Formula
-import org.edla.port.atp.Formulas.Iff
-import org.edla.port.atp.Formulas.Imp
-import org.edla.port.atp.Formulas.Not
-import org.edla.port.atp.Formulas.Or
-import org.edla.port.atp.Formulas.True
-import org.edla.port.atp.Formulas.atom_union
+import scala.util.{ Failure, Success }
+
+import org.edla.port.atp.Formulas.{ And, Atom, False, Formula, Iff, Imp, Not, Or, True, atom_union }
 import org.edla.study.parsing.parboiled.PropositionalLogic
-import org.parboiled2.ParseError
-import org.parboiled2.ParserInput.apply
+import org.parboiled2._
 
 object Prop {
 
@@ -30,10 +20,9 @@ object Prop {
   // ------------------------------------------------------------------------- //
 
   def parse_prop_formula(s: String) = {
-    val parser = new PropositionalLogic(s)
-    val expr = parser.expr.run() match {
+    val expr = PropositionalLogic.expr.run(s) match {
       case Success(expr)          ⇒ expr
-      case Failure(e: ParseError) ⇒ sys.error(parser.formatError(e, showTraces = true))
+      case Failure(e: ParseError) ⇒ sys.error(e.format(s))
       case Failure(e)             ⇒ throw e
     }
     expr

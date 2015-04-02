@@ -4,29 +4,23 @@ organization := "org.edla"
 
 version := "0.1-SNAPSHOT"
 
-scalaVersion := "2.11.5"
+scalaVersion := "2.11.6"
 
-scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-optimize")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:postfixOps","-language:existentials","-language:implicitConversions")
 
 scalacOptions in (Compile, doc) ++= Seq("-diagrams","-implicits")
 
-//resolvers += "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository"
 resolvers += "edla repo" at "http://www.edla.org/snapshots"
-//specs2 https://groups.google.com/forum/#!searchin/specs2-users/scalaz-stream$20$3B0.5a/specs2-users/h7jtavNZc3M/8j4jZeIdG4gJ
-resolvers += "Scalaz Bintray Repo"  at "http://dl.bintray.com/scalaz/releases"
 
 libraryDependencies ++= Seq(
-  "at.logic" % "fol" % "1.0-SNAPSHOT",
-  "at.logic" % "ivy" % "1.0-SNAPSHOT",
+  "at.logic.gapt" %% "gapt" % "1.10-SNAPSHOT",
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.3",
   //workaround for ivy : impossible to get artifacts when data has not been loaded.
   //http://harrah.github.io/xsbt/latest/sxr/Ivy.scala.html
-  "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.3",
-  "org.parboiled" %% "parboiled" % "2.0.1",
-  "org.scala-lang"  %  "scala-reflect"    % "2.11.4"   % "provided",
-  "junit" % "junit" % "4.12" % "test",
-  "org.specs2" %% "specs2" % "2.4.15" % "test",
-  "org.scalatest" %% "scalatest" % "2.2.3" % "test"
+  //"org.scala-lang.modules" % "scala-xml_2.11" % "1.0.3",
+  "org.parboiled" %% "parboiled" % "2.2.0-SNAPSHOT",
+  "org.scalatest" %% "scalatest" % "2.2.4" % "test",
+  "com.twitter" % "util-core_2.11" % "6.23.0"
 )
 
 //seq(CoverallsPlugin.singleProject: _*)
