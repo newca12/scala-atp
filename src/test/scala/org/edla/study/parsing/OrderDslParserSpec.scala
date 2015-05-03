@@ -11,12 +11,12 @@ import org.scalatest.{ Finders, FunSuite }
 class OrderDslParserSpec extends FunSuite {
 
   test("A PEG OrderDsl Parser") {
-    parseAccountSpec("""for account "A1234"""") ===
-      AccountSpec("A1234")
+    assert(parseAccountSpec("""for account "A1234"""") ===
+      AccountSpec("A1234"))
   }
 
   test("Should accept order") {
-    parseOrder("""(100 IBM shares to buy at max 45, 40 Sun shares 
+    assert(parseOrder("""(100 IBM shares to buy at max 45, 40 Sun shares
       to sell at min 24, 25 CISCO shares to buy at max 56) 
       for account "A1234"""") ===
       Order(
@@ -25,7 +25,7 @@ class OrderDslParserSpec extends FunSuite {
         ), LineItem(
           SecuritySpec(25, "CISCO"), BUY, PriceSpec(Some(MAX), 56)
         ))), AccountSpec("A1234")
-      )
+      ))
   }
 
   def parseAccountSpec(s: String): AccountSpec = {
