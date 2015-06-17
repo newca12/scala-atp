@@ -6,21 +6,34 @@ version := "0.1-SNAPSHOT"
 
 scalaVersion := "2.11.6"
 
-scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:postfixOps","-language:existentials","-language:implicitConversions")
-
+scalacOptions ++= Seq(
+  "-language:postfixOps", "-language:existentials", "-language:implicitConversions",
+  //"-optimize",
+  "-deprecation",
+  "-encoding", "UTF-8", // yes, this is 2 args
+  "-feature",
+  "-unchecked",
+  "-Xfatal-warnings",
+  "-Xlint",
+  "-Yno-adapted-args",
+  "-Ywarn-numeric-widen",
+  "-Ywarn-value-discard",
+  "-Xfuture"
+)
 scalacOptions in (Compile, doc) ++= Seq("-diagrams","-implicits")
 
 resolvers += "edla repo" at "http://www.edla.org/snapshots"
 
 libraryDependencies ++= Seq(
   "at.logic.gapt" %% "gapt" % "1.10-SNAPSHOT",
-  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.3",
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
   //workaround for ivy : impossible to get artifacts when data has not been loaded.
   //http://harrah.github.io/xsbt/latest/sxr/Ivy.scala.html
-  //"org.scala-lang.modules" % "scala-xml_2.11" % "1.0.3",
+  //"org.scala-lang.modules" %% "scala-xml" % "1.0.4",
   "org.parboiled" %% "parboiled" % "2.2.0-SNAPSHOT",
-  "org.scalatest" %% "scalatest" % "2.2.4" % "test",
-  "com.twitter" % "util-core_2.11" % "6.23.0"
+  "com.lihaoyi" %% "fastparse" % "0.1.7",
+  "org.scalatest" %% "scalatest" % "2.2.5" % "test",
+  "com.twitter" % "util-core_2.11" % "6.24.0"
 )
 
 //seq(CoverallsPlugin.singleProject: _*)

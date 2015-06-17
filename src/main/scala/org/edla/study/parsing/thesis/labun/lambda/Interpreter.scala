@@ -5,8 +5,10 @@ object Interpreter {
   // API
   def eval(ast: Expr): Unit = {
 
-    try { (new Context) eval ast }
-    catch {
+    try {
+      (new Context) eval ast
+      ()
+    } catch {
       case e: Throwable ⇒
         val msg = e.getMessage
         println("eval error: " + (if (msg != null && msg != "") msg else e))

@@ -54,7 +54,7 @@ object PropositionalLogic extends RegexParsers {
   var varValues = mutable.Map[String, Boolean]()
 
   // process
-  def process(input: String) {
+  def process(input: String) = {
     println("input: " + input)
     varNames.clear
     varValues.clear
@@ -65,7 +65,7 @@ object PropositionalLogic extends RegexParsers {
     println()
   }
   // printTruthTable
-  def printTruthTable(tree: Expr, varNames: Array[String]) {
+  def printTruthTable(tree: Expr, varNames: Array[String]) = {
     val (varCount, resLabel, colSpace, resColSpace) =
       (varNames.length, "Result", " ", " ")
 
@@ -106,7 +106,7 @@ object PropositionalLogic extends RegexParsers {
     }
   }
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]) = {
     if (args.length > 0)
       process(args(0))
   }

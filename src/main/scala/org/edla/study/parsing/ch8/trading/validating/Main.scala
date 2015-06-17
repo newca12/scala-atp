@@ -4,7 +4,7 @@ package org.edla.study.parsing.ch8.trading.validating
 
 object Main {
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]) = {
     // val str = """settle trades for customer "chase" in "JPN" market of "ibm" internally with us at "a-345""""
     val str = """settle trades for broker "icici" in "JPN" market safekeep security internally with us at "us-123" settle cash externally at "BOJ" "b-954""""
 

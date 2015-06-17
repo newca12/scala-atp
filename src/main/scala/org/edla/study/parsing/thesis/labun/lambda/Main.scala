@@ -7,7 +7,7 @@ object Main extends App {
     catch { case e: Throwable ⇒ println("unexpected error: " + e.getMessage) }
   }
 
-  def process(input: String) {
+  def process(input: String) = {
     println("\nINPUT:\n" + input)
     (Parser parse input) match {
       case Right(ast) ⇒

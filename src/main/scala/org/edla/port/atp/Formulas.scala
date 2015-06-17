@@ -85,8 +85,8 @@ object Formulas {
     if (p) print(")")
   }
 
-  def print_formula(pfn: Formula) {
-    def print_formula_(pr: Int, fm: Formula) {
+  def print_formula(pfn: Formula) = {
+    def print_formula_(pr: Int, fm: Formula): Unit = {
       def print_prefix(newpr: Int)(sym: String, p: Formula) = {
         print(sym); print_formula_(newpr + 1, p)
       }

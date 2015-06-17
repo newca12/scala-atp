@@ -39,7 +39,7 @@ trait ASTBuilding {
 object Interpreter extends ArithParser with DirectEvaluation
 object Compiler extends ArithParser with ASTBuilding
 object Arith {
-  def main(args: Array[String]) {
+  def main(args: Array[String]) = {
     val arg = args.toList
     val parser: ArithParser = if (arg.head == "eval") {
       println("Now I'm interpreter!"); Interpreter
