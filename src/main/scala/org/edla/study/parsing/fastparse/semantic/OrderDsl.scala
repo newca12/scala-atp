@@ -3,9 +3,11 @@ package org.edla.study.parsing.fastparse.semantic
 import org.edla.study.parsing.common.AST.AccountSpec
 import org.edla.study.parsing.common.AST.BUY
 import org.edla.study.parsing.common.AST.BuySell
+import org.edla.study.parsing.common.AST.Items
 import org.edla.study.parsing.common.AST.LineItem
 import org.edla.study.parsing.common.AST.MAX
 import org.edla.study.parsing.common.AST.MIN
+import org.edla.study.parsing.common.AST.Order
 import org.edla.study.parsing.common.AST.PriceSpec
 import org.edla.study.parsing.common.AST.PriceType
 import org.edla.study.parsing.common.AST.SELL
@@ -23,7 +25,11 @@ object OrderDsl {
   val stringLit = P(space ~ "\"" ~! (strChars | escape).rep.! ~ "\"")
   val ident = P(CharsWhile(('a' to 'z') ++ ('A' to 'Z') contains (_)))
 
-  val line_item = P(security_spec ~ space ~ buy_sell ~ space ~ price_spec).map {
+  val order: Parser[Order] = P(items ~ space ~ account_spec).map { case (a: Items, b: AccountSpec) ⇒ Order(a, b) }
+
+  val items: Parser[Items] = P("(" ~ space ~ line_item.rep(sep = P(space ~ "," ~ space) ~!, end = space ~ ")")).map { case (a: Seq[LineItem]) ⇒ Items(a.toList) }
+
+  val line_item: Parser[LineItem] = P(security_spec ~ space ~ buy_sell ~ space ~ price_spec).map {
     case (a: SecuritySpec, b: BuySell, c: PriceSpec) ⇒ LineItem(a, b, c)
   }
 
@@ -36,7 +42,7 @@ object OrderDsl {
     case (a, b) ⇒ SecuritySpec(a.toInt, b)
   }
 
-  val price_spec = P("at" ~ space ~ min_max.? ~ space ~ digits.!).map {
+  val price_spec: Parser[PriceSpec] = P("at" ~ space ~ min_max.? ~ space ~ digits.!).map {
     case (a: Option[PriceType], b: String) ⇒ PriceSpec(a, b.toInt)
   }
 
@@ -44,5 +50,7 @@ object OrderDsl {
     case "min" ⇒ MIN
     case "max" ⇒ MAX
   }
+
+  val account_spec: Parser[AccountSpec] = P("for" ~ space ~ "account" ~ space ~ stringLit).map(AccountSpec)
 
 }
