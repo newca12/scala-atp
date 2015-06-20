@@ -19,6 +19,13 @@ import org.edla.study.parsing.common.AST.SELL
 import org.edla.study.parsing.common.AST.SecuritySpec
 
 object OrderDsl extends StandardTokenParsers {
+
+  def parse[T](parser: Parser[T], input: String): T =
+    phrase(parser)(new lexical.Scanner(input)) match {
+      case Success(ast, _) ⇒ ast
+      case e: NoSuccess    ⇒ sys.error("parser error: " + e.msg)
+    }
+
   lexical.reserved +=
     ("to", "buy", "sell", "min", "max", "for", "account", "shares", "at")
 

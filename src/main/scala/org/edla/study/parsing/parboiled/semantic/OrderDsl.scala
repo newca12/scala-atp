@@ -16,7 +16,25 @@ import org.edla.study.parsing.common.AST.SELL
 import org.edla.study.parsing.common.AST.SecuritySpec
 import org.parboiled2._
 
+import scala.util.{ Failure, Success }
+
 object OrderDsl extends SimpleParser {
+
+  def parseAccountSpec(s: String): AccountSpec = {
+    account_spec.run(s) match {
+      case Success(result)        ⇒ result
+      case Failure(e: ParseError) ⇒ sys.error(e.format(s, new ErrorFormatter(showTraces = true)))
+      case Failure(e)             ⇒ throw e
+    }
+  }
+
+  def parseOrder(s: String): Order = {
+    order.run(s) match {
+      case Success(result)        ⇒ result
+      case Failure(e: ParseError) ⇒ sys.error(e.format(s, new ErrorFormatter(showTraces = true)))
+      case Failure(e)             ⇒ throw e
+    }
+  }
 
   implicit def wspStr(s: String): Rule0 = rule {
     str(s) ~ WhiteSpace

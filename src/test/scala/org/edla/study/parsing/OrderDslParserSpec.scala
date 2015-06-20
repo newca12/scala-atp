@@ -1,17 +1,12 @@
 package org.edla.study.parsing
 
-import scala.util.{ Failure, Success }
-
+import org.edla.study.parsing.ch8.trading.semantic.OrderDsl
 import org.edla.study.parsing.common.AST.{ AccountSpec, BUY, Items, LineItem, MAX, MIN, Order, PriceSpec, SELL, SecuritySpec }
-import org.edla.study.parsing.parboiled.semantic.{ OrderDsl ⇒ OrderDslParboiled }
 import org.edla.study.parsing.fastparse.semantic.{ OrderDsl ⇒ OrderDslFastParse }
-import org.parboiled2.{ ErrorFormatter, ParseError }
-import org.parboiled2.ParserInput.apply
-import fastparse._
-import _root_.fastparse._
-import _root_.fastparse.core.Result
-import Result.{ Success ⇒ FastParseSuccess, Failure ⇒ FastParseFailure }
+import org.edla.study.parsing.parboiled.semantic.{ OrderDsl ⇒ OrderDslParboiled }
 import org.scalatest.{ Finders, FunSuite }
+
+import _root_.fastparse.core.Result
 
 class OrderDslParserSpec extends FunSuite {
 
@@ -31,6 +26,14 @@ class OrderDslParserSpec extends FunSuite {
     ))), AccountSpec("A1234")
   )
 
+  test("Scala Standard Parser Combinator AccountSpec Parser") {
+    assert(OrderDsl.parse(OrderDsl.account_spec, accountSample) === accountAST)
+  }
+
+  test("Scala Standard Parser Combinator Order Parser") {
+    assert(OrderDsl.parse(OrderDsl.order, orderSample) === orderAST)
+  }
+
   test("FastParse AccountSpec Parser") {
     val Result.Success(value, index) = OrderDslFastParse.account_spec.parse(accountSample)
     assert(value === accountAST)
@@ -42,28 +45,11 @@ class OrderDslParserSpec extends FunSuite {
   }
 
   test("Parboiled AccountSpec Parser") {
-    assert(parseAccountSpec(accountSample) === accountAST)
+    assert(OrderDslParboiled.parseAccountSpec(accountSample) === accountAST)
   }
 
   test("Parboiled Order Parser") {
-    assert(parseOrder(orderSample) === orderAST)
-
-  }
-
-  def parseAccountSpec(s: String): AccountSpec = {
-    OrderDslParboiled.account_spec.run(s) match {
-      case Success(result)        ⇒ result
-      case Failure(e: ParseError) ⇒ sys.error(e.format(s, new ErrorFormatter(showTraces = true)))
-      case Failure(e)             ⇒ throw e
-    }
-  }
-
-  def parseOrder(s: String): Order = {
-    OrderDslParboiled.order.run(s) match {
-      case Success(result)        ⇒ result
-      case Failure(e: ParseError) ⇒ sys.error(e.format(s, new ErrorFormatter(showTraces = true)))
-      case Failure(e)             ⇒ throw e
-    }
+    assert(OrderDslParboiled.parseOrder(orderSample) === orderAST)
   }
 
 }
