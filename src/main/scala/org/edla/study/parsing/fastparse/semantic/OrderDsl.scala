@@ -16,33 +16,39 @@ import fastparse._
 
 object OrderDsl {
 
-  val space = P(CharsWhile(" \n".contains(_)).?)
+  val White = WhitespaceApi.Wrapper {
+    import fastparse.all._
+    NoTrace(P(CharsWhile(" \n".contains(_)).?))
+  }
+  import fastparse.noApi._
+  import White._
+
   val digits = P(CharsWhile('0' to '9' contains (_)))
   val hexDigit = P(CharIn('0' to '9', 'a' to 'f', 'A' to 'F'))
   val unicodeEscape = P("u" ~ hexDigit ~ hexDigit ~ hexDigit ~ hexDigit)
   val escape = P("\\" ~ (CharIn("\"/\\bfnrt") | unicodeEscape))
   val strChars = P(CharsWhile(!"\"\\".contains(_)))
-  val stringLit = P(space ~ "\"" ~! (strChars | escape).rep.! ~ "\"")
+  val stringLit = P("\"" ~! (strChars | escape).rep.! ~ "\"")
   val ident = P(CharsWhile(('a' to 'z') ++ ('A' to 'Z') contains (_)))
 
-  val order: Parser[Order] = P(items ~ space ~ account_spec).map { case (a: Items, b: AccountSpec) ⇒ Order(a, b) }
+  val order: Parser[Order] = P(items ~ account_spec).map { case (a: Items, b: AccountSpec) ⇒ Order(a, b) }
 
-  val items: Parser[Items] = P("(" ~ space ~ line_item.rep(sep = P(space ~ "," ~ space) ~!, end = space ~ ")")).map { case (a: Seq[LineItem]) ⇒ Items(a.toList) }
+  val items: Parser[Items] = P("(" ~ line_item.rep(sep = "," ~!) ~ ")").map { case (a: Seq[LineItem]) ⇒ Items(a.toList) }
 
-  val line_item: Parser[LineItem] = P(security_spec ~ space ~ buy_sell ~ space ~ price_spec).map {
+  val line_item: Parser[LineItem] = P(security_spec ~ buy_sell ~ price_spec).map {
     case (a: SecuritySpec, b: BuySell, c: PriceSpec) ⇒ LineItem(a, b, c)
   }
 
-  val buy_sell: Parser[BuySell] = P("to" ~ space ~ ("buy".! | "sell".!)).map {
+  val buy_sell: Parser[BuySell] = P("to" ~ ("buy".! | "sell".!)).map {
     case "buy"  ⇒ BUY
     case "sell" ⇒ SELL
   }
 
-  val security_spec: Parser[SecuritySpec] = P(digits.! ~ space ~ ident.! ~ space ~ "shares").map {
+  val security_spec: Parser[SecuritySpec] = P(digits.! ~ ident.! ~ "shares").map {
     case (a, b) ⇒ SecuritySpec(a.toInt, b)
   }
 
-  val price_spec: Parser[PriceSpec] = P("at" ~ space ~ min_max.? ~ space ~ digits.!).map {
+  val price_spec: Parser[PriceSpec] = P("at" ~ min_max.? ~ digits.!).map {
     case (a: Option[PriceType], b: String) ⇒ PriceSpec(a, b.toInt)
   }
 
@@ -51,6 +57,6 @@ object OrderDsl {
     case "max" ⇒ MAX
   }
 
-  val account_spec: Parser[AccountSpec] = P("for" ~ space ~ "account" ~ space ~ stringLit).map(AccountSpec)
+  val account_spec: Parser[AccountSpec] = P("for" ~ "account" ~ stringLit).map(AccountSpec)
 
 }
