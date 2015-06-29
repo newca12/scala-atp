@@ -33,7 +33,7 @@ object OrderDsl {
 
   val order: Parser[Order] = P(items ~ account_spec).map { case (a: Items, b: AccountSpec) ⇒ Order(a, b) }
 
-  val items: Parser[Items] = P("(" ~ line_item.rep(sep = "," ~!) ~ ")").map { case (a: Seq[LineItem]) ⇒ Items(a.toList) }
+  val items: Parser[Items] = P("(" ~ line_item.rep(sep = ",") ~ ")").map { case (a: Seq[LineItem]) ⇒ Items(a.toList) }
 
   val line_item: Parser[LineItem] = P(security_spec ~ buy_sell ~ price_spec).map {
     case (a: SecuritySpec, b: BuySell, c: PriceSpec) ⇒ LineItem(a, b, c)
