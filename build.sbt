@@ -31,7 +31,7 @@ libraryDependencies ++= Seq(
   //http://harrah.github.io/xsbt/latest/sxr/Ivy.scala.html
   //"org.scala-lang.modules" %% "scala-xml" % "1.0.4",
   "org.parboiled" %% "parboiled" % "2.2.0-SNAPSHOT",
-  "com.lihaoyi" %% "fastparse" % "0.2.1",
+  "com.lihaoyi" %% "fastparse" % "0.3.4",
   "org.scalatest" %% "scalatest" % "2.2.5" % "test",
   "com.twitter" % "util-core_2.11" % "6.24.0"
 )

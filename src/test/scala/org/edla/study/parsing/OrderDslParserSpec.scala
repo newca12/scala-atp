@@ -6,7 +6,7 @@ import org.edla.study.parsing.fastparse.semantic.{ OrderDsl ⇒ OrderDslFastPars
 import org.edla.study.parsing.parboiled.semantic.{ OrderDsl ⇒ OrderDslParboiled }
 import org.scalatest.{ Finders, FunSuite }
 
-import _root_.fastparse.core.Result
+import _root_.fastparse.core.Parsed
 
 class OrderDslParserSpec extends FunSuite {
 
@@ -35,12 +35,12 @@ class OrderDslParserSpec extends FunSuite {
   }
 
   test("FastParse AccountSpec Parser") {
-    val Result.Success(value, index) = OrderDslFastParse.account_spec.parse(accountSample)
+    val Parsed.Success(value, index) = OrderDslFastParse.account_spec.parse(accountSample)
     assert(value === accountAST)
   }
 
   test("FastParse Order Parser") {
-    val Result.Success(value, index) = OrderDslFastParse.order.parse(orderSample)
+    val Parsed.Success(value, index) = OrderDslFastParse.order.parse(orderSample)
     assert(value === orderAST)
   }
 
