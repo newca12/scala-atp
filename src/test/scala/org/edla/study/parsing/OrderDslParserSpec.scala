@@ -5,8 +5,9 @@ import org.edla.study.parsing.common.AST.{ AccountSpec, BUY, Items, LineItem, MA
 import org.edla.study.parsing.fastparse.semantic.{ OrderDsl ⇒ OrderDslFastParse }
 import org.edla.study.parsing.parboiled.semantic.{ OrderDsl ⇒ OrderDslParboiled }
 import org.scalatest.{ Finders, FunSuite }
-
 import _root_.fastparse.core.Parsed
+
+import scala.util.Success
 
 class OrderDslParserSpec extends FunSuite {
 
@@ -45,11 +46,11 @@ class OrderDslParserSpec extends FunSuite {
   }
 
   test("Parboiled AccountSpec Parser") {
-    assert(OrderDslParboiled.parseAccountSpec(accountSample) === accountAST)
+    assert(OrderDslParboiled(accountSample).account_spec.run() === Success(accountAST))
   }
 
   test("Parboiled Order Parser") {
-    assert(OrderDslParboiled.parseOrder(orderSample) === orderAST)
+    assert(OrderDslParboiled(orderSample).order.run() === Success(orderAST))
   }
 
 }

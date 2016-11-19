@@ -1,8 +1,10 @@
 import scalariform.formatter.preferences._
+import com.typesafe.sbt.SbtScalariform
+import com.typesafe.sbt.SbtScalariform.ScalariformKeys
 
-scalariformSettings
+SbtScalariform.scalariformSettings
 
-ScalariformKeys.preferences := FormattingPreferences()
+ScalariformKeys.preferences := ScalariformKeys.preferences.value
 .setPreference(RewriteArrowSymbols, true)
 .setPreference(AlignParameters, true)
 .setPreference(AlignSingleLineCaseStatements, true)

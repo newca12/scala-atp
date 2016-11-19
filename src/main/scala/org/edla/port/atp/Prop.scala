@@ -7,10 +7,10 @@
 package org.edla.port.atp
 
 import scala.util.{ Failure, Success }
-
 import org.edla.port.atp.Formulas.{ And, Atom, False, Formula, Iff, Imp, Not, Or, True, atom_union }
 import org.edla.study.parsing.parboiled.PropositionalLogic
-import org.parboiled2._
+import org.parboiled2.{ ErrorFormatter, ParseError }
+import org.parboiled2.ParserInput.apply
 
 object Prop {
 
@@ -20,9 +20,10 @@ object Prop {
   // ------------------------------------------------------------------------- //
 
   def parse_prop_formula(s: String) = {
-    val expr = PropositionalLogic.expr.run(s) match {
+    val parser = new PropositionalLogic(s)
+    val expr = parser.expr.run() match {
       case Success(expr)          ⇒ expr
-      case Failure(e: ParseError) ⇒ sys.error(e.format(s))
+      case Failure(e: ParseError) ⇒ sys.error(parser.formatError(e, new ErrorFormatter(showTraces = true)))
       case Failure(e)             ⇒ throw e
     }
     expr

@@ -38,7 +38,7 @@ SUCH DAMAGE.
 
 Converted to Scala
 
-Copyright (c) 2013-2015, Olivier ROLAND
+Copyright (c) 2013-2016, Olivier ROLAND
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

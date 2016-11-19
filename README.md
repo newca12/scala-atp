@@ -17,6 +17,8 @@ This is a very convenient way to play with Scala
 All examples will be available in the [worksheets directory](https://github.com/newca12/scala-atp/tree/master/worksheets)  
 The `worksheets` folder contains `*.sc` scripts corresponding to the original OCaml files. Within each `*.sc` file, examples appear in the same order as in the book; we have added a comment to each example with its page number in the book to make cross-referencing easier.
 
+> `*.sc` files can also be open with IntelliJ worksheet but a bit less conveniently
+
 ### Notes ###
 We kept the file names of the original mostly intact, though use Scala naming conventions.  
 This project contain also a study about parsers and some code from :  
@@ -25,6 +27,6 @@ This project contain also a study about parsers and some code from :
 
 ### License ###
 © 2003-2007, John Harrison.   
-© 2012-2015, Olivier ROLAND.  
+© 2012-2016, Olivier ROLAND.  
 (See "LICENSE.txt" for details.)
 

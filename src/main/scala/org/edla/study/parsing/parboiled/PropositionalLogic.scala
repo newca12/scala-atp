@@ -5,7 +5,11 @@ import scala.language.implicitConversions
 import org.edla.port.atp.Formulas._
 import org.parboiled2._
 
-object PropositionalLogic extends SimpleParser {
+object PropositionalLogic {
+  def apply(input: String) = new PropositionalLogic(input)
+}
+
+class PropositionalLogic(val input: ParserInput) extends Parser {
 
   implicit def wspStr(s: String): Rule0 = rule {
     str(s) ~ zeroOrMore(WhiteSpaceChar)
