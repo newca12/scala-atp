@@ -26,7 +26,7 @@ object OrderDsl extends StandardTokenParsers {
     numericLit ~ (ident <~ "shares")
 
   lazy val price_spec =
-    "at" ~> (min_max?) ~ numericLit
+    "at" ~> (min_max ?) ~ numericLit
 
   lazy val min_max =
     "min" | "max"

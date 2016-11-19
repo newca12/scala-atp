@@ -38,20 +38,18 @@ object OrderDsl extends StandardTokenParsers {
     "(" ~> rep1sep(line_item, ",") <~ ")" ^^ Items
 
   lazy val line_item: Parser[LineItem] =
-    security_spec ~ buy_sell ~ price_spec ^^
-      { case s ~ b ~ p ⇒ LineItem(s, b, p) }
+    security_spec ~ buy_sell ~ price_spec ^^ { case s ~ b ~ p ⇒ LineItem(s, b, p) }
 
   lazy val buy_sell: Parser[BuySell] =
     "to" ~> ("buy" ^^^ BUY | "sell" ^^^ SELL)
 
   lazy val security_spec: Parser[SecuritySpec] =
-    numericLit ~ (ident <~ "shares") ^^
-      { case n ~ s ⇒ SecuritySpec(n.toInt, s) }
+    numericLit ~ (ident <~ "shares") ^^ { case n ~ s ⇒ SecuritySpec(n.toInt, s) }
 
   lazy val price_spec: Parser[PriceSpec] =
-    "at" ~> (min_max?) ~ numericLit ^?
+    "at" ~> (min_max ?) ~ numericLit ^?
       ({ case m ~ p if p.toInt > 20 ⇒ PriceSpec(m, p.toInt) },
-        (m ⇒ "price needs to be > 20"))
+      (m ⇒ "price needs to be > 20"))
 
   lazy val min_max: Parser[PriceType] =
     "min" ^^^ MIN | "max" ^^^ MAX

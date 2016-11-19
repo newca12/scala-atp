@@ -23,13 +23,13 @@ object OrderDsl {
   import fastparse.noApi._
   import White._
 
-  val digits = P(CharsWhile('0' to '9' contains (_)))
-  val hexDigit = P(CharIn('0' to '9', 'a' to 'f', 'A' to 'F'))
+  val digits        = P(CharsWhile('0' to '9' contains (_)))
+  val hexDigit      = P(CharIn('0' to '9', 'a' to 'f', 'A' to 'F'))
   val unicodeEscape = P("u" ~ hexDigit ~ hexDigit ~ hexDigit ~ hexDigit)
-  val escape = P("\\" ~ (CharIn("\"/\\bfnrt") | unicodeEscape))
-  val strChars = P(CharsWhile(!"\"\\".contains(_)))
-  val stringLit = P("\"" ~/ (strChars | escape).rep.! ~ "\"")
-  val ident = P(CharsWhile(('a' to 'z') ++ ('A' to 'Z') contains (_)))
+  val escape        = P("\\" ~ (CharIn("\"/\\bfnrt") | unicodeEscape))
+  val strChars      = P(CharsWhile(!"\"\\".contains(_)))
+  val stringLit     = P("\"" ~/ (strChars | escape).rep.! ~ "\"")
+  val ident         = P(CharsWhile(('a' to 'z') ++ ('A' to 'Z') contains (_)))
 
   val order: Parser[Order] = P(items ~ account_spec).map { case (a: Items, b: AccountSpec) ⇒ Order(a, b) }
 

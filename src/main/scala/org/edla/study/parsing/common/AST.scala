@@ -13,12 +13,13 @@ object AST {
   case class SecuritySpec(qty: Int, security: String)
 
   trait BuySell
-  case object BUY extends BuySell
+  case object BUY  extends BuySell
   case object SELL extends BuySell
 
   case class LineItem(
-    ss: SecuritySpec,
-    bs: BuySell, ps: PriceSpec
+      ss: SecuritySpec,
+      bs: BuySell,
+      ps: PriceSpec
   )
 
   case class Items(lis: Seq[LineItem])

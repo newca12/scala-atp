@@ -28,8 +28,8 @@ object Intro extends StandardTokenParsers with PackratParsers {
   lexical.delimiters ++= List("+", "*", "(", ")")
 
   abstract class Expression
-  case class Var(n: String) extends Expression
-  case class Const(v: Int) extends Expression
+  case class Var(n: String)                    extends Expression
+  case class Const(v: Int)                     extends Expression
   case class Add(l: Expression, r: Expression) extends Expression
   case class Mul(l: Expression, r: Expression) extends Expression
 
@@ -63,9 +63,13 @@ object Intro extends StandardTokenParsers with PackratParsers {
 
   lazy val atom: PackratParser[Expression] = "(" ~> expression <~ ")" | constant | variable
 
-  lazy val constant = numericLit ^^ { s ⇒ Const(s.toInt) }
+  lazy val constant = numericLit ^^ { s ⇒
+    Const(s.toInt)
+  }
 
-  lazy val variable = ident ^^ { s ⇒ Var(s.toString) }
+  lazy val variable = ident ^^ { s ⇒
+    Var(s.toString)
+  }
 
   def parse(s: String): ParseResult[Expression] = {
     val tokens = new lexical.Scanner(s)

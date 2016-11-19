@@ -5,8 +5,7 @@ package org.edla.study.parsing.ch8.trading.ssi
 import language.postfixOps
 import scala.util.parsing.combinator._
 
-object SSI_Dsl extends JavaTokenParsers
-    with PackratParsers {
+object SSI_Dsl extends JavaTokenParsers with PackratParsers {
 
   import SSI_AST._
 
@@ -17,10 +16,10 @@ object SSI_Dsl extends JavaTokenParsers
     "settle" ~> "trades" ~> trade_type_spec ~ settlement_spec ^^ { case (t ~ s) ⇒ StandingRule(t, s) }
 
   lazy val trade_type_spec: PackratParser[TradeTypeRule] =
-    trade_type_spec ~ ("in" ~> market <~ "market") ^^ { case (t ~ m) ⇒ t.copy(mkt = Some(m)) } |
-      trade_type_spec ~ ("of" ~> security) ^^ { case (t ~ s) ⇒ t.copy(sec = Some(s)) } |
+    trade_type_spec ~ ("in" ~> market <~ "market") ^^ { case (t ~ m)     ⇒ t.copy(mkt = Some(m)) } |
+      trade_type_spec ~ ("of" ~> security) ^^ { case (t ~ s)             ⇒ t.copy(sec = Some(s)) } |
       trade_type_spec ~ ("on" ~> "account" ~> account) ^^ { case (t ~ a) ⇒ t.copy(tradingAccount = Some(a)) } |
-      "for" ~> counterparty_spec ^^ { case c ⇒ TradeTypeRule(c, None, None, None) }
+      "for" ~> counterparty_spec ^^ { case c                             ⇒ TradeTypeRule(c, None, None, None) }
 
   lazy val counterparty_spec: Parser[CounterpartyRule] =
     "customer" ~> customer ^^ Customer |
@@ -53,12 +52,12 @@ object SSI_Dsl extends JavaTokenParsers
   lazy val settle_internal_spec: Parser[SettlementModeRule] =
     "internally" ~> "with" ~> "us" ~> "at" ~> account ^^ SettleInternal
 
-  lazy val market = not(keyword) ~> stringLiteral
+  lazy val market   = not(keyword) ~> stringLiteral
   lazy val security = not(keyword) ~> stringLiteral
   lazy val customer = not(keyword) ~> stringLiteral
-  lazy val broker = not(keyword) ~> stringLiteral
-  lazy val account = not(keyword) ~> stringLiteral
-  lazy val bank = not(keyword) ~> stringLiteral
+  lazy val broker   = not(keyword) ~> stringLiteral
+  lazy val account  = not(keyword) ~> stringLiteral
+  lazy val bank     = not(keyword) ~> stringLiteral
 
   lazy val keyword =
     "at" | "us" | "of" | "on" | "in" | "and" | "with" |

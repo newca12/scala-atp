@@ -48,7 +48,10 @@ class PropositionalLogic(val input: ParserInput) extends Parser {
 
   def PFalse: Rule1[Formula] = rule { "false" ~ push(False) }
 
-  def id = rule { capture(oneOrMore("a" - "z" | "A" - "Z" | "'")) ~ optional(WhiteSpace) ~> (_.toString.replaceAll("""(?m)\s+$""", "")) }
+  def id = rule {
+    capture(oneOrMore("a" - "z" | "A" - "Z" | "'")) ~ optional(WhiteSpace) ~> (_.toString.replaceAll("""(?m)\s+$""",
+                                                                                                     ""))
+  }
 
   def numericLit = rule { capture(oneOrMore("0" - "9")) ~ optional(WhiteSpace) ~> (_.toInt) }
 

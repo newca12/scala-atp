@@ -3,8 +3,7 @@ package org.edla.study.parsing.thesis.labun.lambda
 object Main extends App {
 
   for (a ← args) {
-    try { process(a) }
-    catch { case e: Throwable ⇒ println("unexpected error: " + e.getMessage) }
+    try { process(a) } catch { case e: Throwable ⇒ println("unexpected error: " + e.getMessage) }
   }
 
   def process(input: String) = {

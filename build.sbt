@@ -7,26 +7,33 @@ version := "0.1-SNAPSHOT"
 scalaVersion := "2.12.0"
 
 scalacOptions ++= Seq(
-  "-language:postfixOps", "-language:existentials", "-language:implicitConversions",
+  "-language:postfixOps",
+  "-language:existentials",
+  "-language:implicitConversions",
   //"-optimize",
   "-deprecation",
-  "-encoding", "UTF-8", // yes, this is 2 args
+  "-encoding",
+  "UTF-8", // yes, this is 2 args
   "-feature",
   "-unchecked",
   "-Xfatal-warnings",
+  "-Xfuture",
   "-Xlint:-nullary-unit", //-nullary-unit required for IntelliJ worksheet
   "-Yno-adapted-args",
+  "-Ywarn-dead-code",
   "-Ywarn-numeric-widen",
-  "-Ywarn-value-discard",
-  "-Xfuture"
+  "-Ywarn-value-discard"
 )
-scalacOptions in (Compile, doc) ++= Seq("-diagrams","-implicits")
+
+scalacOptions in (Compile, doc) ++= Seq("-diagrams", "-implicits")
+
+scalafmtConfig in ThisBuild := Some(file(".scalafmt.conf"))
 
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
-  "org.parboiled" %% "parboiled" % "2.1.3",
-  "com.lihaoyi" %% "fastparse" % "0.4.2",
-  "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+  "org.parboiled"          %% "parboiled"                % "2.1.3",
+  "com.lihaoyi"            %% "fastparse"                % "0.4.2",
+  "org.scalatest"          %% "scalatest"                % "3.0.1" % "test"
 )
 
 //seq(CoverallsPlugin.singleProject: _*)

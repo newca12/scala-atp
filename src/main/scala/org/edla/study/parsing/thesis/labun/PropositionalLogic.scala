@@ -5,32 +5,33 @@ import collection._
 
 object PropositionalLogic extends RegexParsers {
   // Parser
-  def expr = xor
-  def xor = rep1sep(equiv, "^") ^^ { _.reduceLeft(Xor) }
+  def expr  = xor
+  def xor   = rep1sep(equiv, "^") ^^ { _.reduceLeft(Xor) }
   def equiv = rep1sep(impl, "<->") ^^ { _.reduceLeft(Equiv) }
-  def impl = rep1sep(or, "->") ^^ { _.reduceRight(Impl) } // right-associative
-  def or = rep1sep(and, "|") ^^ { _.reduceLeft(Or) } // via right folding
-  def and = rep1sep(not, "&") ^^ { _.reduceLeft(And) }
+  def impl  = rep1sep(or, "->") ^^ { _.reduceRight(Impl) } // right-associative
+  def or    = rep1sep(and, "|") ^^ { _.reduceLeft(Or) } // via right folding
+  def and   = rep1sep(not, "&") ^^ { _.reduceLeft(And) }
   def not = opt("!") ~ atom ^^ {
     case Some(_) ~ x ⇒ Not(x)
     case _ ~ x       ⇒ x
   }
   //recursive method expr needs result type
-  def atom: Parser[Expr] = (const ^^ Const
-    | id ^^ Id
-    | "(" ~> expr <~ ")"
-    | "[" ~> expr <~ "]")
+  def atom: Parser[Expr] =
+    (const ^^ Const
+      | id ^^ Id
+      | "(" ~> expr <~ ")"
+      | "[" ~> expr <~ "]")
   def const = "T" | "F"
-  def id = """[a-z]\w*""".r
+  def id    = """[a-z]\w*""".r
 
   // AST
   sealed abstract class Expr
-  case class Xor(l: Expr, r: Expr) extends Expr
+  case class Xor(l: Expr, r: Expr)   extends Expr
   case class Equiv(l: Expr, r: Expr) extends Expr
-  case class Impl(l: Expr, r: Expr) extends Expr
-  case class Or(l: Expr, r: Expr) extends Expr
-  case class And(l: Expr, r: Expr) extends Expr
-  case class Not(v: Expr) extends Expr
+  case class Impl(l: Expr, r: Expr)  extends Expr
+  case class Or(l: Expr, r: Expr)    extends Expr
+  case class And(l: Expr, r: Expr)   extends Expr
+  case class Not(v: Expr)            extends Expr
   case class Const(name: String) extends Expr {
     override def toString = name
   }
@@ -87,12 +88,12 @@ object PropositionalLogic extends RegexParsers {
 
     // helper functions
     /**
-     * Returns the Boolean value <code>v</code> printed as "0" or "1"
-     *
-     *
-     *
-     * in the middle of a String of length <code>w</code >.
-     */
+      * Returns the Boolean value <code>v</code> printed as "0" or "1"
+      *
+      *
+      *
+      * in the middle of a String of length <code>w</code >.
+      */
     def centered(v: Boolean, w: Int) = {
       val spaceBefore = (w - 1) / 2; val spaceAfter = w - spaceBefore - 1
       /*val buf = new StringBuilder;

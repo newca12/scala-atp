@@ -20,18 +20,18 @@ object Parser extends StandardTokenParsers with ImplicitConversions {
 
   type P[+T] = Parser[T] // alias for brevity
 
-  def program = rep1sep(expr, ";") <~ opt(";") ^^ Sequence
+  def program       = rep1sep(expr, ";") <~ opt(";") ^^ Sequence
   def expr: P[Expr] = lambda | ifExpr | assign | operations
 
-  def lambda = ("\\" ~> repsep(ident, ",")) ~ ("=>" ~> expr) ^^ Lambda
-  def ifExpr = ("if" ~> expr) ~ ("then" ~> expr) ~ ("else" ~> expr) ^^ IfExpr
-  def assign = ident ~ ("=" ~> expr) ^^ Assign
+  def lambda     = ("\\" ~> repsep(ident, ",")) ~ ("=>" ~> expr) ^^ Lambda
+  def ifExpr     = ("if" ~> expr) ~ ("then" ~> expr) ~ ("else" ~> expr) ^^ IfExpr
+  def assign     = ident ~ ("=" ~> expr) ^^ Assign
   def operations = infixOps
 
   def infixOps = equality
   def equality = sum * ("==" ^^^ Equal)
-  def sum = product * ("+" ^^^ Add | "-" ^^^ Sub)
-  def product = postfixOps * ("*" ^^^ Mul | "/" ^^^ Div)
+  def sum      = product * ("+" ^^^ Add | "-" ^^^ Sub)
+  def product  = postfixOps * ("*" ^^^ Mul | "/" ^^^ Div)
 
   def postfixOps = application
 
@@ -39,10 +39,12 @@ object Parser extends StandardTokenParsers with ImplicitConversions {
 
   def argList = "(" ~> repsep(expr, ",") <~ ")" | simpleExpr ^^ { List(_) }
 
-  def simpleExpr = (ident ^^ Var
-    | numericLit ^^ { x ⇒ Lit(x.toInt) }
-    | stringLit ^^ Lit
-    | "(" ~> expr <~ ")"
-    | failure("Expression expected"))
+  def simpleExpr =
+    (ident ^^ Var
+      | numericLit ^^ { x ⇒
+        Lit(x.toInt)
+      }
+      | stringLit ^^ Lit
+      | "(" ~> expr <~ ")"
+      | failure("Expression expected"))
 }
-

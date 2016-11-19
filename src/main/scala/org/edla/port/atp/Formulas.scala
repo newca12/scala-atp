@@ -8,7 +8,9 @@ package org.edla.port.atp
 
 object Formulas {
 
-  implicit def atomOrdering: Ordering[Atom] = new Ordering[Atom] { def compare(a: Atom, b: Atom) = a.name compare b.name }
+  implicit def atomOrdering: Ordering[Atom] = new Ordering[Atom] {
+    def compare(a: Atom, b: Atom) = a.name compare b.name
+  }
 
   sealed abstract class Prop
   case class P(pname: String) extends Prop
@@ -23,12 +25,12 @@ object Formulas {
     }
   }
 
-  case object False extends Formula
-  case object True extends Formula
-  case class Atom(name: String) extends Formula
-  case class Not(v: Formula) extends Formula
+  case object False                      extends Formula
+  case object True                       extends Formula
+  case class Atom(name: String)          extends Formula
+  case class Not(v: Formula)             extends Formula
   case class And(l: Formula, r: Formula) extends Formula
-  case class Or(l: Formula, r: Formula) extends Formula
+  case class Or(l: Formula, r: Formula)  extends Formula
   case class Imp(l: Formula, r: Formula) extends Formula
   case class Iff(l: Formula, r: Formula) extends Formula
 
@@ -69,7 +71,7 @@ object Formulas {
   // pg. 32
   // ------------------------------------------------------------------------- //
   // Special case of a union of the results of a function over the atoms.      //
-  // ------------------------------------------------------------------------- //  
+  // ------------------------------------------------------------------------- //
 
   def atom_union(f: Atom ⇒ List[Atom], fm: Formula) = overatoms(f, fm, Nil).toSet.toList.sorted
 

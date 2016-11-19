@@ -6,10 +6,10 @@
 
 package org.edla.port.atp
 
-import scala.util.{ Failure, Success }
-import org.edla.port.atp.Formulas.{ And, Atom, False, Formula, Iff, Imp, Not, Or, True, atom_union }
+import scala.util.{Failure, Success}
+import org.edla.port.atp.Formulas.{And, Atom, False, Formula, Iff, Imp, Not, Or, True, atom_union}
 import org.edla.study.parsing.parboiled.PropositionalLogic
-import org.parboiled2.{ ErrorFormatter, ParseError }
+import org.parboiled2.{ErrorFormatter, ParseError}
 import org.parboiled2.ParserInput.apply
 
 object Prop {
@@ -57,7 +57,7 @@ object Prop {
   // pg. 35
   // ------------------------------------------------------------------------- //
   // Code to print out truth tables.                                           //
-  // ------------------------------------------------------------------------- // 
+  // ------------------------------------------------------------------------- //
 
   def onallvaluations(subfn: (String ⇒ Boolean) ⇒ Boolean, v: String ⇒ Boolean, ats: List[String]): Boolean = {
     ats match {
@@ -70,14 +70,14 @@ object Prop {
   }
 
   def print_truthtable(fm: Formula): Unit = {
-    val ats = atoms(fm)
-    val width = ats.foldRight(0)((x, y) ⇒ Math.max(x.length, y)) + 5 + 1
-    def fixw(s: String) = s"""${s}${" " * (width - s.length)}"""
-    def truthstring(p: Boolean) = fixw(if (p) "true" else "false")
-    def lis(v: String ⇒ Boolean) = ats.map(x ⇒ truthstring(v(x)))
-    def ans(v: String ⇒ Boolean) = truthstring(eval(fm)(v))
+    val ats                         = atoms(fm)
+    val width                       = ats.foldRight(0)((x, y) ⇒ Math.max(x.length, y)) + 5 + 1
+    def fixw(s: String)             = s"""${s}${" " * (width - s.length)}"""
+    def truthstring(p: Boolean)     = fixw(if (p) "true" else "false")
+    def lis(v: String ⇒ Boolean)    = ats.map(x ⇒ truthstring(v(x)))
+    def ans(v: String ⇒ Boolean)    = truthstring(eval(fm)(v))
     def mk_row(v: String ⇒ Boolean) = { println(lis(v).foldRight("| " + ans(v))((x, y) ⇒ x + y)); true }
-    val separator = "-" * (width * ats.length + 9)
+    val separator                   = "-" * (width * ats.length + 9)
     println(ats.foldRight("| formula")((x, y) ⇒ fixw(x) + y))
     println(separator)
     onallvaluations(mk_row, (s: String) ⇒ false, ats)
@@ -89,7 +89,7 @@ object Prop {
   // Recognizing tautologies.                                                  //
   // ------------------------------------------------------------------------- //
 
-  def tautology(fm: Formula) = onallvaluations(eval(fm)_, (s: String) ⇒ false, atoms(fm))
+  def tautology(fm: Formula) = onallvaluations(eval(fm) _, (s: String) ⇒ false, atoms(fm))
 
   // pg. 48
   // ------------------------------------------------------------------------- //
@@ -171,7 +171,7 @@ object Prop {
   // pg. 52
   // ------------------------------------------------------------------------- //
   // Negation normal form.                                                     //
-  // ------------------------------------------------------------------------- //  
+  // ------------------------------------------------------------------------- //
 
   // NOTE: Changed name from nnf to nenfOrig to avoid Scala compiler error.
   def nnfOrig(fm: Formula): Formula = {
@@ -192,7 +192,7 @@ object Prop {
   // pg. 52
   // ------------------------------------------------------------------------- //
   // Roll in simplification.                                                   //
-  // ------------------------------------------------------------------------- //  
+  // ------------------------------------------------------------------------- //
 
   def nnf(fm: Formula): Formula = nnfOrig(psimplify(fm))
 
@@ -249,7 +249,7 @@ object Prop {
     fm match {
       case And(p, q) ⇒ distrib(And(rawdnf(p), rawdnf(q)))
       case Or(p, q)  ⇒ Or(rawdnf(p), rawdnf(q))
-      case _         ⇒ fm; ;
+      case _         ⇒ fm;;
     }
   }
 
@@ -275,7 +275,7 @@ object Prop {
   // pg. 59
   // ------------------------------------------------------------------------- //
   // Filtering out trivial disjuncts (in this guise, contradictory).           //
-  // ------------------------------------------------------------------------- // 
+  // ------------------------------------------------------------------------- //
 
   def trivial(lits: List[Formula]): Boolean = {
     val (pos, neg) = lits.partition(positive(_))
