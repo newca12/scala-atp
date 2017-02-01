@@ -4,7 +4,7 @@ organization := "org.edla"
 
 version := "0.1-SNAPSHOT"
 
-scalaVersion := "2.12.0"
+scalaVersion := "2.12.1"
 
 scalacOptions ++= Seq(
   "-language:postfixOps",
@@ -27,13 +27,12 @@ scalacOptions ++= Seq(
 
 scalacOptions in (Compile, doc) ++= Seq("-diagrams", "-implicits")
 
-scalafmtConfig in ThisBuild := Some(file(".scalafmt.conf"))
-
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
-  "org.parboiled"          %% "parboiled"                % "2.1.3",
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5",
+  "org.parboiled"          %% "parboiled"                % "2.1.4",
   "com.lihaoyi"            %% "fastparse"                % "0.4.2",
-  "org.scalatest"          %% "scalatest"                % "3.0.1" % "test"
+  "org.scalatest"          %% "scalatest"                % "3.0.1" % "test",
+   "org.scala-lang"        %  "scala-reflect"            % "2.12.1" //for lambda.scala
 )
 
 //seq(CoverallsPlugin.singleProject: _*)
