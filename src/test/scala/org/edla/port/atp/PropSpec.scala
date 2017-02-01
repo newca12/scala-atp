@@ -1,8 +1,19 @@
 package org.edla.port.atp
 
-import org.edla.port.atp.Formulas.{ And, Atom, Iff, Imp, Not, Or, print_formula }
-import org.edla.port.atp.Prop.{ atoms, dual, eval, nnf, parse_prop_formula, psimplify, purednf, rawdnf, tautology, trivial }
-import org.scalatest.{ Finders, FunSuite }
+import org.edla.port.atp.Formulas.{And, Atom, Iff, Imp, Not, Or, print_formula}
+import org.edla.port.atp.Prop.{
+  atoms,
+  dual,
+  eval,
+  nnf,
+  parse_prop_formula,
+  psimplify,
+  purednf,
+  rawdnf,
+  tautology,
+  trivial
+}
+import org.scalatest.{Finders, FunSuite}
 
 class PropSpec extends FunSuite {
 
@@ -10,42 +21,51 @@ class PropSpec extends FunSuite {
 
   test("prop.p001") {
     val fm = parse_prop_formula("""p ==> q <=> r /\ s \/ (t <=> ~ ~u /\ v)""")
-    val f = And(fm, fm)
-    assert(f ===
-      And(
-        Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))),
-        Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))
-      ))
+    val f  = And(fm, fm)
+    assert(
+      f ===
+        And(
+          Iff(Imp(Atom("p"), Atom("q")),
+              Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))),
+          Iff(Imp(Atom("p"), Atom("q")),
+              Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))
+        ))
 
     val stream = new java.io.ByteArrayOutputStream()
     Console.withOut(stream) {
       print_formula(f)
     }
-    assert(stream.toString ===
-      """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v)) /\""" +
-      """ (p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))""")
+    assert(
+      stream.toString ===
+        """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v)) /\""" +
+          """ (p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))""")
   }
 
   test("prop.p002") {
     val fm = parse_prop_formula("""p ==> q <=> r /\ s \/ (t <=> ~ ~u /\ v)""")
-    val f = And(Or(fm, fm), fm)
-    assert(f ===
-      And(
-        Or(
-          Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))),
-          Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))
-        ),
-        Iff(Imp(Atom("p"), Atom("q")), Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))
-      ))
+    val f  = And(Or(fm, fm), fm)
+    assert(
+      f ===
+        And(
+          Or(
+            Iff(Imp(Atom("p"), Atom("q")),
+                Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))),
+            Iff(Imp(Atom("p"), Atom("q")),
+                Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))
+          ),
+          Iff(Imp(Atom("p"), Atom("q")),
+              Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))
+        ))
 
     val stream = new java.io.ByteArrayOutputStream()
     Console.withOut(stream) {
       print_formula(f)
     }
-    assert(stream.toString ===
-      """((p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v)) \/ """ +
-      """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))) /\ """ +
-      """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))""")
+    assert(
+      stream.toString ===
+        """((p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v)) \/ """ +
+          """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))) /\ """ +
+          """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))""")
   }
 
   test("prop.p003") {
@@ -137,14 +157,17 @@ class PropSpec extends FunSuite {
   }
 
   test("prop.035") {
-    assert(tautology(Iff(
-      rawdnf("""(p \/ q /\ r) /\ (~p \/ ~r)"""),
-      """(p /\ ~p \/ (q /\ r) /\ ~p) \/ p /\ ~r \/ (q /\ r) /\ ~r"""
-    )) === true)
+    assert(
+      tautology(
+        Iff(
+          rawdnf("""(p \/ q /\ r) /\ (~p \/ ~r)"""),
+          """(p /\ ~p \/ (q /\ r) /\ ~p) \/ p /\ ~r \/ (q /\ r) /\ ~r"""
+        )) === true)
   }
 
   test("prop.038") {
-    assert(purednf("""(p \/ q /\ r) /\ (~p \/ ~r)""").filter(!trivial(_)) ===
-      List(List(Atom("p"), Not(Atom("r"))), List(Atom("q"), Atom("r"), Not(Atom("p")))))
+    assert(
+      purednf("""(p \/ q /\ r) /\ (~p \/ ~r)""").filter(!trivial(_)) ===
+        List(List(Atom("p"), Not(Atom("r"))), List(Atom("q"), Atom("r"), Not(Atom("p")))))
   }
 }

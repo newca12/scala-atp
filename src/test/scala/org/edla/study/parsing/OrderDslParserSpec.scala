@@ -1,10 +1,21 @@
 package org.edla.study.parsing
 
 import org.edla.study.parsing.ch8.trading.semantic.OrderDsl
-import org.edla.study.parsing.common.AST.{ AccountSpec, BUY, Items, LineItem, MAX, MIN, Order, PriceSpec, SELL, SecuritySpec }
-import org.edla.study.parsing.fastparse.semantic.{ OrderDsl ⇒ OrderDslFastParse }
-import org.edla.study.parsing.parboiled.semantic.{ OrderDsl ⇒ OrderDslParboiled }
-import org.scalatest.{ Finders, FunSuite }
+import org.edla.study.parsing.common.AST.{
+  AccountSpec,
+  BUY,
+  Items,
+  LineItem,
+  MAX,
+  MIN,
+  Order,
+  PriceSpec,
+  SELL,
+  SecuritySpec
+}
+import org.edla.study.parsing.fastparse.semantic.{OrderDsl ⇒ OrderDslFastParse}
+import org.edla.study.parsing.parboiled.semantic.{OrderDsl ⇒ OrderDslParboiled}
+import org.scalatest.{Finders, FunSuite}
 import _root_.fastparse.core.Parsed
 
 import scala.util.Success
@@ -20,11 +31,21 @@ class OrderDslParserSpec extends FunSuite {
       for account "A1234"""")
 
   val orderAST = Order(
-    Items(List(LineItem(SecuritySpec(100, "IBM"), BUY, PriceSpec(Some(MAX), 45)), LineItem(
-      SecuritySpec(40, "Sun"), SELL, PriceSpec(Some(MIN), 24)
-    ), LineItem(
-      SecuritySpec(25, "CISCO"), BUY, PriceSpec(Some(MAX), 56)
-    ))), AccountSpec("A1234")
+    Items(
+      List(
+        LineItem(SecuritySpec(100, "IBM"), BUY, PriceSpec(Some(MAX), 45)),
+        LineItem(
+          SecuritySpec(40, "Sun"),
+          SELL,
+          PriceSpec(Some(MIN), 24)
+        ),
+        LineItem(
+          SecuritySpec(25, "CISCO"),
+          BUY,
+          PriceSpec(Some(MAX), 56)
+        )
+      )),
+    AccountSpec("A1234")
   )
 
   test("Scala Standard Parser Combinator AccountSpec Parser") {
