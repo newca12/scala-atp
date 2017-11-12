@@ -3,22 +3,33 @@
 ### About ###
 Port of the Objective Caml code supporting John Harrison's logic [textbook](http://www.cambridge.org/catalogue/catalogue.asp?isbn=9780521899574) Handbook of Practical Logic and Automated Reasoning to Scala.
 
-Ambassy is an EDLA project.
+scala-atp is an EDLA project.
 
 The purpose of [edla.org](http://www.edla.org) is to promote the state of the art in various domains.
 
 ### Other ports ###
-[Haskell](https://github.com/newca12/haskell-atp)  
-[F#](https://github.com/jack-pappas/fsharp-logic-examples)
+[F#](https://github.com/jack-pappas/fsharp-logic-examples) : complete and 'official'   
+[SML](https://github.com/logic-tools/sml-handbook): almost complete and 'official'   
+[Haskell](https://github.com/seereason/atp-haskell) : complete and [published](https://hackage.haskell.org/package/atp-haskell)  
+[OCaml](https://github.com/newca12/ocaml-atp) : original code adapted to OCaml 4  
+[Haskell](https://github.com/newca12/haskell-atp) : complete but need Haskell 6.10.4    
+[Haskell](https://github.com/etu-fkti5301-bgu/alt-exam_automated_theorem_proving) : almost complete  
+[JavaScript](https://github.com/etu-fkti5301-bgu/alt-exam_atp_system) : almost complete (generated with GHCJS compiler)  
+[scala](https://github.com/inpefess/practical-logic-handbook) : uncomplete (chap 1 & 2)  
+[Haskell](https://github.com/relrod/HPLAR) : uncomplete (chap 1)  
+[Haskell](https://github.com/elliottt/plar) : uncomplete  
+[Rust](https://github.com/nikomatsakis/plar-rs) : uncomplete
 
-### Running examples with Scala Worksheet plugin for Eclipse ###
+### Running examples with [Jupyter notebook](http://jupyter.org/) ###
+All examples will be available in the [notebooks directory](https://github.com/newca12/scala-atp/tree/master/notebooks)  
 This is a very convenient way to play with Scala  
-[Scala Worksheet plugin for Eclipse](https://github.com/scala-ide/scala-worksheet) is a glorified editor, with the option of evaluating the script and placing the results of each expression in a comment on the same line.  
-All examples will be available in the [worksheets directory](https://github.com/newca12/scala-atp/tree/master/worksheets)  
-The `worksheets` folder contains `*.sc` scripts corresponding to the original OCaml files. Within each `*.sc` file, examples appear in the same order as in the book; we have added a comment to each example with its page number in the book to make cross-referencing easier.
-
-> `*.sc` files can also be open with IntelliJ worksheet but a bit less conveniently
-
+You need first to publish scala-atp locally :
+```
+https://github.com/newca12/scala-atp.git
+cd scala-atp
+sbt publishLocal
+```
+and then follow instructions [here](https://github.com/jupyter-scala/jupyter-scala) to install jupyter-scala  
 ### Notes ###
 We kept the file names of the original mostly intact, though use Scala naming conventions.  
 This project contain also a study about parsers and some code from :  
@@ -27,6 +38,6 @@ This project contain also a study about parsers and some code from :
 
 ### License ###
 © 2003-2007, John Harrison.   
-© 2012-2016, Olivier ROLAND.  
+© 2012-2017, Olivier ROLAND.  
 (See "LICENSE.txt" for details.)
 

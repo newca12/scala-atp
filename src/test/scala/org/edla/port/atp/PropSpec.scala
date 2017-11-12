@@ -1,19 +1,8 @@
 package org.edla.port.atp
 
 import org.edla.port.atp.Formulas.{And, Atom, Iff, Imp, Not, Or, print_formula}
-import org.edla.port.atp.Prop.{
-  atoms,
-  dual,
-  eval,
-  nnf,
-  parse_prop_formula,
-  psimplify,
-  purednf,
-  rawdnf,
-  tautology,
-  trivial
-}
-import org.scalatest.{Finders, FunSuite}
+import org.edla.port.atp.Prop._
+import org.scalatest.FunSuite
 
 class PropSpec extends FunSuite {
 

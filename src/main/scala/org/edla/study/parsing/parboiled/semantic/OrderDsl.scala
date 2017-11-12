@@ -4,7 +4,6 @@ import scala.language.implicitConversions
 
 import org.edla.study.parsing.common.AST.AccountSpec
 import org.edla.study.parsing.common.AST.BUY
-import org.edla.study.parsing.common.AST.BuySell
 import org.edla.study.parsing.common.AST.Items
 import org.edla.study.parsing.common.AST.LineItem
 import org.edla.study.parsing.common.AST.MAX

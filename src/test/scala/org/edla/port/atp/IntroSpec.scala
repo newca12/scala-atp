@@ -2,7 +2,7 @@ package org.edla.port.atp
 
 import org.edla.port.atp.Intro.{Add, Const, Expression, Mul, Var, parseExpression, printExp, simplify}
 import org.edla.port.atp.Lex.lex
-import org.scalatest.{Finders, FunSuite}
+import org.scalatest.FunSuite
 
 class IntroSpec extends FunSuite {
   val exp: Expression = Add(Mul(Add(Mul(Const(0), Var("x")), Const(1)), Const(3)), Const(12))

@@ -46,7 +46,7 @@ object Interpreter {
   }
 
   // Evaluation
-  val initEnv: Environment = Map("println" -> Println)
+  val initEnv: Environment = Map("println" → Println)
 
   class Context(private var env: Environment = initEnv) {
     override def toString = "Environment: " + env.mkString(", ")
@@ -58,7 +58,7 @@ object Interpreter {
           case b: Boolean ⇒ eval(if (b) e2 else e3)
           case _          ⇒ sys.error("Not a boolean value in condition of IF expression")
         }
-      case Assign(id, expr) ⇒ env += (id -> eval(expr))
+      case Assign(id, expr) ⇒ env += (id → eval(expr))
 
       case Equal(e1, e2) ⇒ eval(e1) == eval(e2)
       case Add(e1, e2) ⇒

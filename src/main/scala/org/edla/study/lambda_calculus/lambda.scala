@@ -240,7 +240,7 @@ package object lambda {
 
   type Fact = r ->: n ->: (If @@ (IsZero @@ n) @@ _1 @@ (Mult @@ n @@ (r @@ r @@ (Sub @@ n @@ _1))))
 
-  import reflect.runtime.{universe => ru}
+  import reflect.runtime.{universe ⇒ ru}
 
   def eval[u <: Term: ru.WeakTypeTag](implicit u: ru.WeakTypeTag[u#eval]): String = eval[u]()
 
@@ -255,21 +255,21 @@ package object lambda {
     import ru._
 
     def pretty(tpe: Type): String = tpe.dealias match {
-      case TypeRef(_, sym, List(arg, body)) if sym.name.toString == "Lam" =>
+      case TypeRef(_, sym, List(arg, body)) if sym.name.toString == "Lam" ⇒
         if (fancy) s"(λ${pretty(arg)}.${pretty(body)})"
         else s"(${pretty(arg)} ->: ${pretty(body)})"
-      case TypeRef(_, sym, List(f, x)) if sym.name.toString == "Ap" =>
+      case TypeRef(_, sym, List(f, x)) if sym.name.toString == "Ap" ⇒
         if (fancy) s"(${pretty(f)} ${pretty(x)})"
         else s"(${pretty(f)} @@ ${pretty(x)})"
-      case TypeRef(_, sym, List(prev)) if sym.name.toString == "VCons" =>
+      case TypeRef(_, sym, List(prev)) if sym.name.toString == "VCons" ⇒
         val point = pretty(prev)(0)
         val next = point match {
-          case 'z' => 'a'
-          case 'w' => 'A'
-          case c   => (c + 1).toChar
+          case 'z' ⇒ 'a'
+          case 'w' ⇒ 'A'
+          case c   ⇒ (c + 1).toChar
         }
         next.toString
-      case TypeRef(_, sym, Nil) if sym.name.toString == "VNil" => "x"
+      case TypeRef(_, sym, Nil) if sym.name.toString == "VNil" ⇒ "x"
     }
 
     pretty(u.tpe)

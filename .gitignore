@@ -25,3 +25,5 @@ project/plugins/project/
 # OSX specific
 .DS_Store
 
+# Jupyter
+.ipynb_checkpoints

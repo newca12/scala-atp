@@ -1,22 +1,11 @@
 package org.edla.study.parsing
 
+import _root_.fastparse.core.Parsed
 import org.edla.study.parsing.ch8.trading.semantic.OrderDsl
-import org.edla.study.parsing.common.AST.{
-  AccountSpec,
-  BUY,
-  Items,
-  LineItem,
-  MAX,
-  MIN,
-  Order,
-  PriceSpec,
-  SELL,
-  SecuritySpec
-}
+import org.edla.study.parsing.common.AST._
 import org.edla.study.parsing.fastparse.semantic.{OrderDsl ⇒ OrderDslFastParse}
 import org.edla.study.parsing.parboiled.semantic.{OrderDsl ⇒ OrderDslParboiled}
-import org.scalatest.{Finders, FunSuite}
-import _root_.fastparse.core.Parsed
+import org.scalatest.FunSuite
 
 import scala.util.Success
 
