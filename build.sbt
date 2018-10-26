@@ -2,33 +2,11 @@ name := "scala-atp"
 
 organization := "org.edla"
 
-version := "0.1"
+version := "0.2"
 
-scalaVersion in ThisBuild := "2.11.11"
+scalaVersion in ThisBuild := "2.12.7"
 scalafmtOnCompile in ThisBuild := true
 
-//2.11.X
-scalacOptions ++= Seq(
-  "-language:postfixOps",
-  "-language:existentials",
-  "-language:implicitConversions",
-  //"-optimize",
-  "-deprecation",
-  "-encoding",
-  "UTF-8", // yes, this is 2 args
-  "-feature",
-  "-unchecked",
-  "-Xfatal-warnings",
-  "-Xfuture",
-  "-Xlint:-nullary-unit", //-nullary-unit required for IntelliJ worksheet
-  "-Yno-adapted-args",
-  "-Ywarn-dead-code",
-  "-Ywarn-numeric-widen",
-  "-Ywarn-value-discard"
-)
-
-//2.12.x
-/*
 scalacOptions ++= Seq(
   "-deprecation", // Emit warning and location for usages of deprecated APIs.
   "-encoding",
@@ -78,16 +56,15 @@ scalacOptions ++= Seq(
   "-Ywarn-unused:privates", // Warn if a private member is unused.
   "-Ywarn-value-discard" // Warn when non-Unit expression results are unused.
 )
- */
 
 scalacOptions in (Compile, doc) ++= Seq("-diagrams", "-implicits")
 
 libraryDependencies ++= Seq(
   "org.scala-lang"         % "scala-reflect"             % scalaVersion.value, //for lambda.scala
-  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.6",
-  "org.parboiled"          %% "parboiled"                % "2.1.4",
-  "com.lihaoyi"            %% "fastparse"                % "1.0.0",
-  "org.scalatest"          %% "scalatest"                % "3.0.4" % "test"
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.1",
+  "org.parboiled"          %% "parboiled"                % "2.1.5",
+  "com.lihaoyi"            %% "fastparse"                % "2.0.4",
+  "org.scalatest"          %% "scalatest"                % "3.0.5" % "test"
 )
 
 //seq(CoverallsPlugin.singleProject: _*)

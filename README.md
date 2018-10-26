@@ -8,11 +8,11 @@ scala-atp is an EDLA project.
 The purpose of [edla.org](http://www.edla.org) is to promote the state of the art in various domains.
 
 ### Other ports ###
-[F#](https://github.com/jack-pappas/fsharp-logic-examples) : complete and 'official'   
-[SML](https://github.com/logic-tools/sml-handbook): almost complete and 'official'   
+[F#](https://github.com/jack-pappas/fsharp-logic-examples) : complete and 'official'  
+[SML](https://github.com/logic-tools/sml-handbook): almost complete and 'official'  
 [Haskell](https://github.com/seereason/atp-haskell) : complete and [published](https://hackage.haskell.org/package/atp-haskell)  
-[OCaml](https://github.com/newca12/ocaml-atp) : original code adapted to OCaml 4  
-[Haskell](https://github.com/newca12/haskell-atp) : complete but need Haskell 6.10.4    
+[OCaml](https://github.com/newca12/ocaml-atp) : original code for Ocam 3 adapted to fit OCaml 4  
+[Haskell](https://github.com/newca12/haskell-atp) : complete, original code for GHC 6.10.4 adapted to fit GHC 8.x  
 [Haskell](https://github.com/etu-fkti5301-bgu/alt-exam_automated_theorem_proving) : almost complete  
 [JavaScript](https://github.com/etu-fkti5301-bgu/alt-exam_atp_system) : almost complete (generated with GHCJS compiler)  
 [scala](https://github.com/inpefess/practical-logic-handbook) : uncomplete (chap 1 & 2)  
@@ -21,6 +21,9 @@ The purpose of [edla.org](http://www.edla.org) is to promote the state of the ar
 [Rust](https://github.com/nikomatsakis/plar-rs) : uncomplete
 
 ### Running examples with [Jupyter notebook](http://jupyter.org/) ###
+
+**Pretty pretting will be broken till [this ammonite issue is fixed](https://github.com/lihaoyi/Ammonite/issues/888)**
+
 All examples will be available in the [notebooks directory](https://github.com/newca12/scala-atp/tree/master/notebooks)  
 This is a very convenient way to play with Scala  
 You need first to publish scala-atp locally :
@@ -38,6 +41,6 @@ This project contain also a study about parsers and some code from :
 
 ### License ###
 © 2003-2007, John Harrison.   
-© 2012-2017, Olivier ROLAND.  
+© 2012-2018, Olivier ROLAND.  
 (See "LICENSE.txt" for details.)
 

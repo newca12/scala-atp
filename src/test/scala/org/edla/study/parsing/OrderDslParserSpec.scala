@@ -1,6 +1,7 @@
 package org.edla.study.parsing
 
-import _root_.fastparse.core.Parsed
+import _root_.fastparse.Parsed
+import _root_.fastparse._
 import org.edla.study.parsing.ch8.trading.semantic.OrderDsl
 import org.edla.study.parsing.common.AST._
 import org.edla.study.parsing.fastparse.semantic.{OrderDsl ⇒ OrderDslFastParse}
@@ -46,12 +47,12 @@ class OrderDslParserSpec extends FunSuite {
   }
 
   test("FastParse AccountSpec Parser") {
-    val Parsed.Success(value, index) = OrderDslFastParse.account_spec.parse(accountSample)
+    val Parsed.Success(value, _) = parse(accountSample, OrderDslFastParse.account_spec(_))
     assert(value === accountAST)
   }
 
   test("FastParse Order Parser") {
-    val Parsed.Success(value, index) = OrderDslFastParse.order.parse(orderSample)
+    val Parsed.Success(value, _) = parse(orderSample, OrderDslFastParse.order(_))
     assert(value === orderAST)
   }
 

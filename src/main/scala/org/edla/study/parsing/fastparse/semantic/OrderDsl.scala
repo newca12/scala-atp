@@ -12,51 +12,53 @@ import org.edla.study.parsing.common.AST.PriceSpec
 import org.edla.study.parsing.common.AST.PriceType
 import org.edla.study.parsing.common.AST.SELL
 import org.edla.study.parsing.common.AST.SecuritySpec
-import fastparse._
+import fastparse._, MultiLineWhitespace._
 
 object OrderDsl {
 
+  /*
   val White = WhitespaceApi.Wrapper {
     import fastparse.all._
     NoTrace(P(CharsWhile(" \n".contains(_)).?))
   }
   import fastparse.noApi._
   import White._
+   */
 
-  val digits        = P(CharsWhile('0' to '9' contains (_)))
-  val hexDigit      = P(CharIn('0' to '9', 'a' to 'f', 'A' to 'F'))
-  val unicodeEscape = P("u" ~ hexDigit ~ hexDigit ~ hexDigit ~ hexDigit)
-  val escape        = P("\\" ~ (CharIn("\"/\\bfnrt") | unicodeEscape))
-  val strChars      = P(CharsWhile(!"\"\\".contains(_)))
-  val stringLit     = P("\"" ~/ (strChars | escape).rep.! ~ "\"")
-  val ident         = P(CharsWhile(('a' to 'z') ++ ('A' to 'Z') contains (_)))
+  def digits[_: P]        = P(CharsWhile('0' to '9' contains (_)))
+  def hexDigit[_: P]      = P(CharIn("0-9", "a-f", "A-F"))
+  def unicodeEscape[_: P] = P("u" ~ hexDigit ~ hexDigit ~ hexDigit ~ hexDigit)
+  def escape[_: P]        = P("\\" ~ (CharIn("\"/\\bfnrt") | unicodeEscape))
+  def strChars[_: P]      = P(CharsWhile(!"\"\\".contains(_)))
+  def stringLit[_: P]     = P("\"" ~/ (strChars | escape).rep.! ~ "\"")
+  def ident[_: P]         = P(CharsWhile(('a' to 'z') ++ ('A' to 'Z') contains (_)))
 
-  val order: Parser[Order] = P(items ~ account_spec).map { case (a: Items, b: AccountSpec) ⇒ Order(a, b) }
+  def order[_: P]: P[Order] = P(items ~ account_spec).map { case (a: Items, b: AccountSpec) ⇒ Order(a, b) }
 
-  val items: Parser[Items] = P("(" ~ line_item.rep(sep = ",") ~ ")").map { case (a: Seq[LineItem]) ⇒ Items(a.toList) }
+  def items[_: P]: P[Items] = P("(" ~ line_item.rep(sep = ",") ~ ")").map { case (a: Seq[LineItem]) ⇒ Items(a.toList) }
 
-  val line_item: Parser[LineItem] = P(security_spec ~ buy_sell ~ price_spec).map {
+  def line_item[_: P]: P[LineItem] = P(security_spec ~ buy_sell ~ price_spec).map {
     case (a: SecuritySpec, b: BuySell, c: PriceSpec) ⇒ LineItem(a, b, c)
   }
 
-  val buy_sell: Parser[BuySell] = P("to" ~ ("buy".! | "sell".!)).map {
+  def buy_sell[_: P]: P[BuySell] = P("to" ~ ("buy".! | "sell".!)).map {
     case "buy"  ⇒ BUY
     case "sell" ⇒ SELL
   }
 
-  val security_spec: Parser[SecuritySpec] = P(digits.! ~ ident.! ~ "shares").map {
+  def security_spec[_: P]: P[SecuritySpec] = P(digits.! ~ ident.! ~ "shares").map {
     case (a, b) ⇒ SecuritySpec(a.toInt, b)
   }
 
-  val price_spec: Parser[PriceSpec] = P("at" ~ min_max.? ~ digits.!).map {
+  def price_spec[_: P]: P[PriceSpec] = P("at" ~ min_max.? ~ digits.!).map {
     case (a: Option[PriceType], b: String) ⇒ PriceSpec(a, b.toInt)
   }
 
-  val min_max: Parser[PriceType] = P(("min" | "max").!).map {
+  def min_max[_: P]: P[PriceType] = P(("min" | "max").!).map {
     case "min" ⇒ MIN
     case "max" ⇒ MAX
   }
 
-  val account_spec: Parser[AccountSpec] = P("for" ~ "account" ~ stringLit).map(AccountSpec)
+  def account_spec[_: P]: P[AccountSpec] = P("for" ~ "account" ~ stringLit).map(AccountSpec)
 
 }
