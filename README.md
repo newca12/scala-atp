@@ -5,7 +5,7 @@ Port of the Objective Caml code supporting John Harrison's logic [textbook](http
 
 scala-atp is an EDLA project.
 
-The purpose of [edla.org](http://www.edla.org) is to promote the state of the art in various domains.
+The purpose of [edla.org](https://edla.org) is to promote the state of the art in various domains.
 
 ### Other ports ###
 [F#](https://github.com/jack-pappas/fsharp-logic-examples) : complete and 'official'  
@@ -22,8 +22,6 @@ The purpose of [edla.org](http://www.edla.org) is to promote the state of the ar
 
 ### Running examples with [Jupyter notebook](http://jupyter.org/) ###
 
-**Pretty pretting will be broken till [this ammonite issue is fixed](https://github.com/lihaoyi/Ammonite/issues/888)**
-
 All examples will be available in the [notebooks directory](https://github.com/newca12/scala-atp/tree/master/notebooks)  
 This is a very convenient way to play with Scala  
 You need first to publish scala-atp locally :
@@ -32,7 +30,11 @@ https://github.com/newca12/scala-atp.git
 cd scala-atp
 sbt publishLocal
 ```
-and then follow instructions [here](https://github.com/jupyter-scala/jupyter-scala) to install jupyter-scala  
+Follow instructions [here](https://github.com/jupyter-scala/jupyter-scala) to install a scala kernel for Jupyter.  
+To run the notebook, run the following command at the Terminal 
+```
+jupyter-notebook
+```
 ### Notes ###
 We kept the file names of the original mostly intact, though use Scala naming conventions.  
 This project contain also a study about parsers and some code from :  
@@ -41,6 +43,6 @@ This project contain also a study about parsers and some code from :
 
 ### License ###
 © 2003-2007, John Harrison.   
-© 2012-2018, Olivier ROLAND.  
+© 2012-2019, Olivier ROLAND.  
 (See "LICENSE.txt" for details.)
 

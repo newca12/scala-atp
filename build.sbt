@@ -2,10 +2,9 @@ name := "scala-atp"
 
 organization := "org.edla"
 
-version := "0.2"
+version := "0.3"
 
-scalaVersion in ThisBuild := "2.12.7"
-scalafmtOnCompile in ThisBuild := true
+scalaVersion in ThisBuild := "2.12.8"
 
 scalacOptions ++= Seq(
   "-deprecation", // Emit warning and location for usages of deprecated APIs.
@@ -63,7 +62,7 @@ libraryDependencies ++= Seq(
   "org.scala-lang"         % "scala-reflect"             % scalaVersion.value, //for lambda.scala
   "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.1",
   "org.parboiled"          %% "parboiled"                % "2.1.5",
-  "com.lihaoyi"            %% "fastparse"                % "2.0.4",
+  "com.lihaoyi"            %% "fastparse"                % "2.1.0",
   "org.scalatest"          %% "scalatest"                % "3.0.5" % "test"
 )
 
