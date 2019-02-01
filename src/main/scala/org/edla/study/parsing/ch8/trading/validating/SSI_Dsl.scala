@@ -13,13 +13,13 @@ object SSI_Dsl extends JavaTokenParsers with PackratParsers with ValidatingParse
     (standing_rule +) ^^ StandingRules
 
   lazy val standing_rule: Parser[StandingRule] =
-    "settle" ~> "trades" ~> trade_type_spec ~ settlement_spec ^^ { case (t ~ s) ⇒ StandingRule(t, s) }
+    "settle" ~> "trades" ~> trade_type_spec ~ settlement_spec ^^ { case (t ~ s) => StandingRule(t, s) }
 
   lazy val trade_type_spec: PackratParser[TradeTypeRule] =
-    trade_type_spec ~ ("in" ~> market <~ "market") ^^ { case (t ~ m)     ⇒ t.copy(mkt = Some(m)) } |
-      trade_type_spec ~ ("of" ~> security) ^^ { case (t ~ s)             ⇒ t.copy(sec = Some(s)) } |
-      trade_type_spec ~ ("on" ~> "account" ~> account) ^^ { case (t ~ a) ⇒ t.copy(tradingAccount = Some(a)) } |
-      "for" ~> counterparty_spec ^^ { case c                             ⇒ TradeTypeRule(c, None, None, None) }
+    trade_type_spec ~ ("in" ~> market <~ "market") ^^ { case (t ~ m)     => t.copy(mkt = Some(m)) } |
+      trade_type_spec ~ ("of" ~> security) ^^ { case (t ~ s)             => t.copy(sec = Some(s)) } |
+      trade_type_spec ~ ("on" ~> "account" ~> account) ^^ { case (t ~ a) => t.copy(tradingAccount = Some(a)) } |
+      "for" ~> counterparty_spec ^^ { case c                             => TradeTypeRule(c, None, None, None) }
 
   lazy val counterparty_spec: Parser[CounterpartyRule] =
     "customer" ~> customer ^^ Customer |
@@ -35,11 +35,11 @@ object SSI_Dsl extends JavaTokenParsers with PackratParsers with ValidatingParse
   lazy val settle_cash_security_separate_spec: Parser[SettlementRule] =
     validate(
       repN(2, settle_cash_security ~ settle_mode_spec) ^^ {
-        case l: Seq[_] ⇒
-          SettleCashSecuritySeparate(l map (e ⇒ (e._1, e._2)))
+        case l: Seq[_] =>
+          SettleCashSecuritySeparate(l map (e => (e._1, e._2)))
       }
     ) {
-      case (s, in) ⇒ {
+      case (s, in) => {
         if ((s hasSettleSecurity) && (s hasSettleCash))
           Success(s, in)
         else
@@ -59,7 +59,7 @@ object SSI_Dsl extends JavaTokenParsers with PackratParsers with ValidatingParse
       settle_internal_spec
 
   lazy val settle_external_spec: Parser[SettlementModeRule] =
-    "externally" ~> "at" ~> bank ~ account ^^ { case b ~ a ⇒ SettleExternal(b, a) }
+    "externally" ~> "at" ~> bank ~ account ^^ { case b ~ a => SettleExternal(b, a) }
 
   lazy val settle_internal_spec: Parser[SettlementModeRule] =
     "internally" ~> "with" ~> "us" ~> "at" ~> account ^^ SettleInternal

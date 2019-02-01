@@ -36,11 +36,11 @@ class OrderDsl(val input: ParserInput) extends Parser {
   def buy_sell = rule { "to" ~ (("buy" ~ push(BUY)) | ("sell" ~ push(SELL))) }
 
   def security_spec = rule {
-    numericLit ~ ident ~> ((n: Int, s) ⇒ SecuritySpec(n.toInt, s.toString)) ~ "shares"
+    numericLit ~ ident ~> ((n: Int, s) => SecuritySpec(n.toInt, s.toString)) ~ "shares"
   }
 
   def price_spec: Rule1[PriceSpec] = rule {
-    "at" ~ optional(min_max) ~> ((m: Option[PriceType]) ⇒ m) ~ numericLit ~> (PriceSpec(_: Option[PriceType], _: Int))
+    "at" ~ optional(min_max) ~> ((m: Option[PriceType]) => m) ~ numericLit ~> (PriceSpec(_: Option[PriceType], _: Int))
   }
 
   def min_max: Rule1[PriceType] = rule { "min" ~ push(MIN) | "max" ~ push(MAX) }

@@ -33,30 +33,30 @@ object OrderDsl {
   def stringLit[_: P]     = P("\"" ~/ (strChars | escape).rep.! ~ "\"")
   def ident[_: P]         = P(CharsWhile(('a' to 'z') ++ ('A' to 'Z') contains (_)))
 
-  def order[_: P]: P[Order] = P(items ~ account_spec).map { case (a: Items, b: AccountSpec) ⇒ Order(a, b) }
+  def order[_: P]: P[Order] = P(items ~ account_spec).map { case (a: Items, b: AccountSpec) => Order(a, b) }
 
-  def items[_: P]: P[Items] = P("(" ~ line_item.rep(sep = ",") ~ ")").map { case (a: Seq[LineItem]) ⇒ Items(a.toList) }
+  def items[_: P]: P[Items] = P("(" ~ line_item.rep(sep = ",") ~ ")").map { case (a: Seq[LineItem]) => Items(a.toList) }
 
   def line_item[_: P]: P[LineItem] = P(security_spec ~ buy_sell ~ price_spec).map {
-    case (a: SecuritySpec, b: BuySell, c: PriceSpec) ⇒ LineItem(a, b, c)
+    case (a: SecuritySpec, b: BuySell, c: PriceSpec) => LineItem(a, b, c)
   }
 
   def buy_sell[_: P]: P[BuySell] = P("to" ~ ("buy".! | "sell".!)).map {
-    case "buy"  ⇒ BUY
-    case "sell" ⇒ SELL
+    case "buy"  => BUY
+    case "sell" => SELL
   }
 
   def security_spec[_: P]: P[SecuritySpec] = P(digits.! ~ ident.! ~ "shares").map {
-    case (a, b) ⇒ SecuritySpec(a.toInt, b)
+    case (a, b) => SecuritySpec(a.toInt, b)
   }
 
   def price_spec[_: P]: P[PriceSpec] = P("at" ~ min_max.? ~ digits.!).map {
-    case (a: Option[PriceType], b: String) ⇒ PriceSpec(a, b.toInt)
+    case (a: Option[PriceType], b: String) => PriceSpec(a, b.toInt)
   }
 
   def min_max[_: P]: P[PriceType] = P(("min" | "max").!).map {
-    case "min" ⇒ MIN
-    case "max" ⇒ MAX
+    case "min" => MIN
+    case "max" => MAX
   }
 
   def account_spec[_: P]: P[AccountSpec] = P("for" ~ "account" ~ stringLit).map(AccountSpec)

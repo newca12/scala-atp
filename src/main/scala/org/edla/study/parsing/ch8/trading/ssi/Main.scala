@@ -12,9 +12,9 @@ object Main {
     import SSI_Dsl._
 
     parseAll(standing_rules, str) match {
-      case Success(s, _)   ⇒ println(s)
-      case Failure(msg, _) ⇒ println("Failure: " + msg)
-      case Error(msg, _)   ⇒ println("Error: " + msg)
+      case Success(s, _)   => println(s)
+      case Failure(msg, _) => println("Failure: " + msg)
+      case Error(msg, _)   => println("Error: " + msg)
     }
   }
 }

@@ -5,13 +5,13 @@ package org.edla.study.parsing.ch8.trading.validating
 import scala.util.parsing.combinator._
 
 trait ValidatingParser extends Parsers {
-  def validate[T](p: ⇒ Parser[T])(
-      validation: (T, Input) ⇒ ParseResult[T]
+  def validate[T](p: => Parser[T])(
+      validation: (T, Input) => ParseResult[T]
   ): Parser[T] = Parser(
-    in ⇒
+    in =>
       p(in) match {
-        case Success(x, in) ⇒ validation(x, in)
-        case fail           ⇒ fail
-    }
+        case Success(x, in) => validation(x, in)
+        case fail           => fail
+      }
   )
 }

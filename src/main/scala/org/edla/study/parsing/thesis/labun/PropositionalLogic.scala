@@ -12,8 +12,8 @@ object PropositionalLogic extends RegexParsers {
   def or    = rep1sep(and, "|") ^^ { _.reduceLeft(Or) } // via right folding
   def and   = rep1sep(not, "&") ^^ { _.reduceLeft(And) }
   def not = opt("!") ~ atom ^^ {
-    case Some(_) ~ x ⇒ Not(x)
-    case _ ~ x       ⇒ x
+    case Some(_) ~ x => Not(x)
+    case _ ~ x       => x
   }
   //recursive method expr needs result type
   def atom: Parser[Expr] =
@@ -42,14 +42,14 @@ object PropositionalLogic extends RegexParsers {
   var varNames = mutable.Set[String]()
   // Interpreter
   def eval(e: Expr): Boolean = e match {
-    case Xor(l, r)   ⇒ eval(l) ^ eval(r)
-    case Equiv(l, r) ⇒ eval(l) == eval(r)
-    case Impl(l, r)  ⇒ !eval(l) || eval(r)
-    case Or(l, r)    ⇒ eval(l) || eval(r)
-    case And(l, r)   ⇒ eval(l) && eval(r)
-    case Not(x)      ⇒ !eval(x)
-    case Const(x)    ⇒ x == "T"
-    case Id(x)       ⇒ varValues(x)
+    case Xor(l, r)   => eval(l) ^ eval(r)
+    case Equiv(l, r) => eval(l) == eval(r)
+    case Impl(l, r)  => !eval(l) || eval(r)
+    case Or(l, r)    => eval(l) || eval(r)
+    case And(l, r)   => eval(l) && eval(r)
+    case Not(x)      => !eval(x)
+    case Const(x)    => x == "T"
+    case Id(x)       => varValues(x)
   }
 
   var varValues = mutable.Map[String, Boolean]()
@@ -76,13 +76,13 @@ object PropositionalLogic extends RegexParsers {
 
     // Body
     val rowCount = 1 << varCount
-    for (r ← 0 until rowCount) {
+    for (r <- 0 until rowCount) {
       // Evaluate the expression -tree for each state of variables and print the result:
       // State of variables as an array of Booleans
-      val state = Array.tabulate[Boolean](varCount)(i ⇒ (r & (1 << i)) > 0)
+      val state = Array.tabulate[Boolean](varCount)(i => (r & (1 << i)) > 0)
       // Store the current state of variables in the varVals map
       varValues ++= varNames.zip(state)
-      print(varNames map (v ⇒ centered(varValues(v), v.length)) mkString colSpace)
+      print(varNames map (v => centered(varValues(v), v.length)) mkString colSpace)
       println(resColSpace + centered(eval(tree), resLabel.length))
     }
 

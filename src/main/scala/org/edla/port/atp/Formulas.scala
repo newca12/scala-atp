@@ -39,15 +39,15 @@ object Formulas {
   // Apply a function to the atoms, otherwise keeping structure.               //
   // ------------------------------------------------------------------------- //
 
-  def onatoms(f: String ⇒ Formula, fm: Formula): Formula = {
+  def onatoms(f: String => Formula, fm: Formula): Formula = {
     fm match {
-      case Atom(a)   ⇒ f(a)
-      case Not(p)    ⇒ Not(onatoms(f, p))
-      case And(p, q) ⇒ And(onatoms(f, p), onatoms(f, q))
-      case Or(p, q)  ⇒ Or(onatoms(f, p), onatoms(f, q))
-      case Imp(p, q) ⇒ Imp(onatoms(f, p), onatoms(f, q))
-      case Iff(p, q) ⇒ Iff(onatoms(f, p), onatoms(f, q))
-      case _         ⇒ fm
+      case Atom(a)   => f(a)
+      case Not(p)    => Not(onatoms(f, p))
+      case And(p, q) => And(onatoms(f, p), onatoms(f, q))
+      case Or(p, q)  => Or(onatoms(f, p), onatoms(f, q))
+      case Imp(p, q) => Imp(onatoms(f, p), onatoms(f, q))
+      case Iff(p, q) => Iff(onatoms(f, p), onatoms(f, q))
+      case _         => fm
     }
   }
 
@@ -56,15 +56,15 @@ object Formulas {
   // Formula analog of list iterator "List.foldBack".                          //
   // ------------------------------------------------------------------------- //
 
-  def overatoms(f: Atom ⇒ List[Atom], fm: Formula, b: List[Atom]): List[Atom] = {
+  def overatoms(f: Atom => List[Atom], fm: Formula, b: List[Atom]): List[Atom] = {
     fm match {
-      case Atom(a)   ⇒ f(Atom(a)) ++ b
-      case Not(p)    ⇒ overatoms(f, p, b)
-      case And(p, q) ⇒ overatoms(f, p, overatoms(f, q, b))
-      case Or(p, q)  ⇒ overatoms(f, p, overatoms(f, q, b))
-      case Imp(p, q) ⇒ overatoms(f, p, overatoms(f, q, b))
-      case Iff(p, q) ⇒ overatoms(f, p, overatoms(f, q, b))
-      case _         ⇒ b
+      case Atom(a)   => f(Atom(a)) ++ b
+      case Not(p)    => overatoms(f, p, b)
+      case And(p, q) => overatoms(f, p, overatoms(f, q, b))
+      case Or(p, q)  => overatoms(f, p, overatoms(f, q, b))
+      case Imp(p, q) => overatoms(f, p, overatoms(f, q, b))
+      case Iff(p, q) => overatoms(f, p, overatoms(f, q, b))
+      case _         => b
     }
   }
 
@@ -73,7 +73,7 @@ object Formulas {
   // Special case of a union of the results of a function over the atoms.      //
   // ------------------------------------------------------------------------- //
 
-  def atom_union(f: Atom ⇒ List[Atom], fm: Formula) = overatoms(f, fm, Nil).toSet.toList.sorted
+  def atom_union(f: Atom => List[Atom], fm: Formula) = overatoms(f, fm, Nil).toSet.toList.sorted
 
   // pg. 626
   // ------------------------------------------------------------------------- //
@@ -81,7 +81,7 @@ object Formulas {
   // ------------------------------------------------------------------------- //
 
   // NOTE: No use of OCaml format module. i.e. print_box removed during conversion
-  def bracket[T](p: Boolean, n: Int, f: (T, Formula) ⇒ Unit, x: T, y: Formula) = {
+  def bracket[T](p: Boolean, n: Int, f: (T, Formula) => Unit, x: T, y: Formula) = {
     if (p) print("(")
     f(x, y)
     if (p) print(")")
@@ -99,14 +99,14 @@ object Formulas {
       }
 
       fm match {
-        case False       ⇒ print("false")
-        case True        ⇒ print("true")
-        case Atom(pargs) ⇒ print(pargs)
-        case Not(p)      ⇒ bracket(pr > 10, 1, print_prefix(10), "~", p)
-        case And(p, q)   ⇒ bracket(pr > 8, 0, print_infix(8, """/\"""), p, q)
-        case Or(p, q)    ⇒ bracket(pr > 6, 0, print_infix(6, """\/"""), p, q)
-        case Imp(p, q)   ⇒ bracket(pr > 4, 0, print_infix(4, "==>"), p, q)
-        case Iff(p, q)   ⇒ bracket(pr > 2, 0, print_infix(2, "<=>"), p, q)
+        case False       => print("false")
+        case True        => print("true")
+        case Atom(pargs) => print(pargs)
+        case Not(p)      => bracket(pr > 10, 1, print_prefix(10), "~", p)
+        case And(p, q)   => bracket(pr > 8, 0, print_infix(8, """/\"""), p, q)
+        case Or(p, q)    => bracket(pr > 6, 0, print_infix(6, """\/"""), p, q)
+        case Imp(p, q)   => bracket(pr > 4, 0, print_infix(4, "==>"), p, q)
+        case Iff(p, q)   => bracket(pr > 2, 0, print_infix(2, "<=>"), p, q)
       }
     }
     print_formula_(0, pfn)

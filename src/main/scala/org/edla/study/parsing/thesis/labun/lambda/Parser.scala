@@ -10,8 +10,8 @@ object Parser extends StandardTokenParsers with ImplicitConversions {
   // API
   def parse(input: String): Either[String, Expr] =
     phrase(program)(new lexical.Scanner(input)) match {
-      case Success(ast, _) ⇒ Right(ast)
-      case e: NoSuccess    ⇒ Left("parser error: " + e.msg)
+      case Success(ast, _) => Right(ast)
+      case e: NoSuccess    => Left("parser error: " + e.msg)
     }
 
   // Impl.
@@ -35,13 +35,13 @@ object Parser extends StandardTokenParsers with ImplicitConversions {
 
   def postfixOps = application
 
-  def application = simpleExpr ~ rep(argList) ^^ { case e ~ args ⇒ (e /: args)(Application) }
+  def application = simpleExpr ~ rep(argList) ^^ { case e ~ args => (e /: args)(Application) }
 
   def argList = "(" ~> repsep(expr, ",") <~ ")" | simpleExpr ^^ { List(_) }
 
   def simpleExpr =
     (ident ^^ Var
-      | numericLit ^^ { x ⇒
+      | numericLit ^^ { x =>
         Lit(x.toInt)
       }
       | stringLit ^^ Lit
