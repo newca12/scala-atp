@@ -18,7 +18,8 @@ The purpose of [edla.org](https://edla.org) is to promote the state of the art i
 [scala](https://github.com/inpefess/practical-logic-handbook) : uncomplete (chap 1 & 2)  
 [Haskell](https://github.com/relrod/HPLAR) : uncomplete (chap 1)  
 [Haskell](https://github.com/elliottt/plar) : uncomplete  
-[Rust](https://github.com/nikomatsakis/plar-rs) : uncomplete
+[Rust](https://github.com/nikomatsakis/plar-rs) : uncomplete  
+[Swift](https://github.com/nikomatsakis/hplar) : uncomplete
 
 ### Running examples with [Jupyter notebook](http://jupyter.org/) ###
 
