@@ -14,11 +14,16 @@ class PropSpec extends FunSuite {
     assert(
       f ===
         And(
-          Iff(Imp(Atom("p"), Atom("q")),
-              Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))),
-          Iff(Imp(Atom("p"), Atom("q")),
-              Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))
-        ))
+          Iff(
+            Imp(Atom("p"), Atom("q")),
+            Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))
+          ),
+          Iff(
+            Imp(Atom("p"), Atom("q")),
+            Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))
+          )
+        )
+    )
 
     val stream = new java.io.ByteArrayOutputStream()
     Console.withOut(stream) {
@@ -27,7 +32,8 @@ class PropSpec extends FunSuite {
     assert(
       stream.toString ===
         """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v)) /\""" +
-          """ (p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))""")
+          """ (p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))"""
+    )
   }
 
   test("prop.p002") {
@@ -37,14 +43,21 @@ class PropSpec extends FunSuite {
       f ===
         And(
           Or(
-            Iff(Imp(Atom("p"), Atom("q")),
-                Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))),
-            Iff(Imp(Atom("p"), Atom("q")),
-                Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))
+            Iff(
+              Imp(Atom("p"), Atom("q")),
+              Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))
+            ),
+            Iff(
+              Imp(Atom("p"), Atom("q")),
+              Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))
+            )
           ),
-          Iff(Imp(Atom("p"), Atom("q")),
-              Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v")))))
-        ))
+          Iff(
+            Imp(Atom("p"), Atom("q")),
+            Or(And(Atom("r"), Atom("s")), Iff(Atom("t"), And(Not(Not(Atom("u"))), Atom("v"))))
+          )
+        )
+    )
 
     val stream = new java.io.ByteArrayOutputStream()
     Console.withOut(stream) {
@@ -54,7 +67,8 @@ class PropSpec extends FunSuite {
       stream.toString ===
         """((p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v)) \/ """ +
           """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))) /\ """ +
-          """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))""")
+          """(p ==> q <=> r /\ s \/ (t <=> ~(~u) /\ v))"""
+    )
   }
 
   test("prop.p003") {
@@ -75,17 +89,17 @@ class PropSpec extends FunSuite {
 
   test("prop.p007") {
     assert(eval("""p /\ q ==> q /\ r""")(_ match {
-      case "p" ⇒ true
-      case "q" ⇒ false
-      case "r" ⇒ true
+      case "p" => true
+      case "q" => false
+      case "r" => true
     }) === true)
   }
 
   test("prop.p008") {
     assert(eval("""p /\ q ==> q /\ r"""")(_ match {
-      case "p" ⇒ true
-      case "q" ⇒ true
-      case "r" ⇒ false
+      case "p" => true
+      case "q" => true
+      case "r" => false
     }) === false)
   }
 
@@ -151,12 +165,15 @@ class PropSpec extends FunSuite {
         Iff(
           rawdnf("""(p \/ q /\ r) /\ (~p \/ ~r)"""),
           """(p /\ ~p \/ (q /\ r) /\ ~p) \/ p /\ ~r \/ (q /\ r) /\ ~r"""
-        )) === true)
+        )
+      ) === true
+    )
   }
 
   test("prop.038") {
     assert(
       purednf("""(p \/ q /\ r) /\ (~p \/ ~r)""").filter(!trivial(_)) ===
-        List(List(Atom("p"), Not(Atom("r"))), List(Atom("q"), Atom("r"), Not(Atom("p")))))
+        List(List(Atom("p"), Not(Atom("r"))), List(Atom("q"), Atom("r"), Not(Atom("p"))))
+    )
   }
 }

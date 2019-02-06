@@ -4,8 +4,8 @@ import _root_.fastparse.Parsed
 import _root_.fastparse._
 import org.edla.study.parsing.ch8.trading.semantic.OrderDsl
 import org.edla.study.parsing.common.AST._
-import org.edla.study.parsing.fastparse.semantic.{OrderDsl ⇒ OrderDslFastParse}
-import org.edla.study.parsing.parboiled.semantic.{OrderDsl ⇒ OrderDslParboiled}
+import org.edla.study.parsing.fastparse.semantic.{OrderDsl => OrderDslFastParse}
+import org.edla.study.parsing.parboiled.semantic.{OrderDsl => OrderDslParboiled}
 import org.scalatest.FunSuite
 
 import scala.util.Success
@@ -34,7 +34,8 @@ class OrderDslParserSpec extends FunSuite {
           BUY,
           PriceSpec(Some(MAX), 56)
         )
-      )),
+      )
+    ),
     AccountSpec("A1234")
   )
 

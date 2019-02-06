@@ -25,7 +25,8 @@ class IntroSpec extends FunSuite {
   test("intro.p006") {
     val input = "(x1 + x2 + x3) * (1 + 2 + 3 * x + y)"
     assert(
-      parseExpression(input).toString === "Mul(Add(Var(x1),Add(Var(x2),Var(x3))),Add(Const(1),Add(Const(2),Add(Mul(Const(3),Var(x)),Var(y)))))")
+      parseExpression(input).toString === "Mul(Add(Var(x1),Add(Var(x2),Var(x3))),Add(Const(1),Add(Const(2),Add(Mul(Const(3),Var(x)),Var(y)))))"
+    )
   }
   test("intro.p008") {
     val input = "x + 3 * y"

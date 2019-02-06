@@ -68,6 +68,6 @@ libraryDependencies ++= Seq(
 
 //seq(CoverallsPlugin.singleProject: _*)
 
-licenses := Seq("GNU GPL v3" → url("http://www.gnu.org/licenses/gpl.html"))
+licenses := Seq("GNU GPL v3" -> url("http://www.gnu.org/licenses/gpl.html"))
 
 homepage := Some(url("http://github.com/newca12/scala-atp"))
