@@ -11,6 +11,7 @@ import org.edla.port.atp.Formulas.{And, Atom, False, Formula, Iff, Imp, Not, Or,
 import org.edla.study.parsing.parboiled.PropositionalLogic
 import org.parboiled2.{ErrorFormatter, ParseError}
 import org.parboiled2.ParserInput.apply
+import org.edla.port.atp.Lib._
 
 object Prop {
 
@@ -19,7 +20,7 @@ object Prop {
   // Parsing of propositional formulas.                                        //
   // ------------------------------------------------------------------------- //
 
-  def parse_prop_formula(s: String) = {
+  def parse_prop_formula(s: String): Formula = {
     val parser = new PropositionalLogic(s)
     val expr = parser.expr.run() match {
       case Success(expr)          => expr
@@ -52,7 +53,7 @@ object Prop {
   // Return the set of propositional variables in a formula.                   //
   // ------------------------------------------------------------------------- //
 
-  def atoms(fm: Formula) = atom_union((a: Atom) => (a :: Nil), fm) map (_.name)
+  def atoms(fm: Formula): List[String] = atom_union((a: Atom) => a :: Nil, fm) map (_.name)
 
   // pg. 35
   // ------------------------------------------------------------------------- //
@@ -62,22 +63,21 @@ object Prop {
   def onallvaluations(subfn: (String => Boolean) => Boolean, v: String => Boolean, ats: List[String]): Boolean = {
     ats match {
       case Nil => subfn(v)
-      case p :: ps => {
+      case p :: ps =>
         def v_(t: Boolean)(q: String) = if (q == p) t else v(q)
         onallvaluations(subfn, v_(false), ps) && onallvaluations(subfn, v_(true), ps)
-      }
     }
   }
 
   def print_truthtable(fm: Formula): Unit = {
-    val ats                         = atoms(fm)
-    val width                       = ats.foldRight(0)((x, y) => Math.max(x.length, y)) + 5 + 1
-    def fixw(s: String)             = s"""${s}${" " * (width - s.length)}"""
-    def truthstring(p: Boolean)     = fixw(if (p) "true" else "false")
+    val ats                          = atoms(fm)
+    val width                        = ats.foldRight(0)((x, y) => Math.max(x.length, y)) + 5 + 1
+    def fixw(s: String)              = s"""${s}${" " * (width - s.length)}"""
+    def truthstring(p: Boolean)      = fixw(if (p) "true" else "false")
     def lis(v: String => Boolean)    = ats.map(x => truthstring(v(x)))
     def ans(v: String => Boolean)    = truthstring(eval(fm)(v))
     def mk_row(v: String => Boolean) = { println(lis(v).foldRight("| " + ans(v))((x, y) => x + y)); true }
-    val separator                   = "-" * (width * ats.length + 9)
+    val separator                    = "-" * (width * ats.length + 9)
     println(ats.foldRight("| formula")((x, y) => fixw(x) + y))
     println(separator)
     onallvaluations(mk_row, (s: String) => false, ats)
@@ -89,7 +89,7 @@ object Prop {
   // Recognizing tautologies.                                                  //
   // ------------------------------------------------------------------------- //
 
-  def tautology(fm: Formula) = onallvaluations(eval(fm) _, (s: String) => false, atoms(fm))
+  def tautology(fm: Formula): Boolean = onallvaluations(eval(fm), (s: String) => false, atoms(fm))
 
   // pg. 48
   // ------------------------------------------------------------------------- //
@@ -152,16 +152,16 @@ object Prop {
   // Some operations on literals.                                              //
   // ------------------------------------------------------------------------- //
 
-  def negative(fm: Formula) = {
+  def negative(fm: Formula): Boolean = {
     fm match {
       case Not(p) => true
       case _      => false
     }
   }
 
-  def positive(lit: Formula) = !negative(lit)
+  def positive(lit: Formula): Boolean = !negative(lit)
 
-  def negate(fm: Formula) = {
+  def negate(fm: Formula): Formula = {
     fm match {
       case Not(p) => p
       case p      => Not(p)
@@ -224,12 +224,12 @@ object Prop {
   // Disjunctive normal form (DNF) via truth tables.                           //
   // ------------------------------------------------------------------------- //
 
-  def list_conj(l: List[Formula]) = {
-    l.foldRight[Formula](True)(And(_, _))
+  def list_conj(l: List[Formula]): Formula = {
+    l.foldRight[Formula](True)(And)
   }
 
-  def list_dij(l: List[Formula]) = {
-    l.foldRight[Formula](False)(Or(_, _))
+  def list_disj(l: List[Formula]): Formula = {
+    l.foldRight[Formula](False)(Or)
   }
 
   // pg. 57
@@ -239,9 +239,9 @@ object Prop {
 
   def distrib(fm: Formula): Formula = {
     fm match {
-      case And(p, (Or(q, r))) => Or(distrib(And(p, q)), distrib(And(p, r)))
-      case And(Or(p, q), r)   => Or(distrib(And(p, r)), distrib(And(q, r)))
-      case _                  => fm
+      case And(p, Or(q, r)) => Or(distrib(And(p, q)), distrib(And(p, r)))
+      case And(Or(p, q), r) => Or(distrib(And(p, r)), distrib(And(q, r)))
+      case _                => fm
     }
   }
 
@@ -259,7 +259,7 @@ object Prop {
   // ------------------------------------------------------------------------- //
 
   //http://stackoverflow.com/questions/11803349/composing-a-list-of-all-pairs
-  def distrib(s1: List[List[Formula]], s2: List[List[Formula]]) = {
+  def distrib(s1: List[List[Formula]], s2: List[List[Formula]]): List[List[Formula]] = {
     for (x <- s1; y <- s2) yield x.union(y)
   }
 
@@ -278,8 +278,53 @@ object Prop {
   // ------------------------------------------------------------------------- //
 
   def trivial(lits: List[Formula]): Boolean = {
-    val (pos, neg) = lits.partition(positive(_))
-    !pos.intersect(neg.map(negate(_))).isEmpty
+    val (pos, neg) = lits.partition(positive)
+    pos.intersect(neg.map(negate)).nonEmpty
+  }
+
+  // pg. 59
+  // ------------------------------------------------------------------------- //
+  // With subsumption checking, done very naively (quadratic).                 //
+  // ------------------------------------------------------------------------- //
+
+  def simpdnf(fm: Formula): List[List[Formula]] = {
+    if (fm == False) Nil
+    else if (fm == True) List(Nil)
+    else {
+      val djs = purednf(nnf(fm)).filter((f: List[Formula]) => !trivial(f))
+      djs.filter(d => !djs.exists(psubset(_, d)))
+    }
+  }
+
+  // pg. 59
+  // ------------------------------------------------------------------------- //
+  // Mapping back to a formula.                                                //
+  // ------------------------------------------------------------------------- //
+
+  def dnf(fm: Formula): Formula = {
+    list_disj(simpdnf(fm).map(list_conj))
+  }
+
+  // pg. 60
+  // ------------------------------------------------------------------------- //
+  // Conjunctive normal form (CNF) by essentially the same code.               //
+  // ------------------------------------------------------------------------- //
+
+  def purecnf(fm: Formula): List[List[Formula]] = {
+    purednf(nnf(Not(fm))).map(_.map(negate))
+  }
+
+  def simpcnf(fm: Formula): List[List[Formula]] = {
+    if (fm == False) List(Nil)
+    else if (fm == True) Nil
+    else {
+      val cjs = purecnf(fm).filter((f: List[Formula]) => !trivial(f))
+      cjs.filter(c => !cjs.exists(psubset(_, c)))
+    }
+  }
+
+  def cnf(fm: Formula): Formula = {
+    list_conj(simpcnf(fm).map(list_disj))
   }
 
 }

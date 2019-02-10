@@ -27,7 +27,7 @@ All examples will be available in the [notebooks directory](https://github.com/n
 This is a very convenient way to play with Scala  
 You need first to publish scala-atp locally :
 ```
-https://github.com/newca12/scala-atp.git
+git clone https://github.com/newca12/scala-atp.git
 cd scala-atp
 sbt publishLocal
 ```
