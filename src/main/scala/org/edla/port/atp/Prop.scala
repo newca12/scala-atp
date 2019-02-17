@@ -228,7 +228,15 @@ object Prop {
     l.foldRight[Formula](True)(And)
   }
 
+  def set_conj(l: Set[Formula]): Formula = {
+    l.foldRight[Formula](True)(And)
+  }
+
   def list_disj(l: List[Formula]): Formula = {
+    l.foldRight[Formula](False)(Or)
+  }
+
+  def set_disj(l: Set[Formula]): Formula = {
     l.foldRight[Formula](False)(Or)
   }
 

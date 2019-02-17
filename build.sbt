@@ -2,7 +2,7 @@ name := "scala-atp"
 
 organization := "org.edla"
 
-version := "0.4"
+version := "0.5"
 
 scalaVersion in ThisBuild := "2.12.8"
 
