@@ -1,4 +1,5 @@
 //https://www.reddit.com/r/scala/comments/3s7iyh/multivariable_lambda_calculus_in_the_scala_type/
+/*
 import org.edla.study.lambda_calculus.lambda._
 
 object example extends App {
@@ -10,3 +11,4 @@ object example extends App {
   println(s"${eval[F#ap[_2]]} == _5")
 
 }
+*/

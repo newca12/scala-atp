@@ -1,4 +1,5 @@
 //https://gist.github.com/drXor/e0d55894d788396d5141
+/*
 package org.edla.study.lambda_calculus
 
 /**
@@ -276,3 +277,4 @@ package object lambda {
     pretty(u.tpe)
   }
 }
+*/
