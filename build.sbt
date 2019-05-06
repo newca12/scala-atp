@@ -60,10 +60,10 @@ scalacOptions in (Compile, doc) ++= Seq("-diagrams", "-implicits")
 
 libraryDependencies ++= Seq(
   "org.scala-lang"         % "scala-reflect"             % scalaVersion.value, //for lambda.scala
-  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.1",
-  "org.parboiled"          %% "parboiled"                % "2.1.5",
-  "com.lihaoyi"            %% "fastparse"                % "2.1.0",
-  "org.scalatest"          %% "scalatest"                % "3.0.5" % "test"
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.2",
+  "org.parboiled"          %% "parboiled"                % "2.1.6",
+  "com.lihaoyi"            %% "fastparse"                % "2.1.2",
+  "org.scalatest"          %% "scalatest"                % "3.0.7" % "test"
 )
 
 //seq(CoverallsPlugin.singleProject: _*)
